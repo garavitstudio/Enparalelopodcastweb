@@ -1,0 +1,32 @@
+# Archivos ignorados por Git
+
+# Dependencias
+node_modules/
+
+# Scripts de optimización (solo desarrollo)
+optimize-images.cjs
+package.json
+package-lock.json
+
+# Originales de imágenes (antes de comprimir)
+_originals/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+
+# Variables de entorno
+.env
+.env.local
+.env.production
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

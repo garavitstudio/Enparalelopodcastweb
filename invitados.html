@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ser un Invitado — En Paralelo Podcast</title>
+  <meta name="description" content="¿Tienes una historia que contar? Aplica para ser invitado en En Paralelo Podcast." />
+  <meta name="theme-color" content="#080808" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="assets/images/logo.svg" type="image/svg+xml" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://enparalelo.com/invitados" />
+  <meta property="og:title" content="Sé un Invitado — En Paralelo Podcast" />
+  <meta property="og:description" content="¿Tienes un camino vivido que contar? Sé invitado en En Paralelo y comparte tu historia en una conversación real." />
+  <meta property="og:image" content="https://enparalelo.com/assets/images/og-cover.jpg" />
+  <meta property="og:locale" content="es_ES" />
+  <meta property="og:site_name" content="En Paralelo Podcast" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Sé un Invitado — En Paralelo Podcast" />
+  <meta name="twitter:description" content="¿Tienes un camino vivido que contar? Sé invitado en En Paralelo y comparte tu historia en una conversación real." />
+  <meta name="twitter:image" content="https://enparalelo.com/assets/images/og-cover.jpg" />
+
+  <!-- Preload -->
+  <link rel="preload" href="assets/css/global.css" as="style" />
+  <link rel="preload" href="assets/images/logo.svg" as="image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/global.css" />
+  <link rel="stylesheet" href="assets/css/background.css" />
+  <link rel="stylesheet" href="assets/css/header.css" />
+  <link rel="stylesheet" href="assets/css/footer.css" />
+  <link rel="stylesheet" href="assets/css/subpage.css" />
+</head>
+<body>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <div class="scan-lines" aria-hidden="true"></div>
+  <div class="glitch-overlay" aria-hidden="true">
+    <div class="glitch-line"></div><div class="glitch-line"></div>
+    <div class="glitch-line"></div><div class="glitch-line"></div>
+    <div class="glitch-line"></div>
+    <div class="glitch-burst"></div><div class="glitch-burst"></div>
+  </div>
+
+  <header id="site-header">
+    <a href="index.html" class="neon-logo">
+      <img src="assets/images/logo.svg" alt="En Paralelo Podcast" class="logo-img" />
+    </a>
+    <button class="hamburger" aria-label="Menú"><span></span><span></span><span></span></button>
+    <nav class="site-nav">
+      <a href="index.html">Inicio</a>
+      <a href="index.html#episodios">Episodios</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="comunidad.html">Comunidad</a>
+      <a href="invitados.html" class="active">Invitados</a>
+    </nav>
+  </header>
+
+  <div id="app">
+    <section class="subpage-hero">
+      <div class="section-wrapper">
+        <div class="subpage-hero-inner reveal">
+          <span class="neon-label">Ser un Invitado</span>
+          <h1>¿Tienes algo real<br />que contar?</h1>
+          <p class="subpage-subtitle">No buscamos famosos. Buscamos personas con un camino vivido.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="subpage-content">
+      <div class="section-wrapper">
+
+        <div class="glass-panel content-panel reveal">
+          <span class="neon-label">¿A quién buscamos?</span>
+          <h2 style="margin:12px 0 20px;">Personas reales.<br />Historias sin guion.</h2>
+          <div class="three-cols">
+            <div class="col-card glass-panel">
+              <span class="col-icon">🔥</span>
+              <h4>Con un camino vivido</h4>
+              <p>No hace falta ser famoso. Hace falta haber vivido algo, haberlo procesado y tener algo genuino que decir.</p>
+            </div>
+            <div class="col-card glass-panel">
+              <span class="col-icon">🧠</span>
+              <h4>Con perspectiva propia</h4>
+              <p>Personas que han llegado a sus propias conclusiones sobre la vida, el propósito, Dios, la muerte, el éxito.</p>
+            </div>
+            <div class="col-card glass-panel">
+              <span class="col-icon">💬</span>
+              <h4>Con ganas de hablar de verdad</h4>
+              <p>Aquí no hay guiones. Las conversaciones van a donde tienen que ir. Y eso requiere estar presente de verdad.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-panel content-panel reveal" data-delay="100" style="margin-top:24px;">
+          <span class="neon-label">¿Cómo es el proceso?</span>
+          <h2 style="margin:12px 0 28px;">Del primer contacto al episodio</h2>
+          <div class="process-steps">
+            <div class="process-step">
+              <span class="step-num">01</span>
+              <div>
+                <h4>Rellena el formulario</h4>
+                <p>Cuéntanos quién eres, tu historia y por qué crees que tienes algo que aportar.</p>
+              </div>
+            </div>
+            <div class="process-step">
+              <span class="step-num">02</span>
+              <div>
+                <h4>Te escribimos</h4>
+                <p>Si sentimos que hay conexión y que el episodio puede ser potente, nos ponemos en contacto contigo.</p>
+              </div>
+            </div>
+            <div class="process-step">
+              <span class="step-num">03</span>
+              <div>
+                <h4>Conversación sin guion</h4>
+                <p>Quedamos en el estudio. Sin preguntas preparadas. Sin imagen que mantener. Solo hablar de verdad.</p>
+              </div>
+            </div>
+            <div class="process-step">
+              <span class="step-num">04</span>
+              <div>
+                <h4>Lo publicamos juntos</h4>
+                <p>El episodio sale en todas las plataformas. Y lo que dijiste, queda.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-panel content-panel reveal" data-delay="200" style="margin-top:24px;">
+          <span class="neon-label">Aplica ahora</span>
+          <h2 style="margin:12px 0 8px;">Cuéntanos tu historia</h2>
+          <p style="color:var(--text-muted);margin-bottom:32px;">Léemos todas las solicitudes. Si encaja, te contactamos.</p>
+
+          <form class="contact-form" id="form-invitados" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="inv-name">Tu nombre</label>
+                <input type="text" id="inv-name" name="name" class="form-input" placeholder="Nombre completo" required />
+              </div>
+              <div class="form-group">
+                <label for="inv-email">Email</label>
+                <input type="email" id="inv-email" name="email" class="form-input" placeholder="tu@email.com" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inv-redes">Tus redes sociales</label>
+              <input type="text" id="inv-redes" name="redes" class="form-input" placeholder="@tuinstagram, TikTok, LinkedIn..." />
+            </div>
+            <div class="form-group">
+              <label for="inv-tematica">Temática o área de tu camino</label>
+              <input type="text" id="inv-tematica" name="tematica" class="form-input" placeholder="Ej: emprendimiento, pérdida, espiritualidad, psicología..." />
+            </div>
+            <div class="form-group">
+              <label for="inv-historia">¿Por qué tú? ¿Qué has vivido?</label>
+              <textarea id="inv-historia" name="historia" class="form-input" rows="5" placeholder="Cuéntanos tu historia con honestidad. No hay respuestas malas." required></textarea>
+            </div>
+            <button type="submit" class="btn-primary" style="width:100%;justify-content:center;">
+              Enviar mi solicitud →
+            </button>
+            <p class="form-disclaimer" style="text-align:center;margin-top:12px;font-size:0.78rem;color:var(--text-dim);">
+              Respondemos a todos, aunque sea para decir que no encaja por ahora.
+            </p>
+          </form>
+        </div>
+
+        <div class="subpage-cta-row reveal" data-delay="200">
+          <a href="comunidad.html" class="btn-secondary">¿Preferirías unirte como oyente? →</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer id="site-footer">
+    <div class="footer-inner">
+      <div class="footer-bottom" style="padding-top:0;">
+        <a href="index.html" class="neon-logo" style="font-size:1.1rem;">
+          <img src="assets/images/logo.svg" alt="En Paralelo Podcast" class="logo-img" style="height:2rem;" />
+        </a>
+        <div style="display:flex;gap:20px;flex-wrap:wrap;">
+          <a href="privacidad.html" style="font-size:0.8rem;color:var(--text-dim);">Privacidad</a>
+          <a href="aviso-legal.html" style="font-size:0.8rem;color:var(--text-dim);">Aviso Legal</a>
+          <a href="cookies.html" style="font-size:0.8rem;color:var(--text-dim);">Cookies</a>
+        </div>
+        <span class="footer-credits">Creado con ❤️ y Flow por <a href="https://garavitstudio.com" target="_blank" rel="noopener">Garavit.Studio</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/background.js"></script>
+  <script src="assets/js/utils.js"></script>
+</body>
+</html>

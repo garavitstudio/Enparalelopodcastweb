@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Política de Privacidad — En Paralelo Podcast</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/global.css" />
+  <link rel="stylesheet" href="assets/css/background.css" />
+  <link rel="stylesheet" href="assets/css/header.css" />
+  <link rel="stylesheet" href="assets/css/footer.css" />
+  <link rel="stylesheet" href="assets/css/subpage.css" />
+</head>
+<body>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <div class="scan-lines" aria-hidden="true"></div>
+  <div class="glitch-overlay" aria-hidden="true">
+    <div class="glitch-line"></div><div class="glitch-line"></div><div class="glitch-line"></div><div class="glitch-line"></div><div class="glitch-line"></div>
+    <div class="glitch-burst"></div><div class="glitch-burst"></div>
+  </div>
+
+  <header id="site-header">
+    <a href="index.html" class="neon-logo">
+      <img src="assets/images/logo.svg" alt="En Paralelo Podcast" class="logo-img" />
+    </a>
+    <button class="hamburger" aria-label="Menú"><span></span><span></span><span></span></button>
+    <nav class="site-nav">
+      <a href="index.html">Inicio</a>
+      <a href="index.html#episodios">Episodios</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="comunidad.html">Comunidad</a>
+      <a href="invitados.html">Invitados</a>
+    </nav>
+  </header>
+
+  <div id="app">
+    <section class="subpage-hero">
+      <div class="section-wrapper">
+        <div class="subpage-hero-inner reveal">
+          <span class="neon-label">Legal</span>
+          <h1>Política de Privacidad</h1>
+          <p class="subpage-subtitle">Última actualización: enero 2025</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="subpage-content">
+      <div class="section-wrapper">
+        <div class="glass-panel legal-content reveal">
+
+          <h2>1. Responsable del tratamiento</h2>
+          <p>En Paralelo Podcast es el responsable del tratamiento de los datos personales que nos facilites a través de este sitio web. Puedes contactarnos en: <strong>hola@enparalelo.com</strong></p>
+
+          <h2>2. ¿Qué datos recogemos?</h2>
+          <p>Recogemos los datos que nos facilitas voluntariamente a través de los formularios de esta web:</p>
+          <ul>
+            <li>Nombre y apellidos</li>
+            <li>Dirección de correo electrónico</li>
+            <li>Perfil (oyente, invitado o patrocinador)</li>
+            <li>Mensaje opcional</li>
+          </ul>
+
+          <h2>3. ¿Para qué usamos tus datos?</h2>
+          <p>Tus datos se utilizan exclusivamente para:</p>
+          <ul>
+            <li>Responderte cuando nos contactes</li>
+            <li>Enviarte novedades del podcast si te suscribes a la comunidad</li>
+            <li>Gestionar solicitudes de invitados o patrocinadores</li>
+          </ul>
+          <p>No cedemos tus datos a terceros ni los utilizamos para fines comerciales ajenos al podcast.</p>
+
+          <h2>4. Base legal del tratamiento</h2>
+          <p>El tratamiento de tus datos se basa en tu consentimiento expreso, otorgado en el momento de rellenar y enviar los formularios de esta web (art. 6.1.a RGPD).</p>
+
+          <h2>5. ¿Cuánto tiempo conservamos tus datos?</h2>
+          <p>Conservamos tus datos el tiempo necesario para atender tu solicitud y, en caso de suscripción a la comunidad, hasta que solicites la baja.</p>
+
+          <h2>6. Tus derechos</h2>
+          <p>Tienes derecho a acceder, rectificar, suprimir, oponerte y limitar el tratamiento de tus datos, así como el derecho a la portabilidad. Puedes ejercerlos escribiéndonos a <strong>hola@enparalelo.com</strong>.</p>
+          <p>Si consideras que el tratamiento no es conforme a la normativa vigente, puedes presentar una reclamación ante la Agencia Española de Protección de Datos (www.aepd.es).</p>
+
+          <h2>7. Seguridad</h2>
+          <p>Aplicamos medidas técnicas y organizativas adecuadas para proteger tus datos personales frente al acceso no autorizado, pérdida o alteración.</p>
+
+        </div>
+
+        <div class="subpage-cta-row reveal">
+          <a href="index.html" class="btn-secondary">← Volver al inicio</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer id="site-footer">
+    <div class="footer-inner">
+      <div class="footer-bottom" style="padding-top:0;">
+        <a href="index.html" class="neon-logo" style="font-size:1.1rem;">
+          <img src="assets/images/logo.svg" alt="En Paralelo Podcast" class="logo-img" style="height:2rem;" />
+        </a>
+        <div style="display:flex;gap:20px;flex-wrap:wrap;">
+          <a href="privacidad.html" style="font-size:0.8rem;color:var(--text-dim);">Privacidad</a>
+          <a href="aviso-legal.html" style="font-size:0.8rem;color:var(--text-dim);">Aviso Legal</a>
+          <a href="cookies.html" style="font-size:0.8rem;color:var(--text-dim);">Cookies</a>
+        </div>
+        <span class="footer-credits">Creado con ❤️ y Flow por <a href="https://garavitstudio.com" target="_blank" rel="noopener">Garavit.Studio</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/background.js"></script>
+  <script src="assets/js/utils.js"></script>
+</body>
+</html>

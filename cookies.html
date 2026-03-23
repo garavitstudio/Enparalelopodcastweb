@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Política de Cookies — En Paralelo Podcast</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/global.css" />
+  <link rel="stylesheet" href="assets/css/background.css" />
+  <link rel="stylesheet" href="assets/css/header.css" />
+  <link rel="stylesheet" href="assets/css/footer.css" />
+  <link rel="stylesheet" href="assets/css/subpage.css" />
+</head>
+<body>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <div class="scan-lines" aria-hidden="true"></div>
+  <div class="glitch-overlay" aria-hidden="true">
+    <div class="glitch-line"></div><div class="glitch-line"></div><div class="glitch-line"></div><div class="glitch-line"></div><div class="glitch-line"></div>
+    <div class="glitch-burst"></div><div class="glitch-burst"></div>
+  </div>
+
+  <header id="site-header">
+    <a href="index.html" class="neon-logo">
+      <img src="assets/images/logo.svg" alt="En Paralelo Podcast" class="logo-img" />
+    </a>
+    <button class="hamburger" aria-label="Menú"><span></span><span></span><span></span></button>
+    <nav class="site-nav">
+      <a href="index.html">Inicio</a>
+      <a href="index.html#episodios">Episodios</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="comunidad.html">Comunidad</a>
+      <a href="invitados.html">Invitados</a>
+    </nav>
+  </header>
+
+  <div id="app">
+    <section class="subpage-hero">
+      <div class="section-wrapper">
+        <div class="subpage-hero-inner reveal">
+          <span class="neon-label">Legal</span>
+          <h1>Política de Cookies</h1>
+          <p class="subpage-subtitle">Cómo y por qué usamos cookies en este sitio.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="subpage-content">
+      <div class="section-wrapper">
+        <div class="glass-panel legal-content reveal">
+
+          <h2>¿Qué son las cookies?</h2>
+          <p>Las cookies son pequeños archivos de texto que se almacenan en tu dispositivo cuando visitas un sitio web. Sirven para recordar información sobre tu visita y mejorar la experiencia de navegación.</p>
+
+          <h2>¿Qué cookies usamos?</h2>
+          <p>Este sitio web utiliza los siguientes tipos de cookies:</p>
+          <ul>
+            <li><strong>Cookies técnicas esenciales:</strong> Necesarias para el funcionamiento básico del sitio. No requieren tu consentimiento.</li>
+            <li><strong>Cookies de análisis (Google Analytics):</strong> Nos permiten medir el tráfico y analizar cómo se usa el sitio. Solo se activan con tu consentimiento.</li>
+            <li><strong>Cookies de YouTube:</strong> Los reproductores de vídeo de YouTube incrustados en el sitio pueden instalar cookies propias de Google. Consulta la política de privacidad de Google para más información.</li>
+          </ul>
+
+          <h2>¿Cómo gestionar las cookies?</h2>
+          <p>Puedes configurar tu navegador para rechazar o eliminar cookies en cualquier momento. Ten en cuenta que deshabilitar ciertas cookies puede afectar al funcionamiento del sitio. Instrucciones para los principales navegadores:</p>
+          <ul>
+            <li>Google Chrome: Configuración → Privacidad y seguridad → Cookies</li>
+            <li>Mozilla Firefox: Opciones → Privacidad y seguridad</li>
+            <li>Safari: Preferencias → Privacidad</li>
+            <li>Microsoft Edge: Configuración → Cookies y permisos del sitio</li>
+          </ul>
+
+          <h2>Actualización de esta política</h2>
+          <p>Podemos actualizar esta política en cualquier momento. La fecha de la última actualización siempre estará visible al inicio de la página. Si el uso que haces del sitio es continuo, consideramos que aceptas los cambios.</p>
+
+          <h2>Contacto</h2>
+          <p>Si tienes dudas sobre nuestra política de cookies, escríbenos a <strong>hola@enparalelo.com</strong>.</p>
+
+        </div>
+
+        <div class="subpage-cta-row reveal">
+          <a href="index.html" class="btn-secondary">← Volver al inicio</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer id="site-footer">
+    <div class="footer-inner">
+      <div class="footer-bottom" style="padding-top:0;">
+        <a href="index.html" class="neon-logo" style="font-size:1.1rem;">
+          <img src="assets/images/logo.svg" alt="En Paralelo Podcast" class="logo-img" style="height:2rem;" />
+        </a>
+        <div style="display:flex;gap:20px;flex-wrap:wrap;">
+          <a href="privacidad.html" style="font-size:0.8rem;color:var(--text-dim);">Privacidad</a>
+          <a href="aviso-legal.html" style="font-size:0.8rem;color:var(--text-dim);">Aviso Legal</a>
+          <a href="cookies.html" style="font-size:0.8rem;color:var(--text-dim);">Cookies</a>
+        </div>
+        <span class="footer-credits">Creado con ❤️ y Flow por <a href="https://garavitstudio.com" target="_blank" rel="noopener">Garavit.Studio</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/background.js"></script>
+  <script src="assets/js/utils.js"></script>
+</body>
+</html>
