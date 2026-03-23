@@ -2,6 +2,13 @@
 // Film grain + glitch lines rendered on a canvas
 
 (function () {
+  // Inject the background pulsing logo before the canvas
+  const bgLogo = document.createElement('img');
+  bgLogo.src = 'assets/images/logo.svg';
+  bgLogo.className = 'bg-pulse-logo';
+  bgLogo.setAttribute('aria-hidden', 'true');
+  document.body.prepend(bgLogo);
+
   const canvas = document.getElementById('bg-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
@@ -51,14 +58,14 @@
   function spawnGlitchBar() {
     glitchBars.push({
       y: Math.random() * h,
-      height: Math.random() * 2 + 0.5,
+      height: Math.random() * 6 + 2, // Thicker to survive blur
       width: Math.random() * w * 0.6 + w * 0.1,
       x: Math.random() > 0.5 ? 0 : w - (Math.random() * w * 0.5),
-      alpha: Math.random() * 0.25 + 0.05,
+      alpha: Math.random() * 0.6 + 0.4, // Much brighter
       speed: Math.random() * 0.8 + 0.2,
       color: Math.random() > 0.7
-        ? `rgba(212,255,97,${Math.random() * 0.15 + 0.03})`
-        : `rgba(57,255,20,${Math.random() * 0.1 + 0.02})`,
+        ? `rgba(212,255,97,${Math.random() * 0.4 + 0.6})`
+        : `rgba(57,255,20,${Math.random() * 0.3 + 0.5})`,
       life: 0,
       maxLife: Math.random() * 40 + 10
     });
@@ -71,9 +78,9 @@
       x: Math.random() * w,
       y: -40,
       height: Math.random() * 120 + 40,
-      width: Math.random() * 1.5 + 0.5,
+      width: Math.random() * 4 + 2, // Thicker vertically
       speed: Math.random() * 3 + 1.5,
-      alpha: Math.random() * 0.12 + 0.03,
+      alpha: Math.random() * 0.3 + 0.2, // Brighter
       color: Math.random() > 0.6
         ? `rgba(212,255,97,1)`
         : `rgba(0,229,255,1)`,
