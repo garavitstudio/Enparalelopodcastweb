@@ -27,11 +27,7 @@
   height: 44px;
   width: auto;
   display: block;
-  filter:
-    drop-shadow(0 0 6px rgba(212, 255, 97, 0.8))
-    drop-shadow(0 0 16px rgba(212, 255, 97, 0.4));
-  animation: logoGlow 4s ease-in-out infinite;
-  transition: filter 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
 .logo-img--footer {
@@ -39,22 +35,7 @@
 }
 
 .neon-logo:hover .logo-img {
-  filter:
-    drop-shadow(0 0 10px rgba(212, 255, 97, 1))
-    drop-shadow(0 0 28px rgba(212, 255, 97, 0.6));
-}
-
-@keyframes logoGlow {
-  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-    filter:
-      drop-shadow(0 0 6px rgba(212, 255, 97, 0.8))
-      drop-shadow(0 0 16px rgba(212, 255, 97, 0.4));
-    opacity: 1;
-  }
-  20%, 24%, 55% {
-    filter: drop-shadow(0 0 2px rgba(212, 255, 97, 0.3));
-    opacity: 0.75;
-  }
+  opacity: 0.8;
 }
 
 /* ===== NEON LOGO ===== */
