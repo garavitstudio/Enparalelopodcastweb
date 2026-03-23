@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # En Paralelo Podcast 🎙️
 
 Sitio web oficial de **En Paralelo Podcast** — conversaciones que van más allá.
@@ -69,3 +70,6 @@ O conecta el repositorio de GitHub en [vercel.com](https://vercel.com) para desp
 ---
 
 Creado con ❤️ y Flow por [Garavit.Studio](https://garavitstudio.com)
+=======
+# Enparalelopodcastweb
+>>>>>>> 2be0b7e39431dc23017383a4e4fe7590bbc3a749
