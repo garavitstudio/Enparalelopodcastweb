@@ -4,7 +4,7 @@
 :root {
   --neon-yellow: #d4ff61;
   --neon-yellow-glow: rgba(212, 255, 97, 0.6);
-  --neon-green: #39ff14;
+  --neon-green: #d4ff61; /* Replaced green with logo yellow as requested */
   --neon-blue: #00e5ff;
   --neon-blue-glow: rgba(0, 229, 255, 0.5);
   --bg-dark: #080808;

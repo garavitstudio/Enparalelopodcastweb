@@ -36,7 +36,7 @@
     const waves = [
       { amp: 15, freq: 0.012, speed: 0.8, color: 'rgba(212,255,97,0.35)', offset: 0 },
       { amp: 22, freq: 0.008, speed: 0.5, color: 'rgba(212,255,97,0.2)', offset: 1.5 },
-      { amp: 10, freq: 0.018, speed: 1.2, color: 'rgba(57,255,20,0.2)', offset: 3 },
+      { amp: 10, freq: 0.018, speed: 1.2, color: 'rgba(212,255,97,0.2)', offset: 3 },
       { amp: 18, freq: 0.006, speed: 0.3, color: 'rgba(0,229,255,0.12)', offset: 4.5 },
     ];
 

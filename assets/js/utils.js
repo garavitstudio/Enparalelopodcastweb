@@ -84,8 +84,8 @@
       const originalText = btn.textContent;
 
       btn.textContent = '✓ ¡Listo! Te escribimos pronto';
-      btn.style.borderColor = 'rgba(57,255,20,0.5)';
-      btn.style.color = '#39ff14';
+      btn.style.borderColor = 'rgba(212,255,97,0.5)';
+      btn.style.color = '#d4ff61';
       btn.disabled = true;
 
       setTimeout(() => {

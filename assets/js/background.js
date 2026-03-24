@@ -65,7 +65,7 @@
       speed: Math.random() * 0.8 + 0.2,
       color: Math.random() > 0.7
         ? `rgba(212,255,97,${Math.random() * 0.4 + 0.6})`
-        : `rgba(57,255,20,${Math.random() * 0.3 + 0.5})`,
+        : `rgba(212,255,97,${Math.random() * 0.3 + 0.5})`,
       life: 0,
       maxLife: Math.random() * 40 + 10
     });
