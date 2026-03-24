@@ -32,8 +32,8 @@
   width: auto;
   display: block;
   filter:
-    drop-shadow(0 0 6px rgba(212, 255, 97, 0.6))
-    drop-shadow(0 0 16px rgba(212, 255, 97, 0.3));
+    drop-shadow(0 0 6px rgba(255, 237, 74, 0.6))
+    drop-shadow(0 0 16px rgba(255, 237, 74, 0.3));
   animation: logoGlow 4s ease-in-out infinite;
   transition: filter 0.3s ease;
 }
@@ -44,17 +44,17 @@
 
 .neon-logo:hover .logo-img {
   filter:
-    drop-shadow(0 0 10px rgba(212, 255, 97, 1))
-    drop-shadow(0 0 28px rgba(212, 255, 97, 0.6));
+    drop-shadow(0 0 10px rgba(255, 237, 74, 1))
+    drop-shadow(0 0 28px rgba(255, 237, 74, 0.6));
 }
 
 @keyframes logoGlow {
   0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-    filter: drop-shadow(0 0 6px rgba(212, 255, 97, 0.6)) drop-shadow(0 0 16px rgba(212, 255, 97, 0.3));
+    filter: drop-shadow(0 0 6px rgba(255, 237, 74, 0.6)) drop-shadow(0 0 16px rgba(255, 237, 74, 0.3));
     opacity: 1;
   }
   20%, 24%, 55% {
-    filter: drop-shadow(0 0 2px rgba(212, 255, 97, 0.2));
+    filter: drop-shadow(0 0 2px rgba(255, 237, 74, 0.2));
     opacity: 0.75;
   }
 }
@@ -79,8 +79,8 @@
   text-shadow:
     0 0 7px var(--neon-yellow),
     0 0 14px var(--neon-yellow),
-    0 0 30px rgba(212, 255, 97, 0.7),
-    0 0 60px rgba(212, 255, 97, 0.3);
+    0 0 30px rgba(255, 237, 74, 0.7),
+    0 0 60px rgba(255, 237, 74, 0.3);
   animation: neonFlicker 4s ease-in-out infinite;
 }
 
@@ -117,8 +117,8 @@
     text-shadow:
       0 0 7px var(--neon-yellow),
       0 0 14px var(--neon-yellow),
-      0 0 30px rgba(212, 255, 97, 0.7),
-      0 0 60px rgba(212, 255, 97, 0.3);
+      0 0 30px rgba(255, 237, 74, 0.7),
+      0 0 60px rgba(255, 237, 74, 0.3);
     opacity: 1;
   }
   20%, 24%, 55% {

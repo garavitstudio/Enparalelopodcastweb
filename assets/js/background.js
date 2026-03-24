@@ -64,8 +64,8 @@
       alpha: Math.random() * 0.6 + 0.4, // Much brighter
       speed: Math.random() * 0.8 + 0.2,
       color: Math.random() > 0.7
-        ? `rgba(212,255,97,${Math.random() * 0.4 + 0.6})`
-        : `rgba(212,255,97,${Math.random() * 0.3 + 0.5})`,
+        ? `rgba(255,237,74,${Math.random() * 0.4 + 0.6})`
+        : `rgba(255,237,74,${Math.random() * 0.3 + 0.5})`,
       life: 0,
       maxLife: Math.random() * 40 + 10
     });
@@ -82,7 +82,7 @@
       speed: Math.random() * 3 + 1.5,
       alpha: Math.random() * 0.3 + 0.2, // Brighter
       color: Math.random() > 0.6
-        ? `rgba(212,255,97,1)`
+        ? `rgba(255,237,74,1)`
         : `rgba(0,229,255,1)`,
       life: 0
     });

@@ -34,9 +34,9 @@
     ctx.clearRect(0, 0, w, h);
 
     const waves = [
-      { amp: 15, freq: 0.012, speed: 0.8, color: 'rgba(212,255,97,0.35)', offset: 0 },
-      { amp: 22, freq: 0.008, speed: 0.5, color: 'rgba(212,255,97,0.2)', offset: 1.5 },
-      { amp: 10, freq: 0.018, speed: 1.2, color: 'rgba(212,255,97,0.2)', offset: 3 },
+      { amp: 15, freq: 0.012, speed: 0.8, color: 'rgba(255,237,74,0.35)', offset: 0 },
+      { amp: 22, freq: 0.008, speed: 0.5, color: 'rgba(255,237,74,0.2)', offset: 1.5 },
+      { amp: 10, freq: 0.018, speed: 1.2, color: 'rgba(255,237,74,0.2)', offset: 3 },
       { amp: 18, freq: 0.006, speed: 0.3, color: 'rgba(0,229,255,0.12)', offset: 4.5 },
     ];
 
@@ -77,9 +77,9 @@
     const step = Math.floor(dataArray.length / barCount);
 
     ctx.beginPath();
-    ctx.strokeStyle = 'rgba(212,255,97,0.8)';
+    ctx.strokeStyle = 'rgba(255,237,74,0.8)';
     ctx.lineWidth = 2.5;
-    ctx.shadowColor = 'rgba(212,255,97,0.6)';
+    ctx.shadowColor = 'rgba(255,237,74,0.6)';
     ctx.shadowBlur = 12;
 
     for (let i = 0; i < barCount; i++) {
@@ -93,7 +93,7 @@
 
     // Mirror below
     ctx.beginPath();
-    ctx.strokeStyle = 'rgba(212,255,97,0.3)';
+    ctx.strokeStyle = 'rgba(255,237,74,0.3)';
     ctx.lineWidth = 1.5;
     ctx.shadowBlur = 6;
 

@@ -2,9 +2,9 @@
 
 /* ===== DESIGN TOKENS ===== */
 :root {
-  --neon-yellow: #d4ff61;
-  --neon-yellow-glow: rgba(212, 255, 97, 0.6);
-  --neon-green: #d4ff61; /* Replaced green with logo yellow as requested */
+  --neon-yellow: #ffed4a;
+  --neon-yellow-glow: rgba(255, 237, 74, 0.6);
+  --neon-green: #ffed4a; /* Replaced green with logo yellow as requested */
   --neon-blue: #00e5ff;
   --neon-blue-glow: rgba(0, 229, 255, 0.5);
   --bg-dark: #080808;
@@ -110,8 +110,8 @@ img {
   align-items: center;
   gap: 10px;
   padding: 14px 32px;
-  background: linear-gradient(135deg, rgba(212,255,97,0.15), rgba(212,255,97,0.05));
-  border: 1px solid rgba(212,255,97,0.5);
+  background: linear-gradient(135deg, rgba(255,237,74,0.15), rgba(255,237,74,0.05));
+  border: 1px solid rgba(255,237,74,0.5);
   border-radius: 50px;
   color: var(--neon-yellow);
   font-family: 'Outfit', sans-serif;
@@ -130,15 +130,15 @@ img {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(212,255,97,0.1), transparent 70%);
+  background: radial-gradient(circle at 50% 50%, rgba(255,237,74,0.1), transparent 70%);
   opacity: 0;
   transition: opacity 0.3s;
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, rgba(212,255,97,0.25), rgba(212,255,97,0.1));
+  background: linear-gradient(135deg, rgba(255,237,74,0.25), rgba(255,237,74,0.1));
   border-color: var(--neon-yellow);
-  box-shadow: 0 0 20px rgba(212,255,97,0.3), 0 0 60px rgba(212,255,97,0.1);
+  box-shadow: 0 0 20px rgba(255,237,74,0.3), 0 0 60px rgba(255,237,74,0.1);
   transform: translateY(-2px);
   color: #fff;
 }
@@ -189,8 +189,8 @@ img {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--neon-yellow);
-  background: rgba(212,255,97,0.08);
-  border: 1px solid rgba(212,255,97,0.2);
+  background: rgba(255,237,74,0.08);
+  border: 1px solid rgba(255,237,74,0.2);
   padding: 5px 14px;
   border-radius: 100px;
   margin-bottom: 20px;
@@ -226,9 +226,9 @@ img {
 }
 
 .form-input:focus {
-  border-color: rgba(212,255,97,0.5);
-  background: rgba(212,255,97,0.04);
-  box-shadow: 0 0 0 3px rgba(212,255,97,0.08);
+  border-color: rgba(255,237,74,0.5);
+  background: rgba(255,237,74,0.04);
+  box-shadow: 0 0 0 3px rgba(255,237,74,0.08);
 }
 
 .form-input::placeholder { color: var(--text-dim); }
@@ -267,8 +267,8 @@ textarea.form-input {
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg-dark); }
-::-webkit-scrollbar-thumb { background: rgba(212,255,97,0.2); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(212,255,97,0.4); }
+::-webkit-scrollbar-thumb { background: rgba(255,237,74,0.2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,237,74,0.4); }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {

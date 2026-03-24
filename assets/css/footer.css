@@ -57,11 +57,11 @@
 }
 
 .social-link:hover {
-  background: rgba(212,255,97,0.1);
-  border-color: rgba(212,255,97,0.3);
+  background: rgba(255,237,74,0.1);
+  border-color: rgba(255,237,74,0.3);
   color: var(--neon-yellow);
   transform: translateY(-3px);
-  box-shadow: 0 4px 16px rgba(212,255,97,0.15);
+  box-shadow: 0 4px 16px rgba(255,237,74,0.15);
 }
 
 /* ===== FOOTER COLUMNS ===== */
