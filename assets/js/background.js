@@ -110,11 +110,11 @@
       ctx.restore();
     }
 
-    // Fade video opacity in/out
-    if (videoFading === 'in' && videoOpacity < 0.6) {
-      videoOpacity = Math.min(0.6, videoOpacity + 0.04);
-    } else if (videoFading === 'out' && videoOpacity > 0) {
-      videoOpacity = Math.max(0, videoOpacity - 0.05);
+    // Hard cut: video either fully visible or fully gone, no interpolation
+    if (videoFading === 'in') {
+      videoOpacity = 0.6; // instant snap ON
+    } else if (videoFading === 'out') {
+      videoOpacity = 0;   // instant snap OFF
     }
 
     // --- V-Sync banding (scan sweep) ---
@@ -172,13 +172,14 @@
         const showFor = Math.random() * 2000 + 4500; // 4.5–6.5 seconds visible
         setTimeout(() => {
           videoFading = 'out';
+          // With a hard cut out, pause immediately
           setTimeout(() => {
             ghostVideo.pause();
             videoIsPlaying = false;
             videoOpacity = 0;
             videoFading = 'none';
             scheduleNext();
-          }, 600); // Wait for fade out (300ms) + buffer
+          }, 50); // just one frame of buffer
         }, showFor);
 
       }).catch(() => {
