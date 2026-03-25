@@ -77,57 +77,17 @@
 }
 
 /* ===== CRT GHOST VIDEO ===== */
-.crt-video-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1; /* Above canvas, below main wrappers */
-  pointer-events: none;
-  overflow: hidden;
-  mix-blend-mode: screen; /* Blend bright fragments with black background */
-}
+/* Video frames are now drawn directly onto #bg-canvas via ctx.drawImage().
+   No separate DOM layer is needed. */
 
-#crt-ghost-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  filter: grayscale(100%) contrast(300%) brightness(1.2);
-  transition: opacity 0.15s ease-in-out;
-  transform: scale(1.05); /* Slight scale to hide edges when shifting */
-  will-change: transform, opacity, filter;
-}
-
-#crt-ghost-video.glitch-video-active {
-  opacity: 0.8; /* Make the video highly visible */
-  animation: ghost-video-jitter 0.4s infinite steps(2);
-}
-
-@keyframes ghost-video-jitter {
-  0% { transform: scale(1.05) translate(0px, 0px) skewX(0deg); filter: grayscale(100%) contrast(250%) brightness(0.7); }
-  10% { transform: scale(1.05) translate(-4px, 6px) skewX(2deg); filter: grayscale(100%) contrast(300%) brightness(0.9); }
-  20% { transform: scale(1.05) translate(6px, -4px) skewX(-1deg); filter: grayscale(100%) contrast(200%) brightness(0.6); }
-  30% { transform: scale(1.05) translate(0px, 12px) skewX(0deg); opacity: 0.2; }
-  40% { transform: scale(1.05) translate(-6px, -6px) skewX(3deg); opacity: 0.45; }
-  50% { transform: scale(1.05) translate(3px, 3px) skewX(0deg); filter: grayscale(100%) contrast(350%) brightness(1); }
-  60% { transform: scale(1.05) translate(-12px, 0px) skewX(-2deg); opacity: 0.25; }
-  70% { transform: scale(1.05) translate(6px, 6px) skewX(0deg); filter: grayscale(100%) contrast(200%) brightness(0.5); }
-  80% { transform: scale(1.05) translate(0px, -12px) skewX(1deg); opacity: 0.5; }
-  90% { transform: scale(1.05) translate(4px, 4px) skewX(0deg); filter: grayscale(100%) contrast(250%) brightness(0.8); }
-  100% { transform: scale(1.05) translate(0px, 0px) skewX(0deg); opacity: 0.35; }
-}
-
-/* Global body snap for heavy interference flashes */
-#bg-canvas.crt-glitch-moment, 
-.crt-video-container.crt-glitch-moment {
+/* Glitch snap — applied to canvas only, never to the whole page */
+#bg-canvas.crt-glitch-moment {
   animation: crt-snap 0.15s ease forwards;
 }
 
 @keyframes crt-snap {
   0% { filter: hue-rotate(0deg) contrast(1); transform: translateY(0); }
-  50% { filter: hue-rotate(90deg) contrast(1.5); transform: translateY(4px); }
+  50% { filter: hue-rotate(90deg) contrast(1.4); transform: translateY(3px); }
   100% { filter: hue-rotate(0deg) contrast(1); transform: translateY(0); }
 }
 
