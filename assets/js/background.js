@@ -74,10 +74,14 @@
       ctx.fillRect(0, 0, w, h);
     }
 
-    // Occasional RGB split distortion across the whole body wrapper
+    // Occasional RGB split distortion across the background ONLY
     if (frame % Math.floor(Math.random() * 400 + 150) === 0) {
-       document.body.classList.add('crt-glitch-moment');
-       setTimeout(() => document.body.classList.remove('crt-glitch-moment'), 150);
+       canvas.classList.add('crt-glitch-moment');
+       if(videoContainer) videoContainer.classList.add('crt-glitch-moment');
+       setTimeout(() => {
+         canvas.classList.remove('crt-glitch-moment');
+         if(videoContainer) videoContainer.classList.remove('crt-glitch-moment');
+       }, 150);
     }
 
     requestAnimationFrame(animate);
@@ -100,6 +104,7 @@
     // Pick a random video from the array
     const randomVideo = ghostVideos[Math.floor(Math.random() * ghostVideos.length)];
     ghostVideo.src = `assets/videos/glitch/${randomVideo}`;
+    ghostVideo.load(); // Force the browser to start fetching and trigger metadata events
     
     // Set up what happens when the video finishes buffering its metadata
     ghostVideo.onloadedmetadata = () => {
