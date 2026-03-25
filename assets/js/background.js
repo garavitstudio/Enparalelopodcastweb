@@ -89,8 +89,8 @@
   // List of available videos in the assets/videos/glitch directory
   const ghostVideos = [
     'video1.mp4', 
+    'video2.mp4',
     // Add more here when you upload them to the folder:
-    // 'video2.mp4',
     // 'video3.mp4'
   ];
 
