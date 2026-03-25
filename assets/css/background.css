@@ -60,20 +60,7 @@
   75% { opacity: 0.6; }
 }
 
-/* ===== ANALOG TV NOISE (Hardware Accelerated) ===== */
-.crt-noise-overlay {
-  position: fixed;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  z-index: 1; /* Below the UI, above the background color */
-  pointer-events: none;
-  background: transparent url('http://assets.iceable.com/img/noise-transparent.png') repeat 0 0;
-  opacity: 0.65; /* Strong constant grain */
-  mix-blend-mode: normal; 
-  animation: static-noise-dance 0.2s infinite steps(2);
-}
+
 
 @keyframes static-noise-dance {
   0% { transform: translate(0, 0); }
