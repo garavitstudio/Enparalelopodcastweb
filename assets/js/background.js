@@ -94,11 +94,16 @@
     if (videoIsPlaying && !ghostVideo.paused && !ghostVideo.ended && videoOpacity > 0) {
       ctx.save();
       ctx.globalAlpha = videoOpacity;
-      // Apply a strong grayscale+contrast look using globalCompositeOperation won't work,
-      // so we draw then apply a CSS filter trick via willReadFrequently is not needed.
-      // Simple solution: draw the video, then draw a semi-transparent black rect to desaturate.
-      ctx.drawImage(ghostVideo, 0, 0, w, h);
-      // Desaturate by overlaying black at 50%
+      // === object-fit: cover logic ===
+      const vw = ghostVideo.videoWidth  || w;
+      const vh = ghostVideo.videoHeight || h;
+      const scale = Math.max(w / vw, h / vh); // scale UP to fill
+      const sw = w / scale;  // source region width
+      const sh = h / scale;  // source region height
+      const sx = (vw - sw) / 2; // center-crop X
+      const sy = (vh - sh) / 2; // center-crop Y
+      ctx.drawImage(ghostVideo, sx, sy, sw, sh, 0, 0, w, h);
+      // Desaturate by overlaying a color-mode black fill
       ctx.globalCompositeOperation = 'color';
       ctx.fillStyle = '#000000';
       ctx.fillRect(0, 0, w, h);
