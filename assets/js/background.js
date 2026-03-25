@@ -141,7 +141,7 @@
 
   // ===== GHOST VIDEO CONTROLLER =====
   function scheduleNext() {
-    const delay = Math.random() * 9000 + 6000; // 6–15s gap between appearances
+    const delay = Math.random() * 9000 + 1000; // 1–10s gap between appearances
     setTimeout(triggerSignal, delay);
   }
 
@@ -164,7 +164,7 @@
         videoFading = 'in';
 
         // Show for 1.5–3.5 seconds then fade out
-        const showFor = Math.random() * 2000 + 1500;
+        const showFor = Math.random() * 2000 + 4500; // 4.5–6.5 seconds visible
         setTimeout(() => {
           videoFading = 'out';
           setTimeout(() => {
