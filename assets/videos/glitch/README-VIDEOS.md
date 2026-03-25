@@ -2,16 +2,31 @@
 
 Esta carpeta (`assets/videos/glitch/`) es el directorio donde debes guardar los vídeos que aparecerán brevemente como interferencias o "señales perdidas" en el fondo de la web.
 
-## Instrucciones y Recomendaciones OBLIGATORIAS
+## Nuevo Sistema Automático de Optimización
 
-1. **Formato:** Utiliza exclusivamente el formato `.mp4` (H.264) o `.webm` para máxima compatibilidad móvil y escritorio.
-2. **Nombres de archivo:** Para que la web los detecte automáticamente, nómbralos de manera estricta y secuencial. Por defecto, he dejado programada la web para detectar el primero como:
-   - `video1.mp4`
-   *Nota: Si añades más vídeos (ej. `video2.mp4`, `video3.mp4`), deberás abrir el archivo `assets/js/background.js`, buscar la palabra `ghostVideos` y añadir el nombre de tu nuevo archivo a la lista que hay allí puesta.*
-3. **Peso y Optimización:**
-   - La resolución ideal es media/baja (ej: 1280x720 o incluso 854x480). Nadie verá el vídeo a 4K porque, debido a los filtros destructivos estilo televisor CRT y las estáticas, parecerá de muy baja calidad visual a propósito.
-   - **Exporta los vídeos SIN AUDIO (Muteados en la línea de tiempo/render).** Esto reducirá el peso de forma increíble de cara al usuario final y evitará bloqueos de reproducción que ponen los navegadores web por defecto.
-   - Idealmente, trata de que cada archivo no supere 1MB a 3MB de peso total.
-4. **Color:** Céntrate solo en el contenido (personas, siluetas, ciudad, etc.). El filtro CSS que la web le aplica de base lo pasará a Blanco y Negro, aumentará el contraste de forma drástica, y lo mezclará con el fondo negro de la página para darle un aspecto a "aparición fantasmal sobre estática". 
-   - (Aun así, si los exportas tú mismo de origen en blanco y negro, reducirás aún más su tamaño).
-5. **Duración:** Sube clips cortos de entre 5 y 15 segundos. El cerebro dinámico de la web elegirá un punto aleatorio en cualquier segundo del clip, y solo mostrará en pantalla una ráfaga que dura entre 1 y 3 segundos cada vez que decida que la señal de la tele ha vuelto a fallar.
+Para que la web no se hunda con el peso de los vídeos (1-2 minutos en alta calidad pesarán más de 100MB), he programado un script que hace todo el trabajo "sucio" por ti. Sigue este flujo paso a paso:
+
+### PASO 1: Deja tus vídeos originales aquí
+1. Arrastra todos tus vídeos pesados originales (con audio, en 4K, en 1080p, MP4 o MOV...) y suéltalos en la carpeta llamada `_raw/` que está justo aquí:
+   📂 `assets/videos/glitch/_raw/`
+
+### PASO 2: Nombres secuenciales (Opcional pero Recomendado)
+1. Para tenerlo todo ordenado, renombra tus vídeos allí mismo a: `video1.mp4`, `video2.mp4`...
+
+### PASO 3: Ejecutar el Optimizador Mágico
+1. Abre tu terminal (consola) en VS Code, asegúrate de estar en la carpeta de tu proyecto.
+2. Escribe este comando y pulsa Enter:
+   👉 `npm run optimize-videos`
+
+⏳ **¿Qué está pasando?**
+El script cogerá tus vídeos originales de `_raw/`, les eliminará la pista de audio (Mute absoluto), bajará su resolución a 480p (ideal para el efecto CRT VHS), reducirá los fotogramas a 24fps para darle toque de cine, y los comprimirá a lo bestia. ¡Tus archivos pasarán de pesar 100MB a quizás 2MB!
+
+### PASO 4: Resultados
+1. El script exportará los vídeos terminados y optimizados y los dejará en esta misma carpeta general (`assets/videos/glitch/`), quedando de esta forma directamente accesibles por la web de producción.
+
+### PASO 5: Actualizar la base de datos de la web
+1. Ve al archivo 👉 `assets/js/background.js`.
+2. Busca la línea (hacia el final) que pone `const ghostVideos = [ ... ]`.
+3. Simplemente escribe los nombres de tus nuevos archivos optimizados que se han generado en esa lista (ej: `'video1.mp4', 'video2.mp4'`, etc.).
+
+¡Y listo! Ya podrás subirlo todo a Vercel con toda tu librería de apariciones fantasma de televisor lista.
