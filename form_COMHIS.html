@@ -168,6 +168,24 @@
       transform: translateY(0);
     }
 
+    /* Inline validation errors */
+    .field-error {
+      display: none;
+      margin-top: 6px;
+      font-size: 12px;
+      color: #ff6b6b;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .field-error.visible {
+      display: block;
+    }
+
+    .comhis-form input.invalid {
+      border-color: rgba(255, 107, 107, 0.6);
+      box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.08);
+    }
+
     /* Data note */
     .data-note {
       margin-top: 16px;
@@ -272,6 +290,7 @@
             placeholder="+34 600 000 000"
             autocomplete="tel"
           />
+          <span class="field-error" id="error-telefono">⚠️ Introduce un número de teléfono válido</span>
         </div>
 
         <div>
@@ -284,6 +303,7 @@
             required
             autocomplete="email"
           />
+          <span class="field-error" id="error-email">⚠️ Introduce un correo electrónico válido</span>
         </div>
 
         <button type="submit" id="comhis-btn" class="comhis-submit">Estoy dentro →</button>
@@ -306,9 +326,52 @@
   <script src="assets/js/background.js?v=1774474198215"></script>
   <script>
     document.getElementById('comhis-form').addEventListener('submit', async function (e) {
-      e.preventDefault(); // Stop the browser from navigating away
+      e.preventDefault();
 
-      const btn = document.getElementById('comhis-btn');
+      const nombreEl   = document.getElementById('nombre');
+      const telefonoEl = document.getElementById('telefono');
+      const emailEl    = document.getElementById('email');
+      const btn        = document.getElementById('comhis-btn');
+
+      // --- Validation regexes ---
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+      // Accept: optional +, then digits/spaces/dashes/parens, min 7 digits total
+      const phoneRegex = /^[+]?[\d\s\-().]{7,20}$/;
+
+      let valid = true;
+
+      // Reset previous errors
+      [nombreEl, telefonoEl, emailEl].forEach(el => el.classList.remove('invalid'));
+      ['error-telefono', 'error-email'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('visible');
+      });
+
+      // Nombre — just needs to be non-empty
+      if (!nombreEl.value.trim()) {
+        nombreEl.classList.add('invalid');
+        valid = false;
+      }
+
+      // Teléfono — required + format
+      const telVal = telefonoEl.value.trim();
+      if (!telVal || !phoneRegex.test(telVal)) {
+        telefonoEl.classList.add('invalid');
+        document.getElementById('error-telefono').classList.add('visible');
+        valid = false;
+      }
+
+      // Email — required + format
+      const emailVal = emailEl.value.trim();
+      if (!emailVal || !emailRegex.test(emailVal)) {
+        emailEl.classList.add('invalid');
+        document.getElementById('error-email').classList.add('visible');
+        valid = false;
+      }
+
+      if (!valid) return; // Stop here if anything is wrong
+
+      // --- All good, send ---
       btn.textContent = 'Enviando...';
       btn.disabled = true;
 
@@ -322,16 +385,27 @@
         });
 
         if (res.ok) {
-          // Success — redirect to our own thank-you page
           window.location.href = 'gracias_COMHIS.html';
         } else {
-          btn.textContent = 'Error, inténtalo de nuevo';
+          btn.textContent = 'Error del servidor, inténtalo de nuevo';
           btn.disabled = false;
         }
       } catch (err) {
         btn.textContent = 'Error de red, inténtalo de nuevo';
         btn.disabled = false;
       }
+    });
+
+    // Live clear error on input
+    ['telefono', 'email'].forEach(function(id) {
+      document.getElementById(id).addEventListener('input', function() {
+        this.classList.remove('invalid');
+        const err = document.getElementById('error-' + id);
+        if (err) err.classList.remove('visible');
+      });
+    });
+    document.getElementById('nombre').addEventListener('input', function() {
+      this.classList.remove('invalid');
     });
   </script>
 
