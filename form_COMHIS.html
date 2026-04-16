@@ -249,15 +249,7 @@
         2. Crea un nuevo formulario apuntando a tu email
         3. Sustituye YOUR_FORM_ID en el action de abajo por el ID que te dan (ej: xkgwabcd)
       -->
-      <form
-        class="comhis-form"
-        action="https://formspree.io/f/xpqkqnrg"
-        method="POST"
-      >
-        <!-- Hidden redirect after submit -->
-        <input type="hidden" name="_next" value="https://enparalelopodcastweb.vercel.app/gracias_COMHIS.html" />
-        <!-- Prevent spam bots -->
-        <input type="hidden" name="_captcha" value="false" />
+      <form id="comhis-form" class="comhis-form">
 
         <div>
           <label for="nombre">Nombre</label>
@@ -294,7 +286,7 @@
           />
         </div>
 
-        <button type="submit" class="comhis-submit">Estoy dentro →</button>
+        <button type="submit" id="comhis-btn" class="comhis-submit">Estoy dentro →</button>
 
         <p class="data-note">
           Tus datos solo se usan para enviarte contenido de En Paralelo. Sin spam. Sin terceros. Puedes salir cuando quieras.
@@ -312,6 +304,36 @@
 
   <!-- Scripts -->
   <script src="assets/js/background.js?v=1774474198215"></script>
+  <script>
+    document.getElementById('comhis-form').addEventListener('submit', async function (e) {
+      e.preventDefault(); // Stop the browser from navigating away
+
+      const btn = document.getElementById('comhis-btn');
+      btn.textContent = 'Enviando...';
+      btn.disabled = true;
+
+      const data = new FormData(this);
+
+      try {
+        const res = await fetch('https://formspree.io/f/xpqkqnrg', {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (res.ok) {
+          // Success — redirect to our own thank-you page
+          window.location.href = 'gracias_COMHIS.html';
+        } else {
+          btn.textContent = 'Error, inténtalo de nuevo';
+          btn.disabled = false;
+        }
+      } catch (err) {
+        btn.textContent = 'Error de red, inténtalo de nuevo';
+        btn.disabled = false;
+      }
+    });
+  </script>
 
 </body>
 </html>
