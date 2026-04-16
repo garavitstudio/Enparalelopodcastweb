@@ -139,6 +139,60 @@
       box-shadow: 0 0 0 3px rgba(255, 237, 74, 0.08);
     }
 
+    /* Phone split field */
+    .phone-field {
+      display: flex;
+      align-items: stretch;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+
+    .phone-field:focus-within {
+      border-color: rgba(255, 237, 74, 0.45);
+      box-shadow: 0 0 0 3px rgba(255, 237, 74, 0.08);
+    }
+
+    .phone-field.invalid {
+      border-color: rgba(255, 107, 107, 0.6);
+      box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.08);
+    }
+
+    .phone-prefix {
+      flex: 0 0 auto;
+      width: 62px;
+      background: rgba(255, 255, 255, 0.07);
+      border: none;
+      border-right: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 0;
+      padding: 14px 10px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: #ffed4a;
+      text-align: center;
+      outline: none;
+    }
+
+    .phone-prefix:focus {
+      background: rgba(255, 237, 74, 0.05);
+      border-right-color: rgba(255, 237, 74, 0.3);
+    }
+
+    .phone-number {
+      flex: 1;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 14px 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: #f0f0f0;
+      outline: none;
+    }
+
     /* Submit button — same neon style as rest of site */
     .comhis-submit {
       margin-top: 8px;
@@ -282,14 +336,29 @@
         </div>
 
         <div>
-          <label for="telefono">Teléfono</label>
-          <input
-            type="tel"
-            id="telefono"
-            name="telefono"
-            placeholder="+34 600 000 000"
-            autocomplete="tel"
-          />
+          <label for="telefono-numero">Teléfono</label>
+          <div class="phone-field" id="phone-field-wrapper">
+            <input
+              type="text"
+              id="telefono-prefijo"
+              name="telefono-prefijo"
+              value="+34"
+              maxlength="6"
+              aria-label="Prefijo país"
+              class="phone-prefix"
+              autocomplete="tel-country-code"
+            />
+            <input
+              type="tel"
+              id="telefono-numero"
+              name="telefono-numero"
+              placeholder="600 000 000"
+              class="phone-number"
+              autocomplete="tel-national"
+            />
+          </div>
+          <!-- Hidden field that holds the combined value sent to Formspree -->
+          <input type="hidden" id="telefono" name="telefono" />
           <span class="field-error" id="error-telefono">⚠️ Introduce un número de teléfono válido</span>
         </div>
 
@@ -329,19 +398,22 @@
       e.preventDefault();
 
       const nombreEl   = document.getElementById('nombre');
-      const telefonoEl = document.getElementById('telefono');
+      const prefixEl   = document.getElementById('telefono-prefijo');
+      const numberEl   = document.getElementById('telefono-numero');
+      const telefonoHidden = document.getElementById('telefono');
+      const phoneWrapper   = document.getElementById('phone-field-wrapper');
       const emailEl    = document.getElementById('email');
       const btn        = document.getElementById('comhis-btn');
 
       // --- Validation regexes ---
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-      // Accept: optional +, then digits/spaces/dashes/parens, min 7 digits total
       const phoneRegex = /^[+]?[\d\s\-().]{7,20}$/;
 
       let valid = true;
 
       // Reset previous errors
-      [nombreEl, telefonoEl, emailEl].forEach(el => el.classList.remove('invalid'));
+      [nombreEl, emailEl].forEach(el => el.classList.remove('invalid'));
+      phoneWrapper.classList.remove('invalid');
       ['error-telefono', 'error-email'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.classList.remove('visible');
@@ -353,10 +425,13 @@
         valid = false;
       }
 
+      // Combine prefix + number into the hidden field
+      const combined = (prefixEl.value.trim() + ' ' + numberEl.value.trim()).trim();
+      telefonoHidden.value = combined;
+
       // Teléfono — required + format
-      const telVal = telefonoEl.value.trim();
-      if (!telVal || !phoneRegex.test(telVal)) {
-        telefonoEl.classList.add('invalid');
+      if (!numberEl.value.trim() || !phoneRegex.test(combined)) {
+        phoneWrapper.classList.add('invalid');
         document.getElementById('error-telefono').classList.add('visible');
         valid = false;
       }
@@ -397,12 +472,17 @@
     });
 
     // Live clear error on input
-    ['telefono', 'email'].forEach(function(id) {
+    ['telefono-numero', 'telefono-prefijo'].forEach(function(id) {
       document.getElementById(id).addEventListener('input', function() {
-        this.classList.remove('invalid');
-        const err = document.getElementById('error-' + id);
+        document.getElementById('phone-field-wrapper').classList.remove('invalid');
+        const err = document.getElementById('error-telefono');
         if (err) err.classList.remove('visible');
       });
+    });
+    document.getElementById('email').addEventListener('input', function() {
+      this.classList.remove('invalid');
+      const err = document.getElementById('error-email');
+      if (err) err.classList.remove('visible');
     });
     document.getElementById('nombre').addEventListener('input', function() {
       this.classList.remove('invalid');
