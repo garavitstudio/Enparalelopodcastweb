@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gracias — En Paralelo</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#080808" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="assets/images/logo.svg?v=2" type="image/svg+xml" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/global.css?v=1774474198215" />
+  <link rel="stylesheet" href="assets/css/background.css?v=1774474198215" />
+
+  <style>
+    .thanks-wrapper {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .thanks-logo {
+      display: block;
+      width: clamp(160px, 35vw, 280px);
+      margin: 0 auto 48px;
+      animation: neonFlicker 3.5s ease-in-out infinite;
+      filter: drop-shadow(0 0 18px rgba(255, 237, 74, 0.7));
+    }
+
+    @keyframes neonFlicker {
+      0%, 18%, 20%, 22%, 24%, 53%, 55%, 57%, 100% {
+        opacity: 1;
+        filter: drop-shadow(0 0 18px rgba(255, 237, 74, 0.8));
+      }
+      19%, 21%, 23%, 54%, 56% {
+        opacity: 0.15;
+        filter: drop-shadow(0 0 4px rgba(255, 237, 74, 0.1));
+      }
+    }
+
+    .thanks-card {
+      max-width: 560px;
+      width: 100%;
+      background: rgba(12, 12, 12, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 24px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.08);
+      padding: clamp(36px, 7vw, 64px);
+    }
+
+    .thanks-heart {
+      font-size: clamp(52px, 10vw, 72px);
+      line-height: 1;
+      margin-bottom: 28px;
+      animation: heartbeat 1.6s ease-in-out infinite;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      14%       { transform: scale(1.12); }
+      28%       { transform: scale(1); }
+      42%       { transform: scale(1.08); }
+      56%       { transform: scale(1); }
+    }
+
+    .thanks-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(17px, 3.5vw, 22px);
+      font-weight: 400;
+      color: #d4d4d4;
+      line-height: 1.65;
+    }
+
+    .thanks-text strong {
+      color: #ffed4a;
+      font-weight: 700;
+    }
+
+    .thanks-footer {
+      margin-top: 40px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <div class="scan-lines" aria-hidden="true"></div>
+
+  <main class="thanks-wrapper">
+
+    <img
+      src="assets/images/logo.svg?v=2"
+      alt="En Paralelo Podcast"
+      class="thanks-logo"
+      width="240"
+      height="80"
+    />
+
+    <div class="thanks-card">
+      <div class="thanks-heart">❤️</div>
+      <p class="thanks-text">
+        <strong>Muchas gracias.</strong><br><br>
+        Me alegra que tengas fe en que esto va a llegar lejos.<br><br>
+        Continuemos yendo a por nuestros sueños<br>
+        <strong>viéndonos en paralelo.</strong>
+      </p>
+    </div>
+
+    <footer class="thanks-footer">Hecha por Garavit Studio</footer>
+
+  </main>
+
+  <script src="assets/js/background.js?v=1774474198215"></script>
+
+</body>
+</html>
