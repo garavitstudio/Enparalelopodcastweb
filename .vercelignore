@@ -1,0 +1,7 @@
+# Archivos que no deben desplegarse en producción
+_originals/
+assets/videos/glitch/_raw/
+*.cjs
+node_modules/
+README.md
+promts/

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+/* Las fuentes se cargan autoalojadas desde fonts.css (ver <head> de cada página) */
 
 /* ===== DESIGN TOKENS ===== */
 :root {
@@ -241,6 +241,42 @@ select.form-input option {
 textarea.form-input {
   resize: vertical;
   min-height: 100px;
+}
+
+/* Consentimiento RGPD */
+.form-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 4px 0 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.form-consent input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  accent-color: var(--neon-yellow);
+  cursor: pointer;
+}
+
+.form-consent a {
+  color: var(--neon-yellow);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Honeypot antispam: oculto para humanos, visible para bots */
+.hp-field {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
 
 /* ===== SCROLL REVEAL ===== */

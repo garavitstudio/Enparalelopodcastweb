@@ -191,7 +191,13 @@
     ghostVideo.load();
   }
 
-  // First trigger after 3–6 seconds
-  setTimeout(triggerSignal, Math.random() * 3000 + 3000);
+  // First trigger after 3–6 seconds.
+  // Respetamos prefers-reduced-motion y el modo ahorro de datos:
+  // en esos casos no se descargan ni reproducen los vídeos glitch.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const saveData = navigator.connection && navigator.connection.saveData;
+  if (!reduceMotion && !saveData) {
+    setTimeout(triggerSignal, Math.random() * 3000 + 3000);
+  }
 
 })();

@@ -1,0 +1,20 @@
+{
+  "name": "en-paralelo-podcast",
+  "version": "1.0.0",
+  "description": "Sitio web oficial de En Paralelo Podcast",
+  "private": true,
+  "scripts": {
+    "dev": "npx serve .",
+    "optimize-images": "node optimize-images.cjs",
+    "optimize-videos": "node optimize-videos.cjs",
+    "cache-bust": "node cache-bust-assets.cjs"
+  },
+  "devDependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "fluent-ffmpeg": "^2.1.3",
+    "sharp": "^0.33.3"
+  },
+  "dependencies": {
+    "text-to-svg": "^3.1.5"
+  }
+}

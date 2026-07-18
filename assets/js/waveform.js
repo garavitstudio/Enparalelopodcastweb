@@ -142,11 +142,18 @@
       cancelAnimationFrame(animFrame);
       drawIdleWave();
     } else {
-      audio.play().catch(() => {});
-      isPlaying = true;
-      if (btn) btn.textContent = '⏸ Pausar';
-      cancelAnimationFrame(animFrame);
-      drawActiveWave();
+      // Solo cambiamos el estado si el navegador permite reproducir
+      // (el autoplay puede estar bloqueado hasta que el usuario interactúe)
+      audio.play().then(() => {
+        isPlaying = true;
+        if (btn) btn.textContent = '⏸ Pausar';
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        cancelAnimationFrame(animFrame);
+        drawActiveWave();
+      }).catch(() => {
+        isPlaying = false;
+        if (btn) btn.textContent = '▶ Reproducir';
+      });
     }
   }
 

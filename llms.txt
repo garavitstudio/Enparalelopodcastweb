@@ -1,0 +1,32 @@
+# En Paralelo Podcast
+
+> EN PARALELO es un podcast en español presentado por Enara Jiménez y José Luis (Selu). Conversaciones profundas y sin guion sobre propósito, miedo, éxito, espiritualidad, autoconocimiento y paz interior, con personas que han construido su propio camino. Nuevo episodio cada martes a las 6:00 (hora de España). Audiencia principal: 18-35 años, España e Hispanoamérica.
+
+## Páginas principales
+
+- [Inicio](https://enparalelopodcastweb.vercel.app/): presentación del podcast, episodios destacados y acceso a la comunidad.
+- [Nosotros](https://enparalelopodcastweb.vercel.app/nosotros): la historia de Enara y José Luis y por qué nació En Paralelo.
+- [Comunidad](https://enparalelopodcastweb.vercel.app/comunidad): comunidad de oyentes; suscripción por nombre y email.
+- [Invitados](https://enparalelopodcastweb.vercel.app/invitados): cómo aplicar para ser invitado del podcast (personas con un camino vivido, no hace falta ser famoso).
+- [Patrocinadores](https://enparalelopodcastweb.vercel.app/patrocinadores): oportunidades de patrocinio y colaboración con marcas.
+
+## Dónde escuchar
+
+- YouTube: https://www.youtube.com/@enparalelopodcast
+- Spotify: https://open.spotify.com/show/2THwTIRw39gN3p7ME2pCTD
+- Apple Podcasts: https://podcasts.apple.com/es/podcast/en-paralelo/id1843074269
+- Amazon Music: https://music.amazon.es/podcasts/e204a4dd-5340-4ffb-8874-b998074ac091/en-paralelo
+- RSS: https://anchor.fm/s/10643c02c/podcast/rss
+
+## Contacto y redes
+
+- Email: enparalelopodcast@gmail.com
+- Instagram: https://www.instagram.com/enparalelopodcast/
+
+## Datos clave
+
+- Nombre oficial: EN PARALELO (también "En Paralelo Podcast").
+- Idioma: español (España).
+- Género: autoconocimiento, espiritualidad, desarrollo personal (Self-Improvement).
+- Presentadores: Enara Jiménez y José Luis (Selu), pareja desde los 13 años.
+- Frecuencia: semanal, cada martes a las 6:00 AM.

@@ -1,0 +1,8 @@
+# En Paralelo Podcast — robots.txt
+# Sitio abierto a todos los rastreadores, incluidos los de IA
+# (GPTBot, ClaudeBot, PerplexityBot, Google-Extended, etc.)
+
+User-agent: *
+Allow: /
+
+Sitemap: https://enparalelopodcastweb.vercel.app/sitemap.xml

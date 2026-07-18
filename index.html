@@ -5,17 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>En Paralelo Podcast — El podcast que te mueve</title>
   <meta name="description" content="En Paralelo es el podcast donde las conversaciones van más allá. Espiritualidad, autoconocimiento y las preguntas que nadie se atreve a hacer. Nuevo episodio cada martes." />
+  <meta name="author" content="En Paralelo Podcast" />
   <meta name="theme-color" content="#080808" />
+  <link rel="canonical" href="https://enparalelopodcastweb.vercel.app/" />
 
   <!-- Favicon -->
   <link rel="icon" href="assets/images/logo.svg?v=2" type="image/svg+xml" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://enparalelo.com/" />
+  <meta property="og:url" content="https://enparalelopodcastweb.vercel.app/" />
   <meta property="og:title" content="En Paralelo Podcast — El podcast que te mueve" />
   <meta property="og:description" content="Conversaciones sobre espiritualidad, autoconocimiento y la vida que de verdad merece la pena. Nuevo episodio cada martes a las 6AM." />
-  <meta property="og:image" content="https://enparalelo.com/assets/images/og-cover.jpg" />
+  <meta property="og:image" content="https://enparalelopodcastweb.vercel.app/assets/images/og-cover.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:locale" content="es_ES" />
@@ -25,22 +27,106 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="En Paralelo Podcast — El podcast que te mueve" />
   <meta name="twitter:description" content="Conversaciones sobre espiritualidad, autoconocimiento y la vida que de verdad merece la pena." />
-  <meta name="twitter:image" content="https://enparalelo.com/assets/images/og-cover.jpg" />
+  <meta name="twitter:image" content="https://enparalelopodcastweb.vercel.app/assets/images/og-cover.jpg" />
 
   <!-- Preload critical assets -->
   <link rel="preload" href="assets/css/global.css?v=1774474198215" as="style" />
   <link rel="preload" href="assets/css/header.css?v=1774474198215" as="style" />
   <link rel="preload" href="assets/images/logo.svg?v=2" as="image" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/fonts.css?v=1774474198215" />
   <link rel="stylesheet" href="assets/css/global.css?v=1774474198215" />
   <link rel="stylesheet" href="assets/css/background.css?v=1774474198215" />
   <link rel="stylesheet" href="assets/css/header.css?v=1774474198215" />
   <link rel="stylesheet" href="assets/css/footer.css?v=1774474198215" />
   <link rel="stylesheet" href="assets/css/index.css?v=1774474198215" />
+
+  <!-- Datos estructurados: ficha del podcast para buscadores y asistentes de IA -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://enparalelopodcastweb.vercel.app/#website",
+        "url": "https://enparalelopodcastweb.vercel.app/",
+        "name": "En Paralelo Podcast",
+        "inLanguage": "es",
+        "publisher": { "@id": "https://enparalelopodcastweb.vercel.app/#podcast" }
+      },
+      {
+        "@type": "PodcastSeries",
+        "@id": "https://enparalelopodcastweb.vercel.app/#podcast",
+        "name": "EN PARALELO",
+        "alternateName": "En Paralelo Podcast",
+        "url": "https://enparalelopodcastweb.vercel.app/",
+        "description": "El podcast donde las conversaciones van más allá: propósito, miedo, éxito, espiritualidad y paz. Conversaciones profundas y sin guion con personas que han construido su propio camino. Nuevo episodio cada martes a las 6:00.",
+        "inLanguage": "es",
+        "genre": ["Autoconocimiento", "Espiritualidad", "Desarrollo personal"],
+        "image": "https://enparalelopodcastweb.vercel.app/assets/images/og-cover.jpg",
+        "webFeed": "https://anchor.fm/s/10643c02c/podcast/rss",
+        "author": [
+          { "@type": "Person", "name": "Enara Jiménez", "jobTitle": "Presentadora" },
+          { "@type": "Person", "name": "José Luis (Selu)", "jobTitle": "Presentador" }
+        ],
+        "sameAs": [
+          "https://www.youtube.com/@enparalelopodcast",
+          "https://open.spotify.com/show/2THwTIRw39gN3p7ME2pCTD",
+          "https://podcasts.apple.com/es/podcast/en-paralelo/id1843074269",
+          "https://music.amazon.es/podcasts/e204a4dd-5340-4ffb-8874-b998074ac091/en-paralelo",
+          "https://www.instagram.com/enparalelopodcast/"
+        ]
+      },
+      {
+        "@type": "ItemList",
+        "name": "Episodios destacados de En Paralelo",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+              "@type": "PodcastEpisode",
+              "name": "Compró una empresa de 1948, la 3ª más antigua de España: Tuve que despedir al empleado más veterano",
+              "url": "https://www.youtube.com/watch?v=Dle9EjaL46g",
+              "partOfSeries": { "@id": "https://enparalelopodcastweb.vercel.app/#podcast" }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "item": {
+              "@type": "PodcastEpisode",
+              "name": "16 años, marca propia y vistiendo a referentes como Ilia Topuria: Así piensa un joven diferente",
+              "url": "https://www.youtube.com/watch?v=hwHc3MYHt3c",
+              "partOfSeries": { "@id": "https://enparalelopodcastweb.vercel.app/#podcast" }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "item": {
+              "@type": "PodcastEpisode",
+              "name": "Del derecho a la mente: El abogado que te enseña a vivir en la era del caos",
+              "url": "https://www.youtube.com/watch?v=T9jckam46BI",
+              "partOfSeries": { "@id": "https://enparalelopodcastweb.vercel.app/#podcast" }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "item": {
+              "@type": "PodcastEpisode",
+              "name": "25 años 8 empleados y una segunda empresa en camino: Cambias tu mentalidad o te quedas atrás",
+              "url": "https://www.youtube.com/watch?v=2q_VC-1iVeA",
+              "partOfSeries": { "@id": "https://enparalelopodcastweb.vercel.app/#podcast" }
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -59,18 +145,18 @@
 
   <!-- ===== HEADER ===== -->
   <header id="site-header">
-    <a href="index.html" class="neon-logo" aria-label="En Paralelo Podcast">
+    <a href="/" class="neon-logo" aria-label="En Paralelo Podcast">
       <img src="assets/images/logo.svg?v=2" alt="En Paralelo Podcast" class="logo-img" />
     </a>
     <button class="hamburger" aria-label="Menú" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
     <nav class="site-nav">
-      <a href="index.html" class="active">Inicio</a>
+      <a href="/" class="active">Inicio</a>
       <a href="#episodios">Episodios</a>
-      <a href="nosotros.html">Nosotros</a>
-      <a href="comunidad.html">Comunidad</a>
-      <a href="invitados.html">Invitados</a>
+      <a href="/nosotros">Nosotros</a>
+      <a href="/comunidad">Comunidad</a>
+      <a href="/invitados">Invitados</a>
     </nav>
   </header>
 
@@ -130,14 +216,14 @@
                 <div class="host-avatar">
                   <picture>
                     <source srcset="assets/images/enara.webp" type="image/webp" />
-                    <img src="assets/images/enara.png" alt="Enara" loading="eager" width="80" height="80" />
+                    <img src="assets/images/enara.png" alt="Enara Jiménez, presentadora de En Paralelo" loading="eager" width="80" height="80" />
                   </picture>
                   <span>Enara</span>
                 </div>
                 <div class="host-avatar">
                   <picture>
                     <source srcset="assets/images/jose.webp" type="image/webp" />
-                    <img src="assets/images/jose.png" alt="José Luis" loading="eager" width="80" height="80" />
+                    <img src="assets/images/jose.png" alt="José Luis, presentador de En Paralelo" loading="eager" width="80" height="80" />
                   </picture>
                   <span>José Luis</span>
                 </div>
@@ -229,7 +315,9 @@
               <h3>Únete a los que ya van en paralelo</h3>
               <p class="form-subtitle">Te avisamos con cada episodio nuevo y lo que vaya surgiendo.</p>
 
-              <form class="contact-form" id="form-comunidad" novalidate>
+              <form class="contact-form" id="form-comunidad">
+                <input type="hidden" name="origen" value="Comunidad (portada)" />
+                <input type="text" name="_gotcha" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" />
                 <div class="form-group">
                   <label for="name-c">Tu nombre</label>
                   <input type="text" id="name-c" name="name" class="form-input" placeholder="¿Cómo te llamamos?" required />
@@ -238,6 +326,10 @@
                   <label for="email-c">Tu email</label>
                   <input type="email" id="email-c" name="email" class="form-input" placeholder="tu@email.com" required />
                 </div>
+                <label class="form-consent">
+                  <input type="checkbox" name="consentimiento" value="sí" required />
+                  <span>He leído y acepto la <a href="/privacidad">política de privacidad</a>.</span>
+                </label>
                 <button type="submit" class="btn-primary" style="width:100%;justify-content:center;">
                   Quiero ir en paralelo →
                 </button>
@@ -281,8 +373,8 @@
                 pero que todos buscamos.
               </p>
 
-              <a href="nosotros.html" class="btn-primary" style="margin-top:24px;display:inline-flex;">
-                Conocenos mejor →
+              <a href="/nosotros" class="btn-primary" style="margin-top:24px;display:inline-flex;">
+                Conócenos mejor →
               </a>
             </div>
 
@@ -317,49 +409,49 @@
 
               <div class="glass-panel episode-card" data-ytid="Dle9EjaL46g">
                 <div class="episode-thumb">
-                  <img src="https://img.youtube.com/vi/Dle9EjaL46g/maxresdefault.jpg" alt="Episodio 1" loading="lazy" />
+                  <img src="https://img.youtube.com/vi/Dle9EjaL46g/maxresdefault.jpg" alt="Compró una empresa de 1948, la 3ª más antigua de España" loading="lazy" />
                   <div class="episode-play-btn" aria-label="Reproducir">&#9654;</div>
                 </div>
                 <div class="episode-info">
-                  <span class="episode-num">Ep. reciente</span>
-                  <p class="episode-title">David Rodero: Lo que lanzas hace Sold Out en una hora</p>
-                  <span class="episode-meta">@Daviid.roderoo</span>
+                  <span class="episode-num">En Paralelo</span>
+                  <p class="episode-title">Compró una empresa de 1948, la 3ª más antigua de España: Tuve que despedir al empleado más veterano</p>
+                  <span class="episode-meta">@enparalelopodcast</span>
                 </div>
               </div>
 
               <div class="glass-panel episode-card" data-ytid="hwHc3MYHt3c">
                 <div class="episode-thumb">
-                  <img src="https://img.youtube.com/vi/hwHc3MYHt3c/maxresdefault.jpg" alt="Episodio 2" loading="lazy" />
+                  <img src="https://img.youtube.com/vi/hwHc3MYHt3c/maxresdefault.jpg" alt="16 años, marca propia y vistiendo a referentes como Ilia Topuria" loading="lazy" />
                   <div class="episode-play-btn" aria-label="Reproducir">&#9654;</div>
                 </div>
                 <div class="episode-info">
                   <span class="episode-num">En Paralelo</span>
-                  <p class="episode-title">Una conversación que te cambia la perspectiva</p>
-                  <span class="episode-meta">En Paralelo Podcast</span>
+                  <p class="episode-title">16 años, marca propia y vistiendo a referentes como Ilia Topuria: Así piensa un joven diferente</p>
+                  <span class="episode-meta">@enparalelopodcast</span>
                 </div>
               </div>
 
               <div class="glass-panel episode-card" data-ytid="T9jckam46BI">
                 <div class="episode-thumb">
-                  <img src="https://img.youtube.com/vi/T9jckam46BI/maxresdefault.jpg" alt="Episodio 3" loading="lazy" />
+                  <img src="https://img.youtube.com/vi/T9jckam46BI/maxresdefault.jpg" alt="Del derecho a la mente: El abogado que te enseña a vivir en la era del caos" loading="lazy" />
                   <div class="episode-play-btn" aria-label="Reproducir">&#9654;</div>
                 </div>
                 <div class="episode-info">
                   <span class="episode-num">En Paralelo</span>
-                  <p class="episode-title">El camino hacia el autoconocimiento</p>
-                  <span class="episode-meta">En Paralelo Podcast</span>
+                  <p class="episode-title">Del derecho a la mente: El abogado que te enseña a vivir en la era del caos</p>
+                  <span class="episode-meta">@enparalelopodcast</span>
                 </div>
               </div>
 
               <div class="glass-panel episode-card" data-ytid="2q_VC-1iVeA">
                 <div class="episode-thumb">
-                  <img src="https://img.youtube.com/vi/2q_VC-1iVeA/maxresdefault.jpg" alt="Episodio 4" loading="lazy" />
+                  <img src="https://img.youtube.com/vi/2q_VC-1iVeA/maxresdefault.jpg" alt="25 años, 8 empleados y una segunda empresa en camino" loading="lazy" />
                   <div class="episode-play-btn" aria-label="Reproducir">&#9654;</div>
                 </div>
                 <div class="episode-info">
                   <span class="episode-num">En Paralelo</span>
-                  <p class="episode-title">Espiritualidad sin religión: encontrar tu camino</p>
-                  <span class="episode-meta">En Paralelo Podcast</span>
+                  <p class="episode-title">25 años, 8 empleados y una segunda empresa en camino: Cambias tu mentalidad o te quedas atrás</p>
+                  <span class="episode-meta">@enparalelopodcast</span>
                 </div>
               </div>
 
@@ -376,7 +468,7 @@
       <div id="yt-modal" class="yt-modal" role="dialog" aria-modal="true" aria-label="Reproductor de video">
         <div class="yt-modal-inner">
           <button id="yt-modal-close" class="yt-modal-close" aria-label="Cerrar">✕</button>
-          <iframe id="yt-modal-iframe" width="100%" height="100%" frameborder="0"
+          <iframe id="yt-modal-iframe" width="100%" height="100%"
             allow="autoplay; fullscreen" allowfullscreen title="Episodio de En Paralelo"></iframe>
         </div>
       </div>
@@ -389,17 +481,17 @@
           🎙 NUEVO EPISODIO TODOS LOS MARTES A LAS 6:00 AM
         </span>
         <span class="ticker-sep">·</span>
-        <a href="https://www.youtube.com/@enparalelo" target="_blank" rel="noopener" class="ticker-platform">
+        <a href="https://www.youtube.com/@enparalelopodcast" target="_blank" rel="noopener" class="ticker-platform">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 00.5 6.2C0 8.1 0 12 0 12s0 3.9.6 5.8a3 3 0 002.1 2.1c1.9.5 9.3.5 9.3.5s7.5 0 9.4-.5a3 3 0 002.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg>
           YouTube
         </a>
         <span class="ticker-sep">·</span>
-        <a href="https://open.spotify.com" target="_blank" rel="noopener" class="ticker-platform">
+        <a href="https://open.spotify.com/show/2THwTIRw39gN3p7ME2pCTD" target="_blank" rel="noopener" class="ticker-platform">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.52 17.28c-.24.36-.66.48-1.02.24-2.82-1.74-6.36-2.1-10.56-1.14-.42.12-.78-.18-.9-.54-.12-.42.18-.78.54-.9 4.56-1.02 8.52-.6 11.64 1.32.42.18.48.66.3 1.02zm1.44-3.3c-.3.42-.84.6-1.26.3-3.24-1.98-8.16-2.58-11.94-1.38-.48.12-.99-.12-1.14-.6-.12-.48.12-.99.6-1.14 4.38-1.32 9.78-.66 13.5 1.62.36.24.54.78.24 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.3c-.6.18-1.2-.18-1.38-.72-.18-.6.18-1.2.72-1.38 4.26-1.26 11.28-1.02 15.72 1.56.54.3.72 1.02.42 1.56-.3.42-1.02.6-1.56.3z"/></svg>
           Spotify
         </a>
         <span class="ticker-sep">·</span>
-        <a href="https://podcasts.apple.com" target="_blank" rel="noopener" class="ticker-platform">
+        <a href="https://podcasts.apple.com/es/podcast/en-paralelo/id1843074269" target="_blank" rel="noopener" class="ticker-platform">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5.34 0A5.328 5.328 0 000 5.34v13.32A5.328 5.328 0 005.34 24h13.32A5.328 5.328 0 0024 18.66V5.34A5.328 5.328 0 0018.66 0zm6.525 2.568c2.336 0 4.448.902 6.056 2.587 1.224 1.272 1.912 2.619 2.264 4.392.12.59.12 2.233.007 2.854a8.605 8.605 0 01-4.688 6.512c-.324.166-.648.295-.648.274 0-.008.129-.595.288-1.298.159-.703.268-1.279.235-1.28-.033 0-.234.086-.448.192a5.926 5.926 0 01-2.611.7c-1.068.044-1.83-.157-2.591-.701a3.025 3.025 0 01-1.292-2.165c-.051-.571.006-.924.228-1.422.63-1.414 2.232-2.056 3.949-1.57.436.124.794.196.796.16 0-.042.047-.462.096-.95.051-.487.085-1.065.076-1.285-.033-.726-.317-1.384-.872-2.016-.556-.632-1.204-.988-2.126-1.168-.382-.073-1.127-.099-1.54-.054-1.16.13-1.976.637-2.42 1.508-.147.287-.275.78-.275 2.233 0 .857.006.91.078.91.044 0 .223-.081.4-.179.435-.245.9-.362 1.389-.348.62.017 1.08.196 1.486.583.338.32.527.684.568 1.087.023.227-.013.584-.09.904-.086.359-.228.62-.467.874a2.038 2.038 0 01-.617.47c-.394.188-.858.28-1.347.278-.79-.003-1.389-.262-1.894-.82-.457-.503-.655-1.166-.573-1.895.085-.736.406-1.262.987-1.58.199-.11.397-.185.398-.16z"/></svg>
           Apple Podcasts
         </a>
@@ -426,7 +518,7 @@
                 Si crees que tienes algo que aportar en una conversación
                 con profundidad y sin guion, este es tu sitio.
               </p>
-              <a href="invitados.html" class="btn-primary" style="margin-top:28px;display:inline-flex;">
+              <a href="/invitados" class="btn-primary" style="margin-top:28px;display:inline-flex;">
                 Quiero ser invitado →
               </a>
             </div>
@@ -512,7 +604,9 @@
             </div>
 
             <div class="join-form-col">
-              <form class="contact-form" id="form-join" novalidate>
+              <form class="contact-form" id="form-join">
+                <input type="hidden" name="origen" value="Únete (portada)" />
+                <input type="text" name="_gotcha" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" />
                 <div class="form-group">
                   <label for="name-j">Nombre</label>
                   <input type="text" id="name-j" name="name" class="form-input" placeholder="Tu nombre" required />
@@ -534,6 +628,10 @@
                   <label for="mensaje-j">Mensaje (opcional)</label>
                   <textarea id="mensaje-j" name="mensaje" class="form-input" rows="3" placeholder="¿Qué te trae por aquí?"></textarea>
                 </div>
+                <label class="form-consent">
+                  <input type="checkbox" name="consentimiento" value="sí" required />
+                  <span>He leído y acepto la <a href="/privacidad">política de privacidad</a>.</span>
+                </label>
                 <button type="submit" class="btn-primary" style="width:100%;justify-content:center;">
                   Caminar en paralelo →
                 </button>
@@ -557,22 +655,19 @@
       <div class="footer-top">
 
         <div class="footer-brand">
-          <a href="index.html" class="neon-logo" aria-label="En Paralelo Podcast">
+          <a href="/" class="neon-logo" aria-label="En Paralelo Podcast">
             <img src="assets/images/logo.svg?v=2" alt="En Paralelo Podcast" class="logo-img logo-img--footer" />
           </a>
           <p>El podcast donde las conversaciones van más allá. Nuevo episodio cada martes a las 6AM.</p>
           <div class="footer-social">
-            <a href="https://www.instagram.com" target="_blank" rel="noopener" class="social-link" aria-label="Instagram">
+            <a href="https://www.instagram.com/enparalelopodcast/" target="_blank" rel="noopener" class="social-link" aria-label="Instagram">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
             </a>
-            <a href="https://www.youtube.com/@enparalelo" target="_blank" rel="noopener" class="social-link" aria-label="YouTube">
+            <a href="https://www.youtube.com/@enparalelopodcast" target="_blank" rel="noopener" class="social-link" aria-label="YouTube">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 00.5 6.2C0 8.1 0 12 0 12s0 3.9.6 5.8a3 3 0 002.1 2.1c1.9.5 9.3.5 9.3.5s7.5 0 9.4-.5a3 3 0 002.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg>
             </a>
-            <a href="https://open.spotify.com" target="_blank" rel="noopener" class="social-link" aria-label="Spotify">
+            <a href="https://open.spotify.com/show/2THwTIRw39gN3p7ME2pCTD" target="_blank" rel="noopener" class="social-link" aria-label="Spotify">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.52 17.28c-.24.36-.66.48-1.02.24-2.82-1.74-6.36-2.1-10.56-1.14-.42.12-.78-.18-.9-.54-.12-.42.18-.78.54-.9 4.56-1.02 8.52-.6 11.64 1.32.42.18.48.66.3 1.02zm1.44-3.3c-.3.42-.84.6-1.26.3-3.24-1.98-8.16-2.58-11.94-1.38-.48.12-.99-.12-1.14-.6-.12-.48.12-.99.6-1.14 4.38-1.32 9.78-.66 13.5 1.62.36.24.54.78.24 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.3c-.6.18-1.2-.18-1.38-.72-.18-.6.18-1.2.72-1.38 4.26-1.26 11.28-1.02 15.72 1.56.54.3.72 1.02.42 1.56-.3.42-1.02.6-1.56.3z"/></svg>
-            </a>
-            <a href="https://www.tiktok.com" target="_blank" rel="noopener" class="social-link" aria-label="TikTok">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.35 6.35 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.77 1.52V6.65a4.85 4.85 0 01-1-.04z"/></svg>
             </a>
           </div>
         </div>
@@ -580,19 +675,19 @@
         <div class="footer-col">
           <h4>Páginas</h4>
           <ul>
-            <li><a href="nosotros.html">Nosotros</a></li>
-            <li><a href="invitados.html">Ser un Invitado</a></li>
-            <li><a href="comunidad.html">¿Caminamos en Paralelo?</a></li>
-            <li><a href="patrocinadores.html">Patrocinadores</a></li>
+            <li><a href="/nosotros">Nosotros</a></li>
+            <li><a href="/invitados">Ser un Invitado</a></li>
+            <li><a href="/comunidad">¿Caminamos en Paralelo?</a></li>
+            <li><a href="/patrocinadores">Patrocinadores</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
           <h4>Legal</h4>
           <ul>
-            <li><a href="privacidad.html">Política de Privacidad</a></li>
-            <li><a href="aviso-legal.html">Aviso Legal</a></li>
-            <li><a href="cookies.html">Política de Cookies</a></li>
+            <li><a href="/privacidad">Política de Privacidad</a></li>
+            <li><a href="/aviso-legal">Aviso Legal</a></li>
+            <li><a href="/cookies">Política de Cookies</a></li>
           </ul>
         </div>
 
@@ -602,13 +697,13 @@
             <li>¿Tienes alguna duda?</li>
           </ul>
           <div class="footer-contact-row">
-            <a href="mailto:hola@enparalelo.com" class="contact-icon-link" aria-label="Email">
+            <a href="mailto:enparalelopodcast@gmail.com" class="contact-icon-link" aria-label="Email">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
               Email
             </a>
-            <a href="https://wa.me/34600000000" target="_blank" rel="noopener" class="contact-icon-link" aria-label="WhatsApp">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.945 0C5.366 0 0 5.329 0 11.861c0 2.096.549 4.14 1.595 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.583 1.38c6.579 0 11.945-5.328 11.945-11.86 0-6.532-5.366-11.866-11.945-11.866zm.003 21.739a9.866 9.866 0 01-5.031-1.378l-.361-.214-3.741.981.998-3.648-.235-.374a9.806 9.806 0 01-1.504-5.247c0-5.42 4.41-9.83 9.874-9.83 5.463 0 9.874 4.41 9.874 9.83 0 5.421-4.411 9.88-9.874 9.88z"/></svg>
-              WhatsApp
+            <a href="https://www.instagram.com/enparalelopodcast/" target="_blank" rel="noopener" class="contact-icon-link" aria-label="Instagram">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+              Instagram
             </a>
           </div>
         </div>

@@ -17,13 +17,12 @@
   if (!elements.length) return;
 
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        // Stagger children if parent has reveal class
         const delay = entry.target.dataset.delay || 0;
         setTimeout(() => {
           entry.target.classList.add('visible');
-        }, parseInt(delay));
+        }, parseInt(delay, 10));
         observer.unobserve(entry.target);
       }
     });
@@ -48,7 +47,7 @@
     } else {
       header.classList.remove('scrolled');
     }
-  });
+  }, { passive: true });
 })();
 
 
@@ -59,42 +58,60 @@
   const nav = document.querySelector('.site-nav');
   if (!hamburger || !nav) return;
 
+  function setOpen(open) {
+    hamburger.classList.toggle('open', open);
+    nav.classList.toggle('open', open);
+    hamburger.setAttribute('aria-expanded', String(open));
+  }
+
   hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('open');
-    nav.classList.toggle('open');
+    setOpen(!nav.classList.contains('open'));
   });
 
   // Close on link click
   nav.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      hamburger.classList.remove('open');
-      nav.classList.remove('open');
-    });
+    link.addEventListener('click', () => setOpen(false));
   });
 })();
 
 
-// ===== FORM SUBMISSION (demo) =====
+// ===== FORM SUBMISSION (Formspree) =====
 
 (function () {
+  const ENDPOINT = 'https://formspree.io/f/xpqkqnrg';
+
   document.querySelectorAll('.contact-form').forEach(form => {
-    form.addEventListener('submit', function (e) {
+    form.addEventListener('submit', async function (e) {
       e.preventDefault();
+
       const btn = this.querySelector('[type="submit"]');
       const originalText = btn.textContent;
-
-      btn.textContent = '✓ ¡Listo! Te escribimos pronto';
-      btn.style.borderColor = 'rgba(255,237,74,0.5)';
-      btn.style.color = '#ffed4a';
+      btn.textContent = 'Enviando…';
       btn.disabled = true;
+
+      try {
+        const res = await fetch(ENDPOINT, {
+          method: 'POST',
+          body: new FormData(this),
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+
+        btn.textContent = '✓ ¡Listo! Te escribimos pronto';
+        btn.style.borderColor = 'rgba(255,237,74,0.5)';
+        btn.style.color = '#ffed4a';
+        this.reset();
+      } catch (err) {
+        btn.textContent = 'No se pudo enviar. Inténtalo de nuevo';
+      }
 
       setTimeout(() => {
         btn.textContent = originalText;
         btn.style.borderColor = '';
         btn.style.color = '';
         btn.disabled = false;
-        this.reset();
-      }, 3000);
+      }, 4000);
     });
   });
 })();
@@ -103,10 +120,14 @@
 // ===== ACTIVE NAV LINK =====
 
 (function () {
-  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  // Funciona tanto con /nosotros (cleanUrls en producción) como con /nosotros.html (local)
+  const path = (window.location.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/');
+
   document.querySelectorAll('.site-nav a').forEach(link => {
-    const href = link.getAttribute('href');
-    if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+    const href = (link.getAttribute('href') || '').split('#')[0].replace(/\.html$/, '');
+    if (!href) return;
+    const isHome = href === '/' || href === 'index' || href === '.';
+    if ((isHome && (path === '/' || path.endsWith('/index'))) || (!isHome && path.endsWith(href.replace(/^\//, '')) && href !== '/')) {
       link.classList.add('active');
     }
   });

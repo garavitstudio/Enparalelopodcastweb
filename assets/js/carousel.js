@@ -104,7 +104,7 @@
       if (e.target.closest('.episode-play-btn') || e.currentTarget === this) {
         const ytId = this.dataset.ytid;
         if (modal && modalIframe && ytId) {
-          modalIframe.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0`;
+          modalIframe.src = `https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&rel=0`;
           modal.classList.add('open');
           document.body.style.overflow = 'hidden';
         }
@@ -128,8 +128,9 @@
     if (e.key === 'Escape') closeModal();
   });
 
-  // Keyboard nav
+  // Keyboard nav (ignorando campos de formulario para no interferir al escribir)
   document.addEventListener('keydown', e => {
+    if (e.target.matches('input, textarea, select')) return;
     if (e.key === 'ArrowLeft') prev();
     if (e.key === 'ArrowRight') next();
   });
