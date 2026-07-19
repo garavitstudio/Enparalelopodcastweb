@@ -7,6 +7,7 @@
   if (document.getElementById('lelo-panda')) return;
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mobileMq = window.matchMedia('(max-width: 768px)');
 
   // ---------- SPRITE ----------
   var SVG =
@@ -123,6 +124,18 @@
   var panelEls = [];
   var panelRects = []; // [{r, el}]
   var lastRectRefresh = 0;
+  var groundTop = H; // en móvil, el borde superior de la barra de pestañas
+
+  function refreshGround() {
+    groundTop = H;
+    if (mobileMq.matches) {
+      var tb = document.querySelector('.ep-tabbar');
+      if (tb && getComputedStyle(tb).display !== 'none') {
+        var r = tb.getBoundingClientRect();
+        if (r.top > 100) groundTop = r.top; // el panda bota sobre la barra
+      }
+    }
+  }
 
   // Solidez aleatoria: cada panel decide por su cuenta, durante unos segundos,
   // si el panda puede apoyarse en él o lo atraviesa. Sin patrón fijo: cada
@@ -152,6 +165,7 @@
   }
 
   refreshPanels();
+  refreshGround();
 
   // ---------- BOCADILLO ----------
   function showBubble(html, autoHideMs) {
@@ -345,54 +359,66 @@
 
     el.classList.toggle('airborne', true);
 
-    // Bordes laterales
-    if (x <= 0) { x = 0; vx = Math.abs(vx); pulse('stretch'); }
-    else if (x + pw >= W) { x = W - pw; vx = -Math.abs(vx); pulse('stretch'); }
+    // Bordes laterales:
+    // - PC: rebota contra ellos
+    // - móvil: efecto túnel, sale por un lado y entra por el otro
+    if (mobileMq.matches) {
+      if (x >= W) x = -pw + 2;
+      else if (x + pw <= 0) x = W - 2;
+    } else {
+      if (x <= 0) { x = 0; vx = Math.abs(vx); pulse('stretch'); }
+      else if (x + pw >= W) { x = W - pw; vx = -Math.abs(vx); pulse('stretch'); }
+    }
 
     // Techo
     if (y <= 0) { y = 0; vy = Math.abs(vy) * 0.6; }
 
-    // Suelo (borde inferior de la ventana): aterriza y vuelve a saltar
-    if (y + ph >= H) {
-      y = H - ph;
+    // Suelo (en móvil, la barra de pestañas): aterriza y vuelve a saltar
+    if (y + ph >= groundTop) {
+      y = groundTop - ph;
       landAndJump();
     }
 
-    // Paneles de cristal: se impulsa solo con los que ahora mismo "elige" sólidos
+    // Paneles de cristal: se impulsa solo con los que ahora mismo "elige"
+    // sólidos. En móvil no hay colisiones con paneles: solo bordes del
+    // dispositivo (con túnel lateral) y la barra de pestañas como suelo.
     var now = performance.now();
     if (now - lastRectRefresh > 400) {
       refreshRects();
+      refreshGround();
       lastRectRefresh = now;
     }
-    for (var i = 0; i < panelRects.length; i++) {
-      var r = panelRects[i].r;
-      if (x + pw < r.left || x > r.right || y + ph < r.top || y > r.bottom) continue;
-      if (!isSolid(panelRects[i].el, now)) continue;
+    if (!mobileMq.matches) {
+      for (var i = 0; i < panelRects.length; i++) {
+        var r = panelRects[i].r;
+        if (x + pw < r.left || x > r.right || y + ph < r.top || y > r.bottom) continue;
+        if (!isSolid(panelRects[i].el, now)) continue;
 
-      var overlapTop = y + ph - r.top;
-      var overlapBottom = r.bottom - y;
-      var overlapLeft = x + pw - r.left;
-      var overlapRight = r.right - x;
-      var m = Math.min(overlapTop, overlapBottom, overlapLeft, overlapRight);
+        var overlapTop = y + ph - r.top;
+        var overlapBottom = r.bottom - y;
+        var overlapLeft = x + pw - r.left;
+        var overlapRight = r.right - x;
+        var m = Math.min(overlapTop, overlapBottom, overlapLeft, overlapRight);
 
-      // Si está muy hundido (el panel se volvió sólido con el panda dentro),
-      // lo dejamos pasar en lugar de teletransportarlo
-      if (m > 34) continue;
+        // Si está muy hundido (el panel se volvió sólido con el panda dentro),
+        // lo dejamos pasar en lugar de teletransportarlo
+        if (m > 34) continue;
 
-      if (m === overlapTop && vy > 0) {          // cae sobre el panel → rebota
-        y = r.top - ph;
-        landAndJump();
-      } else if (m === overlapBottom && vy < 0) { // golpea por debajo
-        y = r.bottom;
-        vy = Math.abs(vy) * 0.5;
-      } else if (m === overlapLeft && vx > 0) {   // lateral izquierdo del panel
-        x = r.left - pw;
-        vx = -Math.abs(vx);
-        pulse('stretch');
-      } else if (m === overlapRight && vx < 0) {  // lateral derecho del panel
-        x = r.right;
-        vx = Math.abs(vx);
-        pulse('stretch');
+        if (m === overlapTop && vy > 0) {          // cae sobre el panel → rebota
+          y = r.top - ph;
+          landAndJump();
+        } else if (m === overlapBottom && vy < 0) { // golpea por debajo
+          y = r.bottom;
+          vy = Math.abs(vy) * 0.5;
+        } else if (m === overlapLeft && vx > 0) {   // lateral izquierdo del panel
+          x = r.left - pw;
+          vx = -Math.abs(vx);
+          pulse('stretch');
+        } else if (m === overlapRight && vx < 0) {  // lateral derecho del panel
+          x = r.right;
+          vx = Math.abs(vx);
+          pulse('stretch');
+        }
       }
     }
 
@@ -460,8 +486,9 @@
     H = window.innerHeight;
     pw = el.offsetWidth || pw;
     ph = el.offsetHeight || ph;
+    refreshGround();
     x = Math.min(x, W - pw);
-    y = Math.min(y, H - ph);
+    y = Math.min(y, groundTop - ph);
     lastRectRefresh = 0;
     if (mode === 'parked') park();
   }
@@ -471,8 +498,9 @@
   // ---------- MODO SIN ANIMACIÓN (prefers-reduced-motion) ----------
   function park() {
     mode = 'parked';
+    refreshGround();
     x = W - pw - 14;
-    y = H - ph - 14;
+    y = groundTop - ph - 10;
     el.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0)';
   }
 

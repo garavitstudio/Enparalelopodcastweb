@@ -26,6 +26,9 @@
 
   let w, h;
   let frame = 0;
+  // En móvil los paneles tapan casi todo: el fondo gana intensidad
+  // (más grano y vídeos glitch más visibles) para que se aprecie.
+  let smallScreen = window.innerWidth <= 768;
 
   // ===== STATIC NOISE TILE =====
   // Pre-generate a tileable noise bitmap at startup (CPU-efficient)
@@ -48,6 +51,7 @@
   function resize() {
     w = canvas.width = window.innerWidth;
     h = canvas.height = window.innerHeight;
+    smallScreen = window.innerWidth <= 768;
     noisePattern = ctx.createPattern(noiseOffscreen, 'repeat');
   }
   window.addEventListener('resize', resize);
@@ -78,7 +82,7 @@
     // --- Static grain (permanent, always visible) ---
     if (noisePattern) {
       ctx.save();
-      ctx.globalAlpha = 0.10;
+      ctx.globalAlpha = smallScreen ? 0.15 : 0.10;
       // Shift tile each frame for chaotic dancing effect
       const ox = (Math.random() * noiseSize) | 0;
       const oy = (Math.random() * noiseSize) | 0;
@@ -112,7 +116,7 @@
 
     // Hard cut: video either fully visible or fully gone, no interpolation
     if (videoFading === 'in') {
-      videoOpacity = 0.6; // instant snap ON
+      videoOpacity = smallScreen ? 0.78 : 0.6; // instant snap ON
     } else if (videoFading === 'out') {
       videoOpacity = 0;   // instant snap OFF
     }

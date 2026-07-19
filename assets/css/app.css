@@ -1,0 +1,155 @@
+/* ============================================
+   APP LAYER — badge EN VIVO + experiencia móvil
+   El badge y la barra de pestañas los inyecta assets/js/app.js.
+   ============================================ */
+
+/* ===== BADGE "EN VIVO" (PC y móvil) ===== */
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 13px;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff3b46;
+  box-shadow: 0 0 6px #ff3b46, 0 0 14px rgba(255, 59, 70, 0.7);
+  animation: liveDotPulse 1.6s ease-in-out infinite;
+  flex: 0 0 auto;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+@keyframes liveDotPulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 6px #ff3b46, 0 0 16px rgba(255, 59, 70, 0.8); }
+  50% { opacity: 0.5; box-shadow: 0 0 3px rgba(255, 59, 70, 0.5); }
+}
+
+/* Estado "ESTÁS VIVO": el LED pasa al amarillo neón de la marca */
+.live-badge.alive {
+  color: var(--neon-yellow);
+  border-color: rgba(255, 237, 74, 0.4);
+  text-shadow: 0 0 10px rgba(255, 237, 74, 0.6);
+}
+.live-badge.alive .live-dot {
+  background: var(--neon-yellow);
+  box-shadow: 0 0 6px var(--neon-yellow), 0 0 16px rgba(255, 237, 74, 0.8);
+  animation-duration: 0.9s;
+}
+
+/* Cortocircuito */
+.live-badge.glitching { animation: liveJitter 0.55s steps(2, end) infinite; }
+.live-badge.glitching .live-text { animation: liveGlitch 0.55s steps(2, end) infinite; }
+.live-badge.glitching .live-dot { animation: liveDotShort 0.14s steps(2, end) infinite; }
+
+@keyframes liveGlitch {
+  0%   { text-shadow: -2px 0 #ff004c, 2px 0 var(--neon-blue); transform: translateX(-1px); }
+  25%  { text-shadow: 2px 0 #ff004c, -2px 0 var(--neon-blue); transform: translateX(1px) skewX(-8deg); }
+  50%  { text-shadow: -1px 0 var(--neon-blue), 1px 0 #ff004c; transform: translateX(-2px); }
+  75%  { text-shadow: 2px 0 var(--neon-blue); transform: translateX(2px) skewX(6deg); }
+  100% { text-shadow: none; transform: none; }
+}
+
+@keyframes liveJitter {
+  0%, 100% { transform: none; }
+  20% { transform: translate(1px, -1px); }
+  40% { transform: translate(-1px, 1px); }
+  60% { transform: translate(2px, 0); }
+  80% { transform: translate(-2px, 0); }
+}
+
+@keyframes liveDotShort {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.1; }
+}
+
+/* ===== BARRA DE PESTAÑAS FLOTANTE (solo móvil) ===== */
+.ep-tabbar {
+  position: fixed;
+  left: 14px;
+  right: 14px;
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  z-index: 21000; /* por encima del panda: bota sobre ella como si fuera el suelo */
+  display: none;
+  align-items: stretch;
+  gap: 2px;
+  padding: 8px 6px;
+  border-radius: 26px;
+  background: rgba(12, 12, 12, 0.62);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.12);
+}
+
+.ep-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 7px 2px 5px;
+  border-radius: 18px;
+  color: rgba(255, 255, 255, 0.55);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.ep-tab svg {
+  width: 21px;
+  height: 21px;
+  display: block;
+}
+
+.ep-tab:active { background: rgba(255, 255, 255, 0.07); }
+
+.ep-tab.active {
+  color: var(--neon-yellow);
+  text-shadow: 0 0 10px rgba(255, 237, 74, 0.7);
+}
+.ep-tab.active svg { filter: drop-shadow(0 0 6px rgba(255, 237, 74, 0.8)); }
+
+/* ===== MODO APP EN MÓVIL ===== */
+@media (max-width: 768px) {
+  /* La barra inferior sustituye al menú hamburguesa */
+  .ep-tabbar { display: flex; }
+  #site-header .hamburger,
+  #site-header .site-nav { display: none !important; }
+
+  /* Aire para que la barra no tape el pie de página */
+  #site-footer { padding-bottom: 118px; }
+
+  /* Más protagonismo del fondo CRT: cristales menos difuminados
+     y un pelín de aire lateral para que el fondo respire */
+  :root {
+    --glass-bg: rgba(14, 14, 14, 0.34);
+    --glass-bg-hover: rgba(22, 22, 22, 0.42);
+    --blur-glass: blur(7px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-dot { animation: none; }
+  .live-badge.glitching,
+  .live-badge.glitching .live-text,
+  .live-badge.glitching .live-dot { animation: none; }
+}
