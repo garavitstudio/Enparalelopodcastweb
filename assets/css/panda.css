@@ -1,0 +1,167 @@
+/* ============================================
+   LELO — la mascota de En Paralelo 🐼
+   Panda interactivo que rebota por la pantalla.
+   El sprite SVG lo inyecta assets/js/panda.js.
+   ============================================ */
+
+#lelo-panda {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 92px;
+  height: 118px;
+  z-index: 20000; /* sobre el contenido (10) y el header (9999), bajo el modal (99999) */
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  will-change: transform;
+  filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.45));
+}
+
+#lelo-panda:active { cursor: grabbing; }
+
+#lelo-panda:focus-visible {
+  outline: 2px solid var(--neon-yellow, #ffed4a);
+  outline-offset: 4px;
+  border-radius: 12px;
+}
+
+#lelo-panda svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+/* Espejo horizontal según la dirección del movimiento */
+#lelo-panda.face-left svg { transform: scaleX(-1); }
+
+/* Aplastamiento/estiramiento del cuerpo entero (origen: los pies) */
+#lelo-panda .p-sprite {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transition: transform 0.16s ease-out;
+}
+#lelo-panda.squash .p-sprite { transform: scale(1.12, 0.84); }
+#lelo-panda.stretch .p-sprite { transform: scale(0.92, 1.08); }
+
+/* Extremidades animables */
+#lelo-panda .p-arm-l,
+#lelo-panda .p-arm-r,
+#lelo-panda .p-leg-l,
+#lelo-panda .p-leg-r {
+  transform-box: fill-box;
+  transition: transform 0.25s ease;
+}
+#lelo-panda .p-arm-l { transform-origin: 80% 15%; }
+#lelo-panda .p-arm-r { transform-origin: 20% 15%; }
+#lelo-panda .p-leg-l,
+#lelo-panda .p-leg-r { transform-origin: 50% 10%; }
+
+/* En el aire: brazos arriba y patas recogidas → gesto de salto */
+#lelo-panda.airborne .p-arm-l { transform: rotate(32deg); }
+#lelo-panda.airborne .p-arm-r { transform: rotate(-32deg); }
+#lelo-panda.airborne .p-leg-l { transform: rotate(-10deg); }
+#lelo-panda.airborne .p-leg-r { transform: rotate(10deg); }
+
+/* ===== Cambio de pose: gafas bajadas + mirada de juicio ===== */
+#lelo-panda .p-eyes,
+#lelo-panda .p-brows,
+#lelo-panda .p-mouth-flat,
+#lelo-panda .p-temples-up { opacity: 0; }
+
+#lelo-panda .p-glasses {
+  transform-box: fill-box;
+  transition: transform 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+#lelo-panda .p-eyes,
+#lelo-panda .p-brows,
+#lelo-panda .p-mouth-flat,
+#lelo-panda .p-mouth-smile,
+#lelo-panda .p-temples-up,
+#lelo-panda .p-temples-flat { transition: opacity 0.15s ease; }
+
+#lelo-panda.caught .p-glasses { transform: translateY(36px); }
+#lelo-panda.caught .p-eyes,
+#lelo-panda.caught .p-brows,
+#lelo-panda.caught .p-mouth-flat,
+#lelo-panda.caught .p-temples-up { opacity: 1; }
+#lelo-panda.caught .p-mouth-smile,
+#lelo-panda.caught .p-temples-flat { opacity: 0; }
+
+/* ===== Bocadillo de cómic ===== */
+.lelo-bubble {
+  position: fixed;
+  z-index: 20001;
+  max-width: 240px;
+  background: #fdfcf7;
+  color: #141414;
+  font-family: 'Outfit', 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  padding: 12px 15px;
+  border: 3px solid #14120f;
+  border-radius: 16px;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transform: scale(0.5);
+  transform-origin: bottom left;
+  transition: opacity 0.16s ease, transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+
+.lelo-bubble.show {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+/* Rabito del bocadillo (dos triángulos: borde + relleno) */
+.lelo-bubble::before,
+.lelo-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -16px;
+  left: 26px;
+  border: 9px solid transparent;
+  border-top-color: #14120f;
+  border-bottom: none;
+}
+.lelo-bubble::after {
+  bottom: -11px;
+  left: 28px;
+  border-width: 7px;
+  border-top-color: #fdfcf7;
+}
+
+/* Variante: bocadillo debajo del panda (rabito hacia arriba) */
+.lelo-bubble.below {
+  transform-origin: top left;
+}
+.lelo-bubble.below::before,
+.lelo-bubble.below::after {
+  bottom: auto;
+  top: -16px;
+  border-top: none;
+  border-bottom: 9px solid #14120f;
+}
+.lelo-bubble.below::after {
+  top: -11px;
+  border-bottom: 7px solid #fdfcf7;
+}
+
+.lelo-bubble a {
+  display: inline-block;
+  margin-top: 6px;
+  color: #0d6e43;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  #lelo-panda { width: 68px; height: 87px; }
+  .lelo-bubble { max-width: 200px; font-size: 0.8rem; }
+}
