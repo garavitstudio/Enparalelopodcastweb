@@ -37,6 +37,13 @@
 /* Espejo horizontal según la dirección del movimiento */
 #lelo-panda.face-left svg { transform: scaleX(-1); }
 
+/* El "lelo" de la camiseta se contra-espeja para que siempre se lea bien */
+#lelo-panda .p-tee {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+#lelo-panda.face-left .p-tee { transform: scaleX(-1); }
+
 /* Aplastamiento/estiramiento del cuerpo entero (origen: los pies) */
 #lelo-panda .p-sprite {
   transform-box: fill-box;

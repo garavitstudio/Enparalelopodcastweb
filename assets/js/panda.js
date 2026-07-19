@@ -33,23 +33,25 @@
     '<path d="M103 21 Q109 4 120 13 Q126 1 134 13 Q144 6 145 21 Q134 14 124 18 Q113 12 103 21 Z" fill="#f5f1e8"/>' +
     '<ellipse cx="86" cy="90" rx="27" ry="33" transform="rotate(-12 86 90)" fill="#26262a" stroke="none"/>' +
     '<ellipse cx="162" cy="90" rx="27" ry="33" transform="rotate(12 162 90)" fill="#26262a" stroke="none"/>' +
-    // ojos y cejas (visibles solo al atraparlo)
+    // ojos y cejas (visibles solo al atraparlo): mirada de chulo,
+    // ojo izquierdo medio cerrado y ceja derecha levantada
     '<g class="p-eyes" stroke="none">' +
-    '<ellipse cx="88" cy="90" rx="12" ry="13" fill="#f5f1e8"/>' +
-    '<ellipse cx="160" cy="90" rx="12" ry="13" fill="#f5f1e8"/>' +
+    '<ellipse cx="88" cy="91" rx="12" ry="11" fill="#f5f1e8"/>' +
+    '<ellipse cx="160" cy="89" rx="12" ry="13" fill="#f5f1e8"/>' +
     '<circle cx="90" cy="92" r="5.5" fill="#1c1c20"/>' +
-    '<circle cx="158" cy="92" r="5.5" fill="#1c1c20"/>' +
+    '<circle cx="158" cy="90" r="5.5" fill="#1c1c20"/>' +
     '<circle cx="92" cy="90" r="1.8" fill="#f5f1e8"/>' +
-    '<circle cx="160" cy="90" r="1.8" fill="#f5f1e8"/>' +
+    '<circle cx="160" cy="88" r="1.8" fill="#f5f1e8"/>' +
+    '<path d="M76 84 Q88 80 100 84 L100 78 L76 78 Z" fill="#26262a"/>' +
     '</g>' +
-    '<g class="p-brows">' +
-    '<path d="M70 70 L104 82" stroke="#14120f" stroke-width="8"/>' +
-    '<path d="M178 70 L144 82" stroke="#14120f" stroke-width="8"/>' +
+    '<g class="p-brows" fill="none">' +
+    '<path d="M74 76 Q88 72 102 76" stroke="#14120f" stroke-width="7"/>' +
+    '<path d="M142 64 Q162 50 182 62" stroke="#14120f" stroke-width="8"/>' +
     '</g>' +
     // nariz y bocas
     '<path d="M114 117 Q124 111 134 117 Q130 128 124 128 Q118 128 114 117 Z" fill="#14120f" stroke="none"/>' +
     '<path class="p-mouth-smile" d="M112 140 Q124 148 136 140" fill="none"/>' +
-    '<path class="p-mouth-flat" d="M114 144 Q124 139 134 144" fill="none"/>' +
+    '<path class="p-mouth-flat" d="M112 143 Q124 147 138 137" fill="none"/>' +
     // gafas (grupo desplazable) + patillas de cada pose
     '<g class="p-temples-flat">' +
     '<path d="M62 86 L36 78" stroke="#c79a62" stroke-width="6"/>' +
@@ -70,7 +72,7 @@
     '</g>' +
     '</g>' +
     '</g>' +
-    '<text x="124" y="186" text-anchor="middle" font-family="Outfit, Arial, sans-serif" font-weight="700" font-size="28" fill="#f2ecc9" stroke="none">lelo</text>' +
+    '<text class="p-tee" x="124" y="186" text-anchor="middle" font-family="Outfit, Arial, sans-serif" font-weight="700" font-size="28" fill="#f2ecc9" stroke="none">lelo</text>' +
     '</g>' +
     '</svg>';
 
@@ -119,8 +121,21 @@
   var fly = null; // datos del vuelo hacia el posadero
 
   var panelEls = [];
-  var panelRects = [];
+  var panelRects = []; // [{r, el}]
   var lastRectRefresh = 0;
+
+  // Solidez aleatoria: cada panel decide por su cuenta, durante unos segundos,
+  // si el panda puede apoyarse en él o lo atraviesa. Sin patrón fijo: cada
+  // decisión caduca en un momento aleatorio distinto.
+  var solidity = new Map(); // elemento -> { solid, until }
+  function isSolid(panelEl, now) {
+    var s = solidity.get(panelEl);
+    if (!s || now > s.until) {
+      s = { solid: Math.random() < 0.4, until: now + 2500 + Math.random() * 6000 };
+      solidity.set(panelEl, s);
+    }
+    return s.solid;
+  }
 
   function refreshPanels() {
     panelEls = Array.prototype.slice.call(document.querySelectorAll('.glass-panel'));
@@ -132,7 +147,7 @@
       var r = panelEls[i].getBoundingClientRect();
       if (r.width < 150 || r.height < 90) continue;       // ignora tarjetitas
       if (r.bottom < 40 || r.top > H - 40) continue;       // fuera de pantalla
-      panelRects.push(r);
+      panelRects.push({ r: r, el: panelEls[i] });
     }
   }
 
@@ -182,7 +197,11 @@
     setTimeout(function () { el.classList.remove(cls); }, 170);
   }
 
-  // ---------- INTERACCIÓN: atraparlo ----------
+  // ---------- INTERACCIÓN: atraparlo y arrastrarlo ----------
+  var drag = null; // { id, offX, offY, startX, startY, lastX, lastY, lastT, vx, vy, moved }
+
+  function clamp(v, min, max) { return Math.min(Math.max(v, min), max); }
+
   function catchPanda() {
     clearTimeout(resumeTimer);
     if (mode === 'flyTo') fly = null;
@@ -194,27 +213,76 @@
     );
   }
 
-  function releasePanda() {
+  // Suelta al panda; si viene de un lanzamiento, hereda la velocidad de la mano
+  function releasePanda(throwVx, throwVy) {
     if (mode !== 'caught') return;
     setCaughtPose(false);
-    hideBubble();
-    if (reduceMotion) { park(); return; }
+    if (reduceMotion) { hideBubble(); mode = 'parked'; return; }
     mode = 'bounce';
-    vy = -8;
-    vx = (Math.random() < 0.5 ? -1 : 1) * (2 + Math.random() * 1.5);
+    if (typeof throwVx === 'number' && (Math.abs(throwVx) > 1 || Math.abs(throwVy) > 1)) {
+      vx = clamp(throwVx, -7, 7);
+      vy = clamp(throwVy, -10, 6);
+      hideBubble();
+    } else {
+      vy = -8;
+      vx = (Math.random() < 0.5 ? -1 : 1) * (2 + Math.random() * 1.5);
+      hideBubble();
+    }
   }
 
   el.addEventListener('pointerdown', function (e) {
     e.preventDefault();
-    if (mode === 'caught') return;
+    try { el.setPointerCapture(e.pointerId); } catch (err) {}
     catchPanda();
+    drag = {
+      id: e.pointerId,
+      offX: e.clientX - x,
+      offY: e.clientY - y,
+      startX: e.clientX,
+      startY: e.clientY,
+      lastX: e.clientX,
+      lastY: e.clientY,
+      lastT: performance.now(),
+      vx: 0,
+      vy: 0,
+      moved: false
+    };
   });
 
-  window.addEventListener('pointerup', function () {
-    if (mode !== 'caught') return;
-    clearTimeout(resumeTimer);
-    resumeTimer = setTimeout(releasePanda, 3500); // tiempo para leer el bocadillo
+  el.addEventListener('pointermove', function (e) {
+    if (!drag || e.pointerId !== drag.id) return;
+    x = clamp(e.clientX - drag.offX, 0, W - pw);
+    y = clamp(e.clientY - drag.offY, 0, H - ph);
+    if (!drag.moved && Math.hypot(e.clientX - drag.startX, e.clientY - drag.startY) > 8) {
+      drag.moved = true;
+    }
+    // Velocidad de la mano (suavizada) para poder lanzarlo
+    var t = performance.now();
+    var dt = Math.max(t - drag.lastT, 1);
+    drag.vx = drag.vx * 0.75 + ((e.clientX - drag.lastX) / dt * 16) * 0.25;
+    drag.vy = drag.vy * 0.75 + ((e.clientY - drag.lastY) / dt * 16) * 0.25;
+    drag.lastX = e.clientX;
+    drag.lastY = e.clientY;
+    drag.lastT = t;
   });
+
+  function onPointerRelease(e) {
+    if (!drag || e.pointerId !== drag.id) return;
+    var wasDrag = drag.moved;
+    var tvx = drag.vx;
+    var tvy = drag.vy;
+    drag = null;
+    clearTimeout(resumeTimer);
+    if (wasDrag) {
+      // Lo has movido: retoma los saltos justo donde lo dejas
+      releasePanda(tvx, tvy);
+    } else {
+      // Toque simple: se queda un momento para que leas el bocadillo
+      resumeTimer = setTimeout(function () { releasePanda(); }, 3500);
+    }
+  }
+  el.addEventListener('pointerup', onPointerRelease);
+  el.addEventListener('pointercancel', onPointerRelease);
 
   el.addEventListener('keydown', function (e) {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -290,20 +358,26 @@
       landAndJump();
     }
 
-    // Paneles de cristal: se impulsa con ellos
-    if (performance.now() - lastRectRefresh > 400) {
+    // Paneles de cristal: se impulsa solo con los que ahora mismo "elige" sólidos
+    var now = performance.now();
+    if (now - lastRectRefresh > 400) {
       refreshRects();
-      lastRectRefresh = performance.now();
+      lastRectRefresh = now;
     }
     for (var i = 0; i < panelRects.length; i++) {
-      var r = panelRects[i];
+      var r = panelRects[i].r;
       if (x + pw < r.left || x > r.right || y + ph < r.top || y > r.bottom) continue;
+      if (!isSolid(panelRects[i].el, now)) continue;
 
       var overlapTop = y + ph - r.top;
       var overlapBottom = r.bottom - y;
       var overlapLeft = x + pw - r.left;
       var overlapRight = r.right - x;
       var m = Math.min(overlapTop, overlapBottom, overlapLeft, overlapRight);
+
+      // Si está muy hundido (el panel se volvió sólido con el panda dentro),
+      // lo dejamos pasar en lugar de teletransportarlo
+      if (m > 34) continue;
 
       if (m === overlapTop && vy > 0) {          // cae sobre el panel → rebota
         y = r.top - ph;
