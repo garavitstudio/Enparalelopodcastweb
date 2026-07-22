@@ -48,6 +48,15 @@
   noiseCtx.putImageData(noiseImg, 0, 0);
   let noisePattern = null;
 
+  // Brillo de los vídeos glitch (0 = negro, 1 = original)
+  const VIDEO_BRIGHTNESS = 0.45;
+  let canFilter = false;
+  try {
+    ctx.filter = 'brightness(0.5)';
+    canFilter = ctx.filter === 'brightness(0.5)';
+    ctx.filter = 'none';
+  } catch (e) { canFilter = false; }
+
   function resize() {
     w = canvas.width = window.innerWidth;
     h = canvas.height = window.innerHeight;
@@ -106,11 +115,22 @@
       const sh = h / scale;  // source region height
       const sx = (vw - sw) / 2; // center-crop X
       const sy = (vh - sh) / 2; // center-crop Y
+      // Bajamos el brillo del vídeo para que sea una presencia fantasmal
+      // y no ilumine la pantalla (mantiene su presencia, pierde la luz).
+      if (canFilter) ctx.filter = 'brightness(' + VIDEO_BRIGHTNESS + ')';
       ctx.drawImage(ghostVideo, sx, sy, sw, sh, 0, 0, w, h);
+      if (canFilter) ctx.filter = 'none';
       // Desaturate by overlaying a color-mode black fill
       ctx.globalCompositeOperation = 'color';
       ctx.fillStyle = '#000000';
       ctx.fillRect(0, 0, w, h);
+      if (!canFilter) {
+        // Navegadores sin ctx.filter: velo negro equivalente
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.globalAlpha = videoOpacity * (1 - VIDEO_BRIGHTNESS);
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, w, h);
+      }
       ctx.restore();
     }
 
