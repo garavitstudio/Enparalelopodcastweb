@@ -1,7 +1,8 @@
 // ===== APP LAYER: badge "EN VIVO" + barra de pestañas móvil =====
-// El badge vive en el header (PC y móvil). Cada cierto tiempo aleatorio
-// sufre un cortocircuito (glitch) y pasa a decir "ESTÁS VIVO" un rato,
-// con el LED en amarillo neón, antes de volver a la normalidad.
+// El badge flota solo a la izquierda en PC y viaja dentro de la píldora del
+// header en móvil. Cada cierto tiempo aleatorio sufre un cortocircuito
+// (glitch) y pasa a decir "ESTÁS VIVO" un rato, con el LED en amarillo
+// neón, antes de volver a la normalidad.
 
 (function () {
   var header = document.getElementById('site-header');
@@ -21,17 +22,36 @@
       '<span class="live-dot" aria-hidden="true"></span>' +
       '<span class="live-text">EN VIVO</span>';
 
-    var logo = header.querySelector('.neon-logo');
-    if (logo && logo.nextSibling) header.insertBefore(badge, logo.nextSibling);
-    else header.appendChild(badge);
+    // En móvil el badge viaja dentro de la píldora del header; en PC vive
+    // suelto a la izquierda. Tiene que salir del header porque su
+    // backdrop-filter haría de marco de referencia para un position:fixed.
+    var wideMq = window.matchMedia('(min-width: 769px)');
+
+    function placeBadge() {
+      if (wideMq.matches) {
+        if (badge.parentNode !== document.body) document.body.appendChild(badge);
+      } else if (badge.parentNode !== header) {
+        var logo = header.querySelector('.neon-logo');
+        if (logo && logo.nextSibling) header.insertBefore(badge, logo.nextSibling);
+        else header.appendChild(badge);
+      }
+    }
+
+    placeBadge();
+    if (wideMq.addEventListener) wideMq.addEventListener('change', placeBadge);
+    else if (wideMq.addListener) wideMq.addListener(placeBadge); // Safari antiguo
 
     if (!reduceMotion) {
       var textEl = badge.querySelector('.live-text');
       var GLITCH_MS = 650;
 
+      var first = true;
       var scheduleShort = function () {
-        // Próximo cortocircuito en 14–40 s
-        setTimeout(shortCircuit, 14000 + Math.random() * 26000);
+        // El primer chispazo llega pronto (2,5–5 s) para que lo vea
+        // cualquiera que entre de paso; luego cada 6–13 s.
+        var delay = first ? 2500 + Math.random() * 2500 : 6000 + Math.random() * 7000;
+        first = false;
+        setTimeout(shortCircuit, delay);
       };
 
       var shortCircuit = function () {
@@ -41,7 +61,7 @@
           badge.classList.add('alive');
           setTimeout(function () { badge.classList.remove('glitching'); }, 280);
 
-          // Se queda "ESTÁS VIVO" 4.5–8 s y vuelve con otro chispazo
+          // Se queda "ESTÁS VIVO" 3,5–6 s y vuelve con otro chispazo
           setTimeout(function () {
             badge.classList.add('glitching');
             setTimeout(function () {
@@ -52,7 +72,7 @@
                 scheduleShort();
               }, 280);
             }, GLITCH_MS);
-          }, 4500 + Math.random() * 3500);
+          }, 3500 + Math.random() * 2500);
         }, GLITCH_MS);
       };
 

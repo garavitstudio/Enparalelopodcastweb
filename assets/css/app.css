@@ -77,6 +77,32 @@
   50% { opacity: 0.1; }
 }
 
+/* PC: la píldora vive sola en el lado izquierdo, centrada a la altura
+   del menú (que flota arriba a la derecha), como pieza independiente. */
+@media (min-width: 769px) {
+  .live-badge {
+    position: fixed;
+    top: 41px; /* centro óptico del header: 32px + 60px/2 - 42px/2 */
+    left: 32px;
+    z-index: 9998;
+    height: 42px;
+    padding: 0 20px;
+    font-size: 0.68rem;
+    background: var(--glass-bg);
+    backdrop-filter: var(--blur-glass);
+    -webkit-backdrop-filter: var(--blur-glass);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 50px;
+    transition: background 0.3s ease, border-color 0.3s ease, color 0.2s ease;
+  }
+
+  .live-badge:hover {
+    background: var(--glass-bg-hover);
+    border-color: var(--glass-border-hover);
+  }
+}
+
 /* ===== BARRA DE PESTAÑAS FLOTANTE (solo móvil) ===== */
 .ep-tabbar {
   position: fixed;
