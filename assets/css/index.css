@@ -719,15 +719,20 @@
   padding: 60px 56px;
 }
 
+/* Bloque vertical centrado: encabezado, perfiles y formulario. */
 .join-inner {
-  display: grid;
-  grid-template-columns: 1fr 0.9fr;
-  gap: 64px;
-  align-items: start;
+  max-width: 880px;
+  margin: 0 auto;
 }
 
-.join-copy h2 {
-  margin: 12px 0 4px;
+.join-header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 40px;
+}
+
+.join-header h2 {
+  margin: 12px 0 6px;
   background: linear-gradient(135deg, #fff 50%, var(--neon-yellow) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -739,18 +744,22 @@
   color: var(--neon-yellow);
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
-.join-copy > p {
+.join-header .neon-divider { margin: 0 auto 24px; }
+
+.join-header p {
   color: rgba(240,240,240,0.75);
-  margin-bottom: 32px;
+  margin-bottom: 0;
 }
 
 .profiles-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 44px;
+  text-align: left;
 }
 
 .profile-card {
@@ -763,6 +772,11 @@
 
 /* El texto de la tarjeta va en su propia columna, a la derecha del icono */
 .profile-card > div { flex: 1; }
+
+.join-form-col {
+  max-width: 520px;
+  margin: 0 auto;
+}
 
 .profile-icon {
   font-size: 1.4rem;
@@ -795,7 +809,6 @@
   .hero-side-panel { display: none; }
   .story-inner { grid-template-columns: 1fr; }
   .story-image { display: none; }
-  .join-inner { grid-template-columns: 1fr; gap: 40px; }
   .guest-inner { grid-template-columns: 1fr; }
   .guest-img-col { display: none; }
 
@@ -823,6 +836,7 @@
   .hero-main-panel { padding: 40px 28px; }
   .story-panel { padding: 40px 28px; }
   .join-panel { padding: 40px 28px; }
+  .profiles-grid { grid-template-columns: 1fr; }
   .guest-panel { padding: 40px 28px; }
   .brands-panel { padding: 40px 28px; }
   .waveform-glass { padding: 40px 28px; }
