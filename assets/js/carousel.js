@@ -15,17 +15,7 @@
   let isDragging = false;
   let dragDelta = 0;
 
-  // Build dots
-  if (dotsContainer) {
-    cards.forEach((_, i) => {
-      const dot = document.createElement('button');
-      dot.className = 'carousel-dot';
-      dot.setAttribute('aria-label', `Episodio ${i + 1}`);
-      dot.addEventListener('click', () => goTo(i));
-      dotsContainer.appendChild(dot);
-    });
-  }
-
+  // Estos cortes deben coincidir con los media queries de index.css
   function getVisibleCount() {
     const w = window.innerWidth;
     if (w >= 1024) return 3;
@@ -35,6 +25,31 @@
 
   function getMaxIndex() {
     return Math.max(0, total - getVisibleCount());
+  }
+
+  // Un punto por cada posición alcanzable (no por tarjeta): con 5 tarjetas
+  // y 3 visibles solo hay 3 paradas posibles.
+  function buildDots() {
+    if (!dotsContainer) return;
+    dotsContainer.innerHTML = '';
+    const stops = getMaxIndex() + 1;
+    if (stops < 2) return; // una sola parada: no hace falta paginación
+    for (let i = 0; i < stops; i++) {
+      const dot = document.createElement('button');
+      dot.className = 'carousel-dot';
+      dot.setAttribute('aria-label', `Ir al grupo ${i + 1} de ${stops}`);
+      dot.addEventListener('click', () => goTo(i));
+      dotsContainer.appendChild(dot);
+    }
+  }
+
+  // Ancho real de una tarjeta más el hueco: desplazar en píxeles medidos
+  // evita el desfase que producía calcular el avance en porcentajes.
+  function getStep() {
+    if (!cards.length) return 0;
+    const styles = getComputedStyle(track);
+    const gap = parseFloat(styles.columnGap || styles.gap) || 0;
+    return cards[0].getBoundingClientRect().width + gap;
   }
 
   function updateDots() {
@@ -50,14 +65,8 @@
   }
 
   function goTo(index) {
-    const maxIndex = getMaxIndex();
-    current = Math.max(0, Math.min(index, maxIndex));
-
-    const visibleCount = getVisibleCount();
-    const cardWidth = 100 / visibleCount;
-    const offset = current * cardWidth;
-
-    track.style.transform = `translateX(-${offset}%)`;
+    current = Math.max(0, Math.min(index, getMaxIndex()));
+    track.style.transform = `translateX(-${current * getStep()}px)`;
     updateDots();
     updateButtons();
   }
@@ -135,8 +144,18 @@
     if (e.key === 'ArrowRight') next();
   });
 
-  window.addEventListener('resize', () => goTo(current));
+  // Al cambiar el ancho cambian las tarjetas visibles: hay que rehacer los
+  // puntos y recolocar el track con la nueva medida.
+  let resizeTimer = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      buildDots();
+      goTo(Math.min(current, getMaxIndex()));
+    }, 120);
+  });
 
   // Init
+  buildDots();
   goTo(0);
 })();

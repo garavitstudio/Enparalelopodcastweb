@@ -304,6 +304,7 @@
 }
 
 .carousel-wrapper {
+  --carousel-gap: 16px;
   position: relative;
   display: flex;
   align-items: center;
@@ -318,12 +319,15 @@
 
 .carousel-track {
   display: flex;
+  gap: var(--carousel-gap);
   transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
+/* El ancho descuenta los huecos para que entren N tarjetas exactas
+   (con margin en vez de gap, el track se desbordaba y cortaba la última). */
 .episode-card {
-  flex: 0 0 calc(100% / 3);
-  margin: 0 8px;
+  flex: 0 0 calc((100% - var(--carousel-gap) * 2) / 3);
+  margin: 0;
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -771,8 +775,21 @@
   .guest-img-col { display: none; }
 
   .brands-grid { grid-template-columns: 1fr; }
+}
 
-  .episode-card { flex: 0 0 calc(100% / 2); }
+/* Carrusel: los cortes deben coincidir EXACTAMENTE con getVisibleCount()
+   de carousel.js (>=1024 -> 3, >=640 -> 2, resto -> 1). */
+@media (max-width: 1023px) {
+  .episode-card { flex: 0 0 calc((100% - var(--carousel-gap)) / 2); }
+}
+
+@media (max-width: 639px) {
+  .episode-card { flex: 0 0 100%; }
+
+  /* Sin flechas la tarjeta aprovecha todo el ancho y queda centrada;
+     se navega deslizando o con los puntos. */
+  .carousel-arrow { display: none; }
+  .carousel-wrapper { gap: 0; }
 }
 
 @media (max-width: 768px) {
@@ -784,8 +801,6 @@
   .guest-panel { padding: 40px 28px; }
   .brands-panel { padding: 40px 28px; }
   .waveform-glass { padding: 40px 28px; }
-
-  .episode-card { flex: 0 0 calc(100% / 1); }
 
   .waveform-mic-icon { display: none; }
 }
