@@ -764,15 +764,6 @@
 /* El texto de la tarjeta va en su propia columna, a la derecha del icono */
 .profile-card > div { flex: 1; }
 
-/* La columna del texto es bastante más alta que el formulario: en
-   escritorio este acompaña la lectura en vez de dejar un hueco enorme. */
-@media (min-width: 1025px) {
-  .join-form-col {
-    position: sticky;
-    top: 100px;
-  }
-}
-
 .profile-icon {
   font-size: 1.4rem;
   flex-shrink: 0;
