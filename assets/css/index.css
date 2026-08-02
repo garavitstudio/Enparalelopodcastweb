@@ -614,12 +614,15 @@
 
 .brands-panel {
   padding: 60px 56px;
-  text-align: center;
 }
 
-.brands-header {
-  max-width: 640px;
-  margin: 0 auto 40px;
+/* Dos columnas: el texto a la izquierda y las opciones a la derecha,
+   para que la sección no se alargue tanto en vertical. */
+.brands-inner {
+  display: grid;
+  grid-template-columns: 1fr 0.85fr;
+  gap: 56px;
+  align-items: start;
 }
 
 .brands-header h2 {
@@ -630,7 +633,7 @@
   background-clip: text;
 }
 
-.brands-header .neon-divider { margin: 0 auto 24px; }
+.brands-header .neon-divider { margin: 0 0 24px; }
 
 .brands-header p {
   color: rgba(240,240,240,0.75);
@@ -638,11 +641,10 @@
 }
 
 .brands-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  text-align: left;
-  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 28px;
 }
 
 /* ========= WAVEFORM ========= */
@@ -717,22 +719,15 @@
   padding: 60px 56px;
 }
 
-/* Bloque vertical centrado: encabezado, perfiles y formulario.
-   Antes eran dos columnas descompensadas (copy largo a la izquierda,
-   formulario corto a la derecha) y el conjunto quedaba desequilibrado. */
 .join-inner {
-  max-width: 880px;
-  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 0.9fr;
+  gap: 64px;
+  align-items: start;
 }
 
-.join-header {
-  text-align: center;
-  max-width: 700px;
-  margin: 0 auto 40px;
-}
-
-.join-header h2 {
-  margin: 12px 0 6px;
+.join-copy h2 {
+  margin: 12px 0 4px;
   background: linear-gradient(135deg, #fff 50%, var(--neon-yellow) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -744,22 +739,18 @@
   color: var(--neon-yellow);
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
-.join-header .neon-divider { margin: 0 auto 24px; }
-
-.join-header p {
+.join-copy > p {
   color: rgba(240,240,240,0.75);
-  margin-bottom: 0;
+  margin-bottom: 32px;
 }
 
 .profiles-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-  margin-bottom: 44px;
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .profile-card {
@@ -773,9 +764,13 @@
 /* El texto de la tarjeta va en su propia columna, a la derecha del icono */
 .profile-card > div { flex: 1; }
 
-.join-form-col {
-  max-width: 520px;
-  margin: 0 auto;
+/* La columna del texto es bastante más alta que el formulario: en
+   escritorio este acompaña la lectura en vez de dejar un hueco enorme. */
+@media (min-width: 1025px) {
+  .join-form-col {
+    position: sticky;
+    top: 100px;
+  }
 }
 
 .profile-icon {
@@ -809,10 +804,11 @@
   .hero-side-panel { display: none; }
   .story-inner { grid-template-columns: 1fr; }
   .story-image { display: none; }
+  .join-inner { grid-template-columns: 1fr; gap: 40px; }
   .guest-inner { grid-template-columns: 1fr; }
   .guest-img-col { display: none; }
 
-  .brands-grid { grid-template-columns: 1fr; }
+  .brands-inner { grid-template-columns: 1fr; gap: 36px; }
 }
 
 /* Carrusel: los cortes deben coincidir EXACTAMENTE con getVisibleCount()
@@ -836,7 +832,6 @@
   .hero-main-panel { padding: 40px 28px; }
   .story-panel { padding: 40px 28px; }
   .join-panel { padding: 40px 28px; }
-  .profiles-grid { grid-template-columns: 1fr; }
   .guest-panel { padding: 40px 28px; }
   .brands-panel { padding: 40px 28px; }
   .waveform-glass { padding: 40px 28px; }
