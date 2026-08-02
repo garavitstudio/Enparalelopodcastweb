@@ -4,6 +4,7 @@
 > Sirve para dárselo a Claude Code y ejecutarlo por fases.
 >
 > Estado: pendiente de aprobar. Fase elegida: **Fase 1 (página + backend)**.
+> Base de datos: **la de Vercel** (Neon Postgres desde el Marketplace de Vercel).
 
 ---
 
@@ -183,26 +184,48 @@ contigo. Su recorrido cambia a partir del paso 2:
 
 ### 4.1 Piezas
 
-Decidido: **Supabase** como base de datos. Con un matiz importante de seguridad:
+Decidido: **la base de datos de Vercel**, contratada desde el propio panel de Vercel.
 
-> El navegador **nunca** habla con Supabase directamente. Habla con funciones serverless
-> tuyas en `/api/*` de Vercel, y son esas funciones las que hablan con Supabase y con
-> Claude.
+Un apunte para que no te pille de sorpresa al entrar: «Vercel Postgres» como producto propio
+ya no existe — desde diciembre de 2024 la base de datos de Vercel **es Neon**, que se
+contrata desde el Marketplace de Vercel con la facturación integrada en tu misma cuenta. Es
+Postgres del de siempre, soporta `pgvector` (que es lo único imprescindible aquí) y trae
+editor de tablas, cliente SQL, ramas de base de datos y recuperación a un punto en el
+tiempo. Para lo que necesitamos, va sobrado.
 
-Por qué: la clave de servicio de Supabase y la clave de Anthropic **jamás** pueden estar en
-el navegador — cualquiera abre el inspector, te coge la clave de Anthropic y te gasta la
-cuenta. Y así el `CSP` de `vercel.json` sigue con `connect-src 'self'`, sin abrir dominios
-externos. Supabase te da el Postgres, el `pgvector`, el panel para mirar los datos y las
-copias de seguridad; Vercel pone la puerta.
+Arquitectura:
 
 ```
 Navegador (/lelo)
    │  fetch a mismo origen
    ▼
 /api/*  (Vercel Functions)          ← aquí viven las claves
-   ├── Supabase (Postgres + pgvector)   datos y búsqueda
-   └── Claude API                        redacción de la respuesta
+   ├── Postgres de Vercel (Neon) + pgvector    datos y búsqueda
+   └── Claude API                              redacción de la respuesta
 ```
+
+El navegador **nunca** toca la base de datos: solo llama a funciones tuyas en `/api/*`, y
+son ellas las que hablan con Postgres y con Claude. La clave de Anthropic y la cadena de
+conexión jamás salen del servidor — si acaban en el navegador, cualquiera abre el inspector
+y te vacía la cuenta de Anthropic en una tarde. Así además el `CSP` de `vercel.json` sigue
+con `connect-src 'self'`, sin abrir ni un dominio externo.
+
+**Lo que ganas frente a Supabase:** un solo proveedor, una sola factura, un solo sitio donde
+mirar. Las variables de entorno las inyecta Vercel sola al conectar la base de datos, y cada
+rama de despliegue puede tener su propia rama de base de datos para probar sin tocar los
+datos buenos. La conexión es interna entre Vercel y su Marketplace, así que también es un
+salto de red menos por consulta.
+
+**Lo que pierdes, y cómo se cubre:** Supabase traía login de usuarios y almacenamiento de
+archivos ya hechos. Aquí no hay ninguno de los dos. En Fase 1 da igual — no hay usuarios que
+inicien sesión ni archivos que subir, las transcripciones entran por consola. En Fase 2, el
+login del panel se hace con contraseña y cookie firmada (media jornada, y era más o menos lo
+que íbamos a hacer igual), y para subir archivos desde el navegador se usa Vercel Blob o se
+procesa el archivo en memoria sin guardarlo.
+
+**Elige región europea** al crear la base de datos (Fráncfort o similar). Tu público es
+español y vas a guardar datos personales: tenerlos en la UE te ahorra medio capítulo de
+la política de privacidad.
 
 ### 4.2 Endpoints de la Fase 1
 
@@ -225,8 +248,10 @@ Navegador (/lelo)
 - **`leads`** — invitado/patrocinador: correo, nombre, texto, `lead_type`, estado.
 - **`usage_log`** — coste y tokens por consulta, para el tope de gasto.
 
-RLS activado en todas y **acceso solo con la service key desde `/api`**. Ninguna tabla
-expuesta con la clave pública.
+Nada de esto queda expuesto: la base de datos no es accesible desde internet con una clave
+pública, solo desde las funciones `/api/*`. Es una capa de riesgo menos que teníamos con
+Supabase (allí había que atar bien los permisos por tabla para que la clave pública no
+filtrara nada; aquí, sencillamente, no hay clave pública).
 
 ### 4.4 Cómo se consigue el minuto exacto (la parte crítica)
 
@@ -260,7 +285,8 @@ Coste estimado por consulta: unos **0,01–0,03 €**. Con tope diario configura
 
 ### 4.5 Que no te la líen
 
-- **Límite por IP**: p. ej. 5 consultas / 15 min, 20 / día. Almacenado en Supabase.
+- **Límite por IP**: p. ej. 5 consultas / 15 min, 20 / día. Contado en una tabla de la
+  propia base de datos (no hace falta Redis para este volumen).
 - **Tope de gasto diario**: al llegar, lelo dice que está durmiendo y ofrece la newsletter.
 - **Longitud máxima** de entrada y filtro de inyección de prompt (el texto del usuario va
   siempre delimitado y con instrucción explícita de tratarlo como contenido, no como orden).
@@ -302,7 +328,7 @@ nuestros episodios, no un profesional. Si lo estás pasando mal de verdad, habla
 
 ### Fase 1 — lo que has elegido
 1. Página `/lelo` completa, los 5 pasos, con datos simulados. *(Ya se puede enseñar.)*
-2. Proyecto Supabase + tablas + `pgvector`.
+2. Base de datos de Vercel (Neon) conectada al proyecto + tablas + `pgvector`.
 3. Script de ingesta de transcripciones por línea de comandos (`npm run ingest`).
 4. Funciones `/api/lelo/*` con búsqueda híbrida, verificación de citas y respuesta de Claude.
 5. Guardado de correos y leads en **tu** base de datos.
@@ -330,7 +356,7 @@ comunidad, invitados, patrocinadores y COMHIS hacia tu base de datos.
 
 Estás guardando cómo se siente la gente, con su correo al lado. Eso es serio:
 
-- Actualizar `privacidad.html`: nuevo tratamiento, Supabase y Anthropic como encargados,
+- Actualizar `privacidad.html`: nuevo tratamiento, Vercel/Neon y Anthropic como encargados,
   base legal (consentimiento), plazo de conservación, y que los textos se usan de forma
   agregada para decidir temas de episodios.
 - Consentimiento **separado**: uno para la newsletter, otro para el tratamiento del texto.
@@ -343,7 +369,9 @@ Estás guardando cómo se siente la gente, con su correo al lado. Eso es serio:
 ## 8. Lo que necesito de ti para arrancar
 
 **Cuentas y claves** (a variables de entorno en Vercel, nunca al repo):
-- [ ] Proyecto Supabase creado → URL, `anon key`, `service_role key`
+- [ ] Base de datos creada desde el panel de Vercel (Storage → Neon Postgres), **en región
+      europea**, y conectada al proyecto. Las variables (`DATABASE_URL` y compañía) las pone
+      Vercel sola; no hay que copiar nada a mano
 - [ ] Clave de API de Anthropic
 - [ ] Clave del proveedor de embeddings *(ver decisión abajo)*
 - [ ] Dominio definitivo, si ya lo tienes
