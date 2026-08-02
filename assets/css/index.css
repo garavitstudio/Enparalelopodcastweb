@@ -506,15 +506,35 @@
 .ticker-track {
   display: flex;
   align-items: center;
-  gap: 40px;
   white-space: nowrap;
-  animation: ticker 30s linear infinite;
   width: max-content;
+  animation: ticker 30s linear infinite;
+  will-change: transform;
+}
+
+/* Dos grupos idénticos: al desplazar exactamente el 50% del track, el
+   segundo cae justo donde estaba el primero y el bucle es invisible. */
+.ticker-group {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+/* El espaciado va como margen dentro del grupo (no como gap del track):
+   así el ancho del grupo YA incluye su hueco final y el 50% es exacto.
+   Con gap, el hueco entre grupos quedaba fuera del cálculo y provocaba
+   un salto de unos píxeles en cada vuelta. */
+.ticker-group > * {
+  margin-right: 40px;
 }
 
 @keyframes ticker {
   from { transform: translateX(0); }
-  to { transform: translateX(-33.333%); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track { animation: none; }
 }
 
 .ticker-item {

@@ -1,11 +1,70 @@
 // ===== TICKER BANNER =====
 
 (function () {
-  // Duplicate content for seamless loop
+  const SPEED = 55; // píxeles por segundo (misma velocidad en toda pantalla)
   const tracks = document.querySelectorAll('.ticker-track');
+  if (!tracks.length) return;
+
+  function build(track, original) {
+    // 1. Medir cuánto ocupa una copia del contenido
+    const probe = document.createElement('div');
+    probe.className = 'ticker-group';
+    probe.style.cssText = 'position:absolute;visibility:hidden;top:0;left:0;';
+    probe.innerHTML = original;
+    track.appendChild(probe);
+    const unitWidth = probe.getBoundingClientRect().width;
+    track.removeChild(probe);
+    if (!unitWidth) return 0;
+
+    // 2. Repetirla hasta cubrir la pantalla: si el grupo fuese más estrecho
+    //    que el viewport se vería un hueco al final de cada vuelta.
+    const repeats = Math.max(1, Math.ceil(window.innerWidth / unitWidth));
+    const groupHTML = original.repeat(repeats);
+
+    // 3. Dos grupos idénticos; el CSS desplaza justo el 50% (= un grupo).
+    track.innerHTML =
+      '<div class="ticker-group">' + groupHTML + '</div>' +
+      '<div class="ticker-group" aria-hidden="true">' + groupHTML + '</div>';
+
+    // 4. Duración proporcional al recorrido: la velocidad no depende de
+    //    cuántas repeticiones hayan hecho falta.
+    const groupWidth = track.firstElementChild.getBoundingClientRect().width;
+    if (groupWidth) {
+      track.style.animationDuration = (groupWidth / SPEED).toFixed(2) + 's';
+    }
+
+    // El banner es decorativo (aria-hidden) y su contenido está repetido:
+    // sus enlaces no deben recibir el foco del teclado (están en el pie).
+    track.querySelectorAll('a').forEach(a => a.setAttribute('tabindex', '-1'));
+
+    return unitWidth;
+  }
+
   tracks.forEach(track => {
-    const content = track.innerHTML;
-    track.innerHTML = content + content + content;
+    const original = track.innerHTML;
+    let measuredAt = build(track, original);
+
+    // Las medidas cambian cuando entran las fuentes autoalojadas: si el
+    // ancho real difiere, se reconstruye con los valores definitivos.
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        const probe = document.createElement('div');
+        probe.className = 'ticker-group';
+        probe.style.cssText = 'position:absolute;visibility:hidden;top:0;left:0;';
+        probe.innerHTML = original;
+        track.appendChild(probe);
+        const now = probe.getBoundingClientRect().width;
+        track.removeChild(probe);
+        if (Math.abs(now - measuredAt) > 1) measuredAt = build(track, original);
+      });
+    }
+
+    // Al girar el móvil o redimensionar puede hacer falta otra repetición
+    let t = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(t);
+      t = setTimeout(() => { measuredAt = build(track, original); }, 200);
+    });
   });
 })();
 
