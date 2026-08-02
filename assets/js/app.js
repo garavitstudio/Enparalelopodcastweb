@@ -85,7 +85,7 @@
     var S = 'fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"';
     var ICONS = {
       inicio: '<svg viewBox="0 0 24 24" ' + S + '><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg>',
-      episodios: '<svg viewBox="0 0 24 24" ' + S + '><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5z"/></svg>',
+      marcas: '<svg viewBox="0 0 24 24" ' + S + '><path d="M12 3.5 3.5 8v7.5L12 20.5l8.5-5V8z"/><path d="M3.5 8 12 12.5 20.5 8"/><path d="M12 12.5v8"/></svg>',
       nosotros: '<svg viewBox="0 0 24 24" ' + S + '><circle cx="8.5" cy="8" r="3.2"/><circle cx="16" cy="9.5" r="2.6"/><path d="M3.5 19c.6-3.2 2.6-5 5-5s4.4 1.8 5 5"/><path d="M14.5 14.6c2.2.3 3.9 1.9 4.4 4.4"/></svg>',
       comunidad: '<svg viewBox="0 0 24 24" ' + S + '><path d="M21 11.5a7.5 7.5 0 0 1-7.5 7.5c-1.2 0-2.4-.3-3.4-.8L5 19.5l1.4-4A7.5 7.5 0 1 1 21 11.5z"/></svg>',
       invitados: '<svg viewBox="0 0 24 24" ' + S + '><rect x="9" y="2.5" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/><path d="M8.5 21.5h7"/></svg>'
@@ -93,10 +93,10 @@
 
     var tabs = [
       { href: '/', label: 'Inicio', icon: ICONS.inicio },
-      { href: '/#episodios', label: 'Episodios', icon: ICONS.episodios },
       { href: '/nosotros', label: 'Nosotros', icon: ICONS.nosotros },
       { href: '/comunidad', label: 'Comunidad', icon: ICONS.comunidad },
-      { href: '/invitados', label: 'Invitados', icon: ICONS.invitados }
+      { href: '/invitados', label: 'Invitados', icon: ICONS.invitados },
+      { href: '/patrocinadores', label: 'Marcas', icon: ICONS.marcas }
     ];
 
     var path = (window.location.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/');

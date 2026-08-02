@@ -585,6 +585,42 @@
   object-fit: cover;
 }
 
+/* ========= MARCAS ========= */
+.brands-section {}
+
+.brands-panel {
+  padding: 60px 56px;
+  text-align: center;
+}
+
+.brands-header {
+  max-width: 640px;
+  margin: 0 auto 40px;
+}
+
+.brands-header h2 {
+  margin: 12px 0 20px;
+  background: linear-gradient(135deg, #fff 50%, var(--neon-yellow) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.brands-header .neon-divider { margin: 0 auto 24px; }
+
+.brands-header p {
+  color: rgba(240,240,240,0.75);
+  margin-bottom: 14px;
+}
+
+.brands-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  text-align: left;
+  margin-bottom: 40px;
+}
+
 /* ========= WAVEFORM ========= */
 .waveform-section {}
 
@@ -734,6 +770,8 @@
   .guest-inner { grid-template-columns: 1fr; }
   .guest-img-col { display: none; }
 
+  .brands-grid { grid-template-columns: 1fr; }
+
   .episode-card { flex: 0 0 calc(100% / 2); }
 }
 
@@ -744,6 +782,7 @@
   .story-panel { padding: 40px 28px; }
   .join-panel { padding: 40px 28px; }
   .guest-panel { padding: 40px 28px; }
+  .brands-panel { padding: 40px 28px; }
   .waveform-glass { padding: 40px 28px; }
 
   .episode-card { flex: 0 0 calc(100% / 1); }
