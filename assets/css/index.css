@@ -617,15 +617,22 @@
 }
 
 /* Dos columnas: el texto a la izquierda y las opciones a la derecha,
-   para que la sección no se alargue tanto en vertical. */
+   para que la sección no se alargue tanto en vertical.
+   El título ocupa su propia fila, así las tarjetas de la derecha
+   arrancan a la altura del texto (bajo la línea amarilla) sin
+   necesidad de márgenes fijos que se descuadren al redimensionar. */
 .brands-inner {
   display: grid;
   grid-template-columns: 1fr 0.85fr;
-  gap: 56px;
+  column-gap: 56px;
   align-items: start;
 }
 
-.brands-header h2 {
+.brands-head  { grid-column: 1; grid-row: 1; }
+.brands-body  { grid-column: 1; grid-row: 2; }
+.brands-aside { grid-column: 2; grid-row: 2; }
+
+.brands-head h2 {
   margin: 12px 0 20px;
   background: linear-gradient(135deg, #fff 50%, var(--neon-yellow) 100%);
   -webkit-background-clip: text;
@@ -633,9 +640,9 @@
   background-clip: text;
 }
 
-.brands-header .neon-divider { margin: 0 0 24px; }
+.brands-head .neon-divider { margin: 0 0 24px; }
 
-.brands-header p {
+.brands-body p {
   color: rgba(240,240,240,0.75);
   margin-bottom: 14px;
 }
@@ -812,7 +819,12 @@
   .guest-inner { grid-template-columns: 1fr; }
   .guest-img-col { display: none; }
 
-  .brands-inner { grid-template-columns: 1fr; gap: 36px; }
+  /* Una sola columna: cada bloque en su propia fila, en orden natural */
+  .brands-inner { grid-template-columns: 1fr; row-gap: 4px; }
+  .brands-head,
+  .brands-body,
+  .brands-aside { grid-column: 1; grid-row: auto; }
+  .brands-aside { margin-top: 28px; }
 }
 
 /* Carrusel: los cortes deben coincidir EXACTAMENTE con getVisibleCount()
