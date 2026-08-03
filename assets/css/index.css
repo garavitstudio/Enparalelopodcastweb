@@ -6,10 +6,6 @@
   display: flex;
   align-items: center;
   padding-top: 70px;
-  /* Ancla del indicador de scroll: sin esto se posicionaba respecto a
-     #app y acababa al final de la página, donde la barra de pestañas
-     del móvil se lo comía. */
-  position: relative;
 }
 
 .hero-grid {
@@ -122,6 +118,9 @@
 }
 
 /* SCROLL INDICATOR */
+/* Va anclado al final del contenido (#app), como cierre de la página.
+   Necesita z-index propio: los paneles de cristal van en la capa 10 y,
+   si se solapan, lo taparían. */
 .scroll-indicator {
   position: absolute;
   bottom: 32px;
@@ -131,6 +130,7 @@
   flex-direction: column;
   align-items: center;
   gap: 5px;
+  z-index: 11;
 }
 
 .scroll-indicator span {
@@ -855,9 +855,6 @@
 }
 
 @media (max-width: 768px) {
-  /* Por encima de la barra de pestañas flotante, que si no lo tapa */
-  .scroll-indicator { bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
-
   /* Una sola columna: cada bloque en su fila, en orden natural */
   .community-grid { grid-template-columns: 1fr; row-gap: 4px; }
   .community-head,
@@ -879,4 +876,9 @@
 @media (max-width: 480px) {
   .hero-cta-row { flex-direction: column; align-items: stretch; }
   .btn-primary, .btn-secondary { justify-content: center; }
+
+  /* Aquí el hueco bajo el último panel baja a 50px y los puntos (25px de
+     alto desde los 32px) se metían debajo del cristal: se bajan para que
+     quepan enteros en ese hueco. */
+  .scroll-indicator { bottom: 14px; }
 }
