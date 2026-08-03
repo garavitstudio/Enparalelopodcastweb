@@ -120,6 +120,8 @@
   var perchDone = false;
   var perchedSince = 0;
   var fly = null; // datos del vuelo hacia el posadero
+  var tunnelArmed = false; // el próximo aterrizaje atraviesa el suelo
+  var tunneling = false;   // está cayendo fuera de la pantalla
 
   var panelEls = [];
   var panelRects = []; // [{r, el}]
@@ -219,6 +221,10 @@
   function catchPanda() {
     clearTimeout(resumeTimer);
     if (mode === 'flyTo') fly = null;
+    // Si lo atrapan mientras se cuela por abajo, se cancela el efecto
+    // (si no, al soltarlo seguiría cayendo fuera de la pantalla).
+    if (tunneling) { tunneling = false; y = Math.min(y, groundTop - ph); }
+    tunnelArmed = false;
     mode = 'caught';
     vx = 0; vy = 0;
     setCaughtPose(true);
@@ -311,6 +317,44 @@
     if (e.target.tagName === 'A') releasePanda();
   });
 
+  // ---------- GUIÑOS: se cuela por abajo y provoca al visitante ----------
+
+  // Rompe el borde inferior y reaparece arriba. El primero llega pronto para
+  // que cualquiera que pase por la web lo vea al menos una vez; después se
+  // espacia para que siga siendo una sorpresa.
+  function scheduleTunnel(first) {
+    var delay = first ? 11000 + Math.random() * 7000   // 11–18 s
+                      : 32000 + Math.random() * 25000; // 32–57 s
+    setTimeout(function () {
+      if (mode === 'bounce') tunnelArmed = true;
+      else scheduleTunnel(); // ocupado (atrapado o posado): se reintenta
+    }, delay);
+  }
+
+  var TAUNTS = [
+    '¿No me puedes pillar o qué?',
+    '¿No me puedes pillar o qué?',
+    'A que no me coges…',
+    'Pssst… que me puedes agarrar.'
+  ];
+
+  // Provocación ocasional para que se entienda que se le puede atrapar
+  function scheduleTaunt(first) {
+    var delay = first ? 7000 + Math.random() * 6000    // 7–13 s
+                      : 20000 + Math.random() * 18000; // 20–38 s
+    setTimeout(function () {
+      if (mode === 'bounce' && !bubble.classList.contains('show') && !tunneling) {
+        showBubble(TAUNTS[Math.floor(Math.random() * TAUNTS.length)], 3200);
+      }
+      scheduleTaunt();
+    }, delay);
+  }
+
+  if (!reduceMotion) {
+    scheduleTunnel(true);
+    scheduleTaunt(true);
+  }
+
   // ---------- SECCIÓN DE AUDIO: posarse ----------
   var wfSection = document.getElementById('waveform-section');
   var wfPanel = wfSection ? (wfSection.querySelector('.waveform-glass') || wfSection) : null;
@@ -370,13 +414,32 @@
       else if (x + pw >= W) { x = W - pw; vx = -Math.abs(vx); pulse('stretch'); }
     }
 
-    // Techo
-    if (y <= 0) { y = 0; vy = Math.abs(vy) * 0.6; }
+    if (tunneling) {
+      // Se ha colado por abajo: sigue cayendo hasta desaparecer y entra
+      // de nuevo por arriba, como si la pantalla diera la vuelta.
+      if (y > H + 10) {
+        y = -ph;
+        vy = Math.max(vy, 3);
+        tunneling = false;
+        scheduleTunnel();
+      }
+    } else {
+      // Techo
+      if (y <= 0) { y = 0; vy = Math.abs(vy) * 0.6; }
 
-    // Suelo (en móvil, la barra de pestañas): aterriza y vuelve a saltar
-    if (y + ph >= groundTop) {
-      y = groundTop - ph;
-      landAndJump();
+      // Suelo (en móvil, la barra de pestañas): aterriza y vuelve a saltar
+      if (y + ph >= groundTop) {
+        if (tunnelArmed) {
+          // En vez de rebotar, rompe el límite de abajo
+          tunnelArmed = false;
+          tunneling = true;
+          vy = Math.max(vy, 6);
+          hideBubble();
+        } else {
+          y = groundTop - ph;
+          landAndJump();
+        }
+      }
     }
 
     // Paneles de cristal: se impulsa solo con los que ahora mismo "elige"
@@ -388,7 +451,7 @@
       refreshGround();
       lastRectRefresh = now;
     }
-    if (!mobileMq.matches) {
+    if (!mobileMq.matches && !tunneling) {
       for (var i = 0; i < panelRects.length; i++) {
         var r = panelRects[i].r;
         if (x + pw < r.left || x > r.right || y + ph < r.top || y > r.bottom) continue;
