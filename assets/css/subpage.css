@@ -199,6 +199,29 @@
   grid-template-columns: repeat(2, 1fr);
 }
 
+/* Texto de entrada de una sección: párrafos cortos y bien aireados,
+   para que no se lea como un bloque compacto. */
+.lead-copy {
+  max-width: 760px;
+  margin-bottom: 8px;
+}
+
+.lead-copy p {
+  color: rgba(240, 240, 240, 0.75);
+  margin-bottom: 20px;
+}
+
+.lead-copy p:last-child { margin-bottom: 0; }
+
+.lead-copy a {
+  color: var(--neon-yellow);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s ease;
+}
+
+.lead-copy a:hover { opacity: 0.8; }
+
 /* ===== QUÉ PASA DESPUÉS DE PUBLICAR (Invitados) =====
    Datos en cifras para que la información no sea un muro de texto. */
 .dist-grid {
