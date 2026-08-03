@@ -97,10 +97,91 @@
 #lelo-panda.caught .p-mouth-smile,
 #lelo-panda.caught .p-temples-flat { opacity: 0; }
 
+/* ===== CAJA DE CASTIGO =====
+   Va en dos piezas: el fondo detrás del panda y el frente delante, así el
+   panda queda metido dentro de la caja y no pegado encima. */
+.lelo-box {
+  position: fixed;
+  right: 28px;
+  bottom: 24px;
+  width: 132px;
+  opacity: 0;
+  transform: translateY(14px) scale(0.92);
+  transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
+  pointer-events: none;
+}
+
+.lelo-box.show { opacity: 1; transform: none; }
+
+/* Resaltada mientras arrastras el panda por encima */
+.lelo-box.hot { transform: scale(1.06); }
+.lelo-box.hot .lelo-box-front { filter: drop-shadow(0 0 12px rgba(255, 237, 74, 0.75)); }
+
+.lelo-box-back,
+.lelo-box-front {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.lelo-box-back { z-index: 19998; }
+.lelo-box-front { z-index: 20002; }
+
+.lelo-box svg { width: 100%; height: auto; display: block; }
+
+/* El panda castigado: quieto, sin sombra de salto */
+#lelo-panda.punished { cursor: grab; }
+
+/* Pose de enfado: brazos cruzados y cara de arrebato */
+#lelo-panda .p-arms-crossed,
+#lelo-panda .p-eyes-angry,
+#lelo-panda .p-brows-angry,
+#lelo-panda .p-mouth-angry { opacity: 0; }
+
+#lelo-panda.punished .p-arm-l,
+#lelo-panda.punished .p-arm-r,
+#lelo-panda.punished .p-mouth-smile,
+#lelo-panda.punished .p-mouth-flat,
+#lelo-panda.punished .p-eyes,
+#lelo-panda.punished .p-brows,
+#lelo-panda.punished .p-temples-flat { opacity: 0; }
+
+#lelo-panda.punished .p-arms-crossed,
+#lelo-panda.punished .p-eyes-angry,
+#lelo-panda.punished .p-brows-angry,
+#lelo-panda.punished .p-mouth-angry,
+#lelo-panda.punished .p-temples-up { opacity: 1; }
+
+/* Gafas caídas, como cuando lo atrapas: así se le ve la cara */
+#lelo-panda.punished .p-glasses { transform: translateY(36px); }
+
+/* Pequeño arrebato al entrar en la caja */
+#lelo-panda.tantrum .p-sprite { animation: leloTantrum 0.42s ease-in-out 2; }
+
+@keyframes leloTantrum {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-7deg); }
+  75% { transform: rotate(7deg); }
+}
+
+@media (max-width: 768px) {
+  /* Justo encima del menú, a la derecha y sin robar espacio */
+  .lelo-box {
+    right: 14px;
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+    width: 92px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #lelo-panda.tantrum .p-sprite { animation: none; }
+}
+
 /* ===== Bocadillo de cómic ===== */
 .lelo-bubble {
   position: fixed;
-  z-index: 20001;
+  z-index: 20005; /* por encima del frente de la caja */
   max-width: 240px;
   background: #fdfcf7;
   color: #141414;

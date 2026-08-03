@@ -24,6 +24,12 @@
     // brazos
     '<path class="p-arm-l" d="M78 154 Q54 174 57 206 Q58 219 71 217 Q83 213 83 194 L86 162 Z" fill="#2b2b2e"/>' +
     '<path class="p-arm-r" d="M170 154 Q194 174 191 206 Q190 219 177 217 Q165 213 165 194 L162 162 Z" fill="#2b2b2e"/>' +
+    // brazos cruzados (pose de castigo), en tonos algo más claros para
+    // que se distingan de la camiseta negra
+    '<g class="p-arms-crossed">' +
+    '<path d="M74 174 Q104 166 150 182 Q157 189 150 197 Q104 185 74 193 Q67 185 74 174 Z" fill="#3d3d43"/>' +
+    '<path d="M174 166 Q144 158 98 174 Q91 181 98 189 Q144 177 174 185 Q181 177 174 166 Z" fill="#4a4a51"/>' +
+    '</g>' +
     // cabeza
     '<g>' +
     '<circle cx="56" cy="40" r="25" fill="#2b2b2e"/>' +
@@ -49,10 +55,22 @@
     '<path d="M74 76 Q88 72 102 76" stroke="#14120f" stroke-width="7"/>' +
     '<path d="M142 64 Q162 50 182 62" stroke="#14120f" stroke-width="8"/>' +
     '</g>' +
+    // cara de enfado (pose de castigo): ojos entrecerrados y cejas en V
+    '<g class="p-eyes-angry" stroke="none">' +
+    '<ellipse cx="88" cy="93" rx="12" ry="9" fill="#f5f1e8"/>' +
+    '<ellipse cx="160" cy="93" rx="12" ry="9" fill="#f5f1e8"/>' +
+    '<circle cx="88" cy="94" r="5.5" fill="#1c1c20"/>' +
+    '<circle cx="160" cy="94" r="5.5" fill="#1c1c20"/>' +
+    '</g>' +
+    '<g class="p-brows-angry" fill="none">' +
+    '<path d="M66 70 L106 84" stroke="#14120f" stroke-width="9"/>' +
+    '<path d="M182 70 L142 84" stroke="#14120f" stroke-width="9"/>' +
+    '</g>' +
     // nariz y bocas
     '<path d="M114 117 Q124 111 134 117 Q130 128 124 128 Q118 128 114 117 Z" fill="#14120f" stroke="none"/>' +
     '<path class="p-mouth-smile" d="M112 140 Q124 148 136 140" fill="none"/>' +
     '<path class="p-mouth-flat" d="M112 143 Q124 147 138 137" fill="none"/>' +
+    '<path class="p-mouth-angry" d="M110 148 Q124 138 138 148" fill="none"/>' +
     // gafas (grupo desplazable) + patillas de cada pose
     '<g class="p-temples-flat">' +
     '<path d="M62 86 L36 78" stroke="#c79a62" stroke-width="6"/>' +
@@ -77,6 +95,16 @@
     '</g>' +
     '</svg>';
 
+  // Refunfuños desde la caja
+  var MSG_ANGRY = [
+    'Muy bien. Luego no me vengas pidiendo nada.',
+    'Aquí me quedo, ¿eh? Tú te lo pierdes.',
+    'Yo solo quería tu correo…',
+    '¿Contento? Pues ya está.',
+    'Sácame cuando se te pase.',
+    'Con lo bien que botaba yo…'
+  ];
+
   var MSG_NEWSLETTER =
     '¿Qué haces, que no nos has dejado tu correo para la newsletter? ' +
     'Tú sabrás lo que te pierdes…';
@@ -93,6 +121,32 @@
   var bubble = document.createElement('div');
   bubble.className = 'lelo-bubble';
 
+  // ---------- CAJA DE CASTIGO ----------
+  // Dos piezas para que el panda quede DENTRO: el fondo se pinta detrás
+  // de él y el frente por delante.
+  var BOX_BACK =
+    '<svg viewBox="0 0 132 150" aria-hidden="true">' +
+    '<path d="M14 44 L40 16 L92 16 L118 44 Z" fill="#a97c4f" stroke="#7a5733" stroke-width="4" stroke-linejoin="round"/>' +
+    '</svg>';
+
+  var BOX_FRONT =
+    '<svg viewBox="0 0 132 150" aria-hidden="true">' +
+    '<path d="M10 44 L122 44 L114 142 L18 142 Z" fill="#c69a68" stroke="#7a5733" stroke-width="4" stroke-linejoin="round"/>' +
+    '<path d="M10 44 L36 68 L96 68 L122 44 Z" fill="#b3854f" stroke="#7a5733" stroke-width="4" stroke-linejoin="round"/>' +
+    '<rect x="58" y="44" width="16" height="98" fill="#d8b98c" opacity="0.5"/>' +
+    '<rect x="24" y="84" width="84" height="42" rx="4" fill="#f0e5d0" stroke="#7a5733" stroke-width="3"/>' +
+    '<text x="66" y="101" text-anchor="middle" font-family="Space Grotesk, Arial, sans-serif" font-weight="700" font-size="16" fill="#3a2a17">LELO</text>' +
+    '<text x="66" y="118" text-anchor="middle" font-family="Space Grotesk, Arial, sans-serif" font-weight="700" font-size="12" fill="#6b4f2c" letter-spacing="1">CASTIGO</text>' +
+    '</svg>';
+
+  var box = document.createElement('div');
+  box.className = 'lelo-box';
+  box.setAttribute('aria-hidden', 'true');
+  box.innerHTML =
+    '<div class="lelo-box-back">' + BOX_BACK + '</div>' +
+    '<div class="lelo-box-front">' + BOX_FRONT + '</div>';
+
+  document.body.appendChild(box);
   document.body.appendChild(el);
   document.body.appendChild(bubble);
 
@@ -124,6 +178,7 @@
   var tunneling = false;   // está cayendo fuera de la pantalla
   var landings = [];       // aterrizajes recientes, para detectar atascos
   var panelsMutedUntil = 0;
+  var grumbleTimer = null; // refunfuños mientras está castigado
 
   var panelEls = [];
   var panelRects = []; // [{r, el}]
@@ -218,6 +273,65 @@
     bubble.style.top = by + 'px';
   }
 
+  // ---------- CASTIGO ----------
+  function boxRect() {
+    return box.querySelector('.lelo-box-front').getBoundingClientRect();
+  }
+
+  // ¿El panda está sobre la caja ahora mismo?
+  function overBox() {
+    var r = boxRect();
+    var cx = x + pw / 2;
+    var cy = y + ph / 2;
+    return cx > r.left - 30 && cx < r.right + 30 && cy > r.top - 70 && cy < r.bottom + 30;
+  }
+
+  // Lo coloca metido en la caja: asoma de la cintura para arriba
+  function seatInBox() {
+    var r = boxRect();
+    x = r.left + (r.width - pw) / 2;
+    y = r.top - ph * 0.52;
+    el.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0)';
+  }
+
+  function punish() {
+    clearTimeout(resumeTimer);
+    mode = 'punished';
+    vx = 0; vy = 0;
+    tunneling = false;
+    tunnelArmed = false;
+    fly = null;
+    setCaughtPose(false);
+    el.classList.add('punished');
+    el.classList.remove('airborne', 'face-left');
+    box.classList.add('show');
+    box.classList.remove('hot');
+    seatInBox();
+
+    // Pataleta breve al caer dentro
+    el.classList.add('tantrum');
+    setTimeout(function () { el.classList.remove('tantrum'); }, 900);
+
+    showBubble('¡Oye! ¿En serio?', 2600);
+    scheduleGrumble(true);
+  }
+
+  function scheduleGrumble(first) {
+    clearTimeout(grumbleTimer);
+    var delay = first ? 5000 + Math.random() * 3000 : 9000 + Math.random() * 9000;
+    grumbleTimer = setTimeout(function () {
+      if (mode !== 'punished') return;
+      showBubble(MSG_ANGRY[Math.floor(Math.random() * MSG_ANGRY.length)], 4200);
+      scheduleGrumble();
+    }, delay);
+  }
+
+  function freeFromBox() {
+    clearTimeout(grumbleTimer);
+    el.classList.remove('punished', 'tantrum');
+    box.classList.remove('show', 'hot');
+  }
+
   // ---------- POSES ----------
   function setCaughtPose(on) {
     el.classList.toggle('caught', on);
@@ -239,6 +353,7 @@
 
   function catchPanda() {
     clearTimeout(resumeTimer);
+    clearTimeout(grumbleTimer);
     if (mode === 'flyTo') fly = null;
     // Si lo atrapan mientras se cuela por abajo, se cancela el efecto
     // (si no, al soltarlo seguiría cayendo fuera de la pantalla).
@@ -256,6 +371,8 @@
   function releasePanda(throwVx, throwVy) {
     if (mode !== 'caught') return;
     setCaughtPose(false);
+    el.classList.remove('punished', 'tantrum');
+    box.classList.remove('show', 'hot');
     if (reduceMotion) { hideBubble(); mode = 'parked'; return; }
     mode = 'bounce';
     if (typeof throwVx === 'number' && (Math.abs(throwVx) > 1 || Math.abs(throwVy) > 1)) {
@@ -272,7 +389,9 @@
   el.addEventListener('pointerdown', function (e) {
     e.preventDefault();
     try { el.setPointerCapture(e.pointerId); } catch (err) {}
+    if (mode === 'punished') freeFromBox(); // sacarlo de la caja
     catchPanda();
+    box.classList.add('show'); // al arrastrar se descubre dónde soltarlo
     drag = {
       id: e.pointerId,
       offX: e.clientX - x,
@@ -295,6 +414,7 @@
     if (!drag.moved && Math.hypot(e.clientX - drag.startX, e.clientY - drag.startY) > 8) {
       drag.moved = true;
     }
+    box.classList.toggle('hot', overBox()); // resalta si va a caer dentro
     // Velocidad de la mano (suavizada) para poder lanzarlo
     var t = performance.now();
     var dt = Math.max(t - drag.lastT, 1);
@@ -310,8 +430,17 @@
     var wasDrag = drag.moved;
     var tvx = drag.vx;
     var tvy = drag.vy;
+    var onBox = overBox();
     drag = null;
     clearTimeout(resumeTimer);
+
+    if (onBox) {
+      // Soltado sobre la caja: a pensar en lo que ha hecho
+      punish();
+      return;
+    }
+
+    box.classList.remove('show', 'hot');
     if (wasDrag) {
       // Lo has movido: retoma los saltos justo donde lo dejas
       releasePanda(tvx, tvy);
@@ -326,10 +455,20 @@
   el.addEventListener('keydown', function (e) {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      if (mode === 'caught') releasePanda();
+      if (mode === 'punished') { freeFromBox(); releaseFromPunish(); }
+      else if (mode === 'caught') releasePanda();
       else { catchPanda(); resumeTimer = setTimeout(releasePanda, 5000); }
     }
   });
+
+  // Vuelve a botar tras salir de la caja
+  function releaseFromPunish() {
+    hideBubble();
+    if (reduceMotion) { park(); return; }
+    mode = 'bounce';
+    vy = -8;
+    vx = (Math.random() < 0.5 ? -1 : 1) * 2.6;
+  }
 
   // Si pulsa el enlace del bocadillo, soltamos al panda
   bubble.addEventListener('click', function (e) {
@@ -571,15 +710,23 @@
     if (modal && modal.classList.contains('open')) {
       el.style.visibility = 'hidden';
       bubble.style.visibility = 'hidden';
+      box.style.visibility = 'hidden';
       requestAnimationFrame(frame);
       return;
     }
     el.style.visibility = '';
     bubble.style.visibility = '';
+    box.style.visibility = '';
 
     if (mode === 'bounce') bouncePhysics();
     else if (mode === 'flyTo' && fly) flyPhysics(now);
     else if (mode === 'perched') perchedPhysics(now);
+    else if (mode === 'punished') {
+      // Se mantiene metido en la caja pase lo que pase (scroll, giro…)
+      var br = boxRect();
+      x = br.left + (br.width - pw) / 2;
+      y = br.top - ph * 0.52;
+    }
 
     var tilt = mode === 'bounce' ? Math.max(-8, Math.min(8, vx * 2)) : 0;
     el.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) rotate(' + tilt + 'deg)';
