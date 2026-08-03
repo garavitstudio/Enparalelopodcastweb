@@ -2,7 +2,7 @@
 
 Sitio web oficial de **EN PARALELO** — el podcast donde las conversaciones van más allá.
 
-**Producción:** https://enparalelopodcastweb.vercel.app/
+**Producción:** https://enparalelopodcast.com/
 
 ## Descripción
 
@@ -73,7 +73,7 @@ npx vercel --prod   # deploy manual alternativo
 - Metaetiquetas canónicas, Open Graph y Twitter Card en todas las páginas.
 - Datos estructurados JSON-LD (`PodcastSeries`, `PodcastEpisode`, `AboutPage`, `BreadcrumbList`).
 - `sitemap.xml`, `robots.txt` (abierto a rastreadores de IA) y `llms.txt`.
-- Al conectar el dominio definitivo, buscar y reemplazar `enparalelopodcastweb.vercel.app` por el nuevo dominio en todos los archivos.
+- Al conectar el dominio definitivo, buscar y reemplazar `enparalelopodcast.com` por el nuevo dominio en todos los archivos.
 
 ## Escucha el podcast
 

@@ -4,11 +4,11 @@
 
 ## Páginas principales
 
-- [Inicio](https://enparalelopodcastweb.vercel.app/): presentación del podcast, episodios destacados y acceso a la comunidad.
-- [Nosotros](https://enparalelopodcastweb.vercel.app/nosotros): la historia de Enara y José Luis y por qué nació En Paralelo.
-- [Comunidad](https://enparalelopodcastweb.vercel.app/comunidad): comunidad de oyentes; suscripción por nombre y email.
-- [Invitados](https://enparalelopodcastweb.vercel.app/invitados): cómo aplicar para ser invitado del podcast (personas con un camino vivido, no hace falta ser famoso).
-- [Marcas](https://enparalelopodcastweb.vercel.app/patrocinadores): oportunidades de patrocinio y colaboración con marcas (mención en episodio, presencia en redes o proyectos a medida).
+- [Inicio](https://enparalelopodcast.com/): presentación del podcast, episodios destacados y acceso a la comunidad.
+- [Nosotros](https://enparalelopodcast.com/nosotros): la historia de Enara y José Luis y por qué nació En Paralelo.
+- [Comunidad](https://enparalelopodcast.com/comunidad): comunidad de oyentes; suscripción por nombre y email.
+- [Invitados](https://enparalelopodcast.com/invitados): cómo aplicar para ser invitado del podcast (personas con un camino vivido, no hace falta ser famoso).
+- [Marcas](https://enparalelopodcast.com/patrocinadores): oportunidades de patrocinio y colaboración con marcas (mención en episodio, presencia en redes o proyectos a medida).
 
 ## Dónde escuchar
 

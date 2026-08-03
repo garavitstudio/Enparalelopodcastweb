@@ -5,4 +5,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://enparalelopodcastweb.vercel.app/sitemap.xml
+Sitemap: https://enparalelopodcast.com/sitemap.xml
