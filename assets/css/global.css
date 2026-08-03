@@ -196,6 +196,25 @@ img {
   margin-bottom: 20px;
 }
 
+/* ===== ICONOS PROPIOS =====
+   Sustituyen a los emoji: línea fina, mismo grosor y color heredado, para
+   que se integren con el resto en vez de destacar como pegatinas. */
+.ui-icon {
+  width: 1em;
+  height: 1em;
+  display: block;
+  flex-shrink: 0;
+  color: var(--neon-yellow);
+  opacity: 0.92;
+}
+
+/* Cuando acompaña a un texto en la misma línea */
+.ui-icon--inline {
+  display: inline-block;
+  vertical-align: -0.16em;
+  margin-right: 0.45em;
+}
+
 /* ===== FORMS ===== */
 .form-group {
   display: flex;

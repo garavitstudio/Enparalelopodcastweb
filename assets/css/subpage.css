@@ -130,6 +130,14 @@
   margin-bottom: 14px;
 }
 
+/* Cuando la cifra del dato es un icono, no hereda el cuerpo enorme
+   de las cifras: se fija a un tamaño propio y centrado. */
+.stat-number .ui-icon {
+  width: 2.1rem;
+  height: 2.1rem;
+  margin: 0.3rem auto;
+}
+
 .col-card h4 {
   font-size: 0.95rem;
   margin-bottom: 8px;

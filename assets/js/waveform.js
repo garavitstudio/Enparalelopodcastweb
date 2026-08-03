@@ -6,6 +6,13 @@
   const btn = document.getElementById('waveform-btn');
   const audioSrc = 'assets/audio/clip.m4a';
 
+  // Iconos propios en lugar de los símbolos de texto
+  const ICO = 'class="ui-icon ui-icon--inline" viewBox="0 0 24 24" fill="none" ' +
+    'stroke="currentColor" stroke-width="1.7" stroke-linecap="round" ' +
+    'stroke-linejoin="round" aria-hidden="true"';
+  const BTN_PLAY = '<svg ' + ICO + '><path d="M8.4 5.6 18.4 12 8.4 18.4z"/></svg>Reproducir';
+  const BTN_PAUSA = '<svg ' + ICO + '><path d="M9.2 5.8v12.4"/><path d="M14.8 5.8v12.4"/></svg>Pausar';
+
   if (!canvas || !section) return;
 
   const ctx = canvas.getContext('2d');
@@ -126,7 +133,7 @@
 
     audio.addEventListener('ended', () => {
       isPlaying = false;
-      if (btn) btn.textContent = '▶ Reproducir';
+      if (btn) btn.innerHTML = BTN_PLAY;
       cancelAnimationFrame(animFrame);
       drawIdleWave();
     });
@@ -138,7 +145,7 @@
     if (isPlaying) {
       audio.pause();
       isPlaying = false;
-      if (btn) btn.textContent = '▶ Reproducir';
+      if (btn) btn.innerHTML = BTN_PLAY;
       cancelAnimationFrame(animFrame);
       drawIdleWave();
     } else {
@@ -146,13 +153,13 @@
       // (el autoplay puede estar bloqueado hasta que el usuario interactúe)
       audio.play().then(() => {
         isPlaying = true;
-        if (btn) btn.textContent = '⏸ Pausar';
+        if (btn) btn.innerHTML = BTN_PAUSA;
         if (audioCtx.state === 'suspended') audioCtx.resume();
         cancelAnimationFrame(animFrame);
         drawActiveWave();
       }).catch(() => {
         isPlaying = false;
-        if (btn) btn.textContent = '▶ Reproducir';
+        if (btn) btn.innerHTML = BTN_PLAY;
       });
     }
   }
