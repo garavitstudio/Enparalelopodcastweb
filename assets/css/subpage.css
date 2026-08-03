@@ -122,16 +122,22 @@
   color: var(--text-muted);
 }
 
-/* Bloque de presentación: fotos y texto centrados entre sí */
-.story-block--hosts { align-items: center; }
+/* Bloques con foto al lado: imagen y texto centrados entre sí, para que
+   la foto no quede colgando arriba cuando el texto es más largo. */
+.story-block--hosts,
+.story-block--middle { align-items: center; }
 
 @media (max-width: 900px) {
   /* La columna de imágenes se oculta en móvil por ser decorativa, pero
-     estos retratos son el contenido de la página: se mantienen, uno al
-     lado del otro y encima del texto. */
+     estas fotos son contenido de la página: se mantienen. */
   .story-block--hosts .story-img-col {
     display: block;
     margin-bottom: 30px;
+  }
+  .story-block--middle .story-img-col {
+    display: block;
+    margin-top: 28px;
+    max-width: 360px;
   }
   .hosts { flex-direction: row; justify-content: center; gap: 22px; }
   .host { max-width: 150px; }
