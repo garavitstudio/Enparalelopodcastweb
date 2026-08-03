@@ -119,6 +119,12 @@
   margin-top: 32px;
 }
 
+/* Variante de cuatro tarjetas: en 2x2, que con textos largos se lee
+   mejor que cuatro columnas estrechas. */
+.three-cols--four {
+  grid-template-columns: repeat(2, 1fr);
+}
+
 .col-card {
   padding: 28px 24px;
   border-radius: var(--radius-md) !important;
