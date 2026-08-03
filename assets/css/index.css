@@ -6,6 +6,10 @@
   display: flex;
   align-items: center;
   padding-top: 70px;
+  /* Ancla del indicador de scroll: sin esto se posicionaba respecto a
+     #app y acababa al final de la página, donde la barra de pestañas
+     del móvil se lo comía. */
+  position: relative;
 }
 
 .hero-grid {
@@ -851,6 +855,9 @@
 }
 
 @media (max-width: 768px) {
+  /* Por encima de la barra de pestañas flotante, que si no lo tapa */
+  .scroll-indicator { bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
+
   /* Una sola columna: cada bloque en su fila, en orden natural */
   .community-grid { grid-template-columns: 1fr; row-gap: 4px; }
   .community-head,
