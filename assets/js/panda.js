@@ -21,6 +21,9 @@
     '<path d="M78 188 Q72 258 124 260 Q176 258 170 188 Z" fill="#f5f1e8"/>' +
     // camiseta
     '<path d="M72 158 Q70 146 84 142 L164 142 Q178 146 176 158 L172 212 Q124 222 76 212 Z" fill="#191919"/>' +
+    // El nombre va aquí, antes que los brazos: así al cruzarlos quedan por
+    // delante y lo tapan, como pasaría de verdad.
+    '<text class="p-tee" x="124" y="186" text-anchor="middle" font-family="Outfit, Arial, sans-serif" font-weight="700" font-size="28" fill="#f2ecc9" stroke="none">lelo</text>' +
     // brazos
     '<path class="p-arm-l" d="M78 154 Q54 174 57 206 Q58 219 71 217 Q83 213 83 194 L86 162 Z" fill="#2b2b2e"/>' +
     '<path class="p-arm-r" d="M170 154 Q194 174 191 206 Q190 219 177 217 Q165 213 165 194 L162 162 Z" fill="#2b2b2e"/>' +
@@ -91,7 +94,6 @@
     '</g>' +
     '</g>' +
     '</g>' +
-    '<text class="p-tee" x="124" y="186" text-anchor="middle" font-family="Outfit, Arial, sans-serif" font-weight="700" font-size="28" fill="#f2ecc9" stroke="none">lelo</text>' +
     '</g>' +
     '</svg>';
 
