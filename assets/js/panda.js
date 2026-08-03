@@ -122,6 +122,8 @@
   var fly = null; // datos del vuelo hacia el posadero
   var tunnelArmed = false; // el próximo aterrizaje atraviesa el suelo
   var tunneling = false;   // está cayendo fuera de la pantalla
+  var landings = [];       // aterrizajes recientes, para detectar atascos
+  var panelsMutedUntil = 0;
 
   var panelEls = [];
   var panelRects = []; // [{r, el}]
@@ -152,8 +154,18 @@
     return s.solid;
   }
 
+  // Solo los paneles de primer nivel. Muchos cristales viven dentro de otro
+  // (tarjetas dentro de un panel grande) y, al decidir cada uno su solidez
+  // por separado, el panda podía quedar encajado rebotando entre el de fuera
+  // y el de dentro.
   function refreshPanels() {
-    panelEls = Array.prototype.slice.call(document.querySelectorAll('.glass-panel'));
+    var all = Array.prototype.slice.call(document.querySelectorAll('.glass-panel'));
+    panelEls = all.filter(function (candidate) {
+      for (var i = 0; i < all.length; i++) {
+        if (all[i] !== candidate && all[i].contains(candidate)) return false;
+      }
+      return true;
+    });
   }
 
   function refreshRects() {
@@ -185,6 +197,13 @@
 
   function placeBubble() {
     if (!bubble.classList.contains('show')) return;
+
+    // Si el panda asoma fuera de la pantalla (cruzando de un lado a otro),
+    // el bocadillo no puede seguirlo y se quedaría clavado en el borde:
+    // mejor retirarlo. Se respeta cuando está atrapado o posado, que ahí
+    // el panda no se mueve.
+    if (mode === 'bounce' && (x < 4 || x + pw > W - 4)) { hideBubble(); return; }
+
     var bw = bubble.offsetWidth;
     var bh = bubble.offsetHeight;
     var bx = Math.min(Math.max(x + pw * 0.55, 8), W - bw - 8);
@@ -407,8 +426,8 @@
     // - PC: rebota contra ellos
     // - móvil: efecto túnel, sale por un lado y entra por el otro
     if (mobileMq.matches) {
-      if (x >= W) x = -pw + 2;
-      else if (x + pw <= 0) x = W - 2;
+      if (x >= W) { x = -pw + 2; hideBubble(); }
+      else if (x + pw <= 0) { x = W - 2; hideBubble(); }
     } else {
       if (x <= 0) { x = 0; vx = Math.abs(vx); pulse('stretch'); }
       else if (x + pw >= W) { x = W - pw; vx = -Math.abs(vx); pulse('stretch'); }
@@ -451,7 +470,7 @@
       refreshGround();
       lastRectRefresh = now;
     }
-    if (!mobileMq.matches && !tunneling) {
+    if (!mobileMq.matches && !tunneling && now >= panelsMutedUntil) {
       for (var i = 0; i < panelRects.length; i++) {
         var r = panelRects[i].r;
         if (x + pw < r.left || x > r.right || y + ph < r.top || y > r.bottom) continue;
@@ -471,6 +490,10 @@
           y = r.top - ph;
           landAndJump();
         } else if (m === overlapBottom && vy < 0) { // golpea por debajo
+          // Si empujarlo hacia abajo lo dejaría sin hueco hasta el suelo,
+          // se le deja pasar: era la causa de los botes rápidos encadenados
+          // (bajaba, tocaba suelo, saltaba, volvía a golpear, sin fin).
+          if (r.bottom + ph > groundTop - 4) continue;
           y = r.bottom;
           vy = Math.abs(vy) * 0.5;
         } else if (m === overlapLeft && vx > 0) {   // lateral izquierdo del panel
@@ -481,7 +504,13 @@
           x = r.right;
           vx = Math.abs(vx);
           pulse('stretch');
+        } else {
+          continue; // no procede corregir con este panel
         }
+
+        // Una colisión por fotograma: resolver dos a la vez producía
+        // correcciones contradictorias y el rebote se veía atascado.
+        break;
       }
     }
 
@@ -496,6 +525,21 @@
     vy = -(6.5 + Math.random() * 3);            // impulso del salto
     if (Math.random() < 0.35) {                  // a veces cambia de rumbo
       vx = (Math.random() < 0.5 ? -1 : 1) * (1.8 + Math.random() * 1.8);
+    }
+    noteLanding(performance.now());
+  }
+
+  // Red de seguridad: si encadena aterrizajes en muy poco tiempo es que se
+  // ha quedado encajado en algún hueco. Se ignoran los paneles un momento y
+  // se le da un impulso franco para que salga sin que parezca un fallo.
+  function noteLanding(now) {
+    landings.push(now);
+    while (landings.length && now - landings[0] > 1200) landings.shift();
+    if (landings.length >= 4) {
+      landings.length = 0;
+      panelsMutedUntil = now + 1800;
+      vy = -9.5;
+      vx = (vx >= 0 ? 1 : -1) * 3.4;
     }
   }
 
