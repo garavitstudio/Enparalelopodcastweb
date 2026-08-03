@@ -139,14 +139,30 @@
     '<text x="66" y="118" text-anchor="middle" font-family="Space Grotesk, Arial, sans-serif" font-weight="700" font-size="12" fill="#6b4f2c" letter-spacing="1">CASTIGO</text>' +
     '</svg>';
 
-  var box = document.createElement('div');
-  box.className = 'lelo-box';
-  box.setAttribute('aria-hidden', 'true');
-  box.innerHTML =
-    '<div class="lelo-box-back">' + BOX_BACK + '</div>' +
-    '<div class="lelo-box-front">' + BOX_FRONT + '</div>';
+  // Dos elementos sueltos (no anidados) para que el panda pueda quedar
+  // entre ambos por capas y se vea dentro de la caja.
+  var boxBack = document.createElement('div');
+  boxBack.className = 'lelo-box lelo-box--back';
+  boxBack.setAttribute('aria-hidden', 'true');
+  boxBack.innerHTML = BOX_BACK;
 
-  document.body.appendChild(box);
+  var boxFront = document.createElement('div');
+  boxFront.className = 'lelo-box lelo-box--front';
+  boxFront.setAttribute('aria-hidden', 'true');
+  boxFront.innerHTML = BOX_FRONT;
+
+  function boxShow(on) {
+    boxBack.classList.toggle('show', on);
+    boxFront.classList.toggle('show', on);
+    if (!on) boxHot(false);
+  }
+  function boxHot(on) {
+    boxBack.classList.toggle('hot', on);
+    boxFront.classList.toggle('hot', on);
+  }
+
+  document.body.appendChild(boxBack);
+  document.body.appendChild(boxFront);
   document.body.appendChild(el);
   document.body.appendChild(bubble);
 
@@ -275,7 +291,7 @@
 
   // ---------- CASTIGO ----------
   function boxRect() {
-    return box.querySelector('.lelo-box-front').getBoundingClientRect();
+    return boxFront.getBoundingClientRect();
   }
 
   // ¿El panda está sobre la caja ahora mismo?
@@ -304,8 +320,7 @@
     setCaughtPose(false);
     el.classList.add('punished');
     el.classList.remove('airborne', 'face-left');
-    box.classList.add('show');
-    box.classList.remove('hot');
+    boxShow(true);
     seatInBox();
 
     // Pataleta breve al caer dentro
@@ -329,7 +344,7 @@
   function freeFromBox() {
     clearTimeout(grumbleTimer);
     el.classList.remove('punished', 'tantrum');
-    box.classList.remove('show', 'hot');
+    boxShow(false);
   }
 
   // ---------- POSES ----------
@@ -372,7 +387,7 @@
     if (mode !== 'caught') return;
     setCaughtPose(false);
     el.classList.remove('punished', 'tantrum');
-    box.classList.remove('show', 'hot');
+    boxShow(false);
     if (reduceMotion) { hideBubble(); mode = 'parked'; return; }
     mode = 'bounce';
     if (typeof throwVx === 'number' && (Math.abs(throwVx) > 1 || Math.abs(throwVy) > 1)) {
@@ -391,7 +406,7 @@
     try { el.setPointerCapture(e.pointerId); } catch (err) {}
     if (mode === 'punished') freeFromBox(); // sacarlo de la caja
     catchPanda();
-    box.classList.add('show'); // al arrastrar se descubre dónde soltarlo
+    boxShow(true); // al arrastrar se descubre dónde soltarlo
     drag = {
       id: e.pointerId,
       offX: e.clientX - x,
@@ -414,7 +429,7 @@
     if (!drag.moved && Math.hypot(e.clientX - drag.startX, e.clientY - drag.startY) > 8) {
       drag.moved = true;
     }
-    box.classList.toggle('hot', overBox()); // resalta si va a caer dentro
+    boxHot(overBox()); // resalta si va a caer dentro
     // Velocidad de la mano (suavizada) para poder lanzarlo
     var t = performance.now();
     var dt = Math.max(t - drag.lastT, 1);
@@ -440,7 +455,7 @@
       return;
     }
 
-    box.classList.remove('show', 'hot');
+    boxShow(false);
     if (wasDrag) {
       // Lo has movido: retoma los saltos justo donde lo dejas
       releasePanda(tvx, tvy);
@@ -710,13 +725,15 @@
     if (modal && modal.classList.contains('open')) {
       el.style.visibility = 'hidden';
       bubble.style.visibility = 'hidden';
-      box.style.visibility = 'hidden';
+      boxBack.style.visibility = 'hidden';
+      boxFront.style.visibility = 'hidden';
       requestAnimationFrame(frame);
       return;
     }
     el.style.visibility = '';
     bubble.style.visibility = '';
-    box.style.visibility = '';
+    boxBack.style.visibility = '';
+    boxFront.style.visibility = '';
 
     if (mode === 'bounce') bouncePhysics();
     else if (mode === 'flyTo' && fly) flyPhysics(now);

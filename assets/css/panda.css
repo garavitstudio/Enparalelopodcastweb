@@ -100,6 +100,9 @@
 /* ===== CAJA DE CASTIGO =====
    Va en dos piezas: el fondo detrás del panda y el frente delante, así el
    panda queda metido dentro de la caja y no pegado encima. */
+/* Fondo y frente son elementos independientes, no madre e hijos: si
+   fuesen hijos de un contenedor fijo, sus capas quedarían encerradas en
+   la de la madre y la caja acabaría detrás del contenido de la página. */
 .lelo-box {
   position: fixed;
   right: 28px;
@@ -115,18 +118,10 @@
 
 /* Resaltada mientras arrastras el panda por encima */
 .lelo-box.hot { transform: scale(1.06); }
-.lelo-box.hot .lelo-box-front { filter: drop-shadow(0 0 12px rgba(255, 237, 74, 0.75)); }
+.lelo-box--front.hot { filter: drop-shadow(0 0 12px rgba(255, 237, 74, 0.75)); }
 
-.lelo-box-back,
-.lelo-box-front {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-}
-
-.lelo-box-back { z-index: 19998; }
-.lelo-box-front { z-index: 20002; }
+.lelo-box--back { z-index: 19998; }
+.lelo-box--front { z-index: 20002; }
 
 .lelo-box svg { width: 100%; height: auto; display: block; }
 
