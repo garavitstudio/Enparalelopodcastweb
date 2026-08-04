@@ -619,6 +619,53 @@
 .gs-link:hover { gap: 14px; border-color: var(--neon-yellow); }
 .gs-link svg { width: 15px; height: 15px; }
 
+/* --- Pista de deslizar (solo tactil) ---
+   En escritorio sobran las flechas; en movil el gesto no se adivina, asi que
+   se avisa hasta que la persona cambia de invitado por primera vez. */
+.gs-swipe {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 18px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.76rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: opacity 0.4s ease, max-height 0.4s ease, margin 0.4s ease;
+}
+
+.gs-swipe-hand {
+  display: inline-flex;
+  color: var(--neon-yellow);
+  animation: gsSwipe 2.6s ease-in-out infinite;
+}
+
+.gs-swipe-hand svg { width: 19px; height: 19px; }
+
+@keyframes gsSwipe {
+  0%, 62%, 100% { transform: translateX(6px); opacity: 0.55; }
+  20%           { transform: translateX(-6px); opacity: 1; }
+  45%           { transform: translateX(6px); opacity: 1; }
+}
+
+/* Ya ha deslizado: la pista se va y no vuelve */
+.gs-swipe.is-gone {
+  opacity: 0;
+  max-height: 0;
+  margin-top: 0;
+  pointer-events: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .gs-swipe { display: flex; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gs-swipe-hand { animation: none; }
+}
+
 /* --- Barra de navegación --- */
 .gs-nav {
   display: flex;

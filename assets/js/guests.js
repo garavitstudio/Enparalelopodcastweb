@@ -14,7 +14,9 @@
   const counter = stage.querySelector('.gs-count b');
   if (!items.length) return;
 
+  const pista = stage.querySelector('.gs-swipe');
   let current = 0;
+  let primerCambio = true;
 
   // Volver a la miniatura: si se deja el iframe cargado, el episodio sigue
   // sonando de fondo al cambiar de invitado.
@@ -44,6 +46,10 @@
     });
 
     if (counter) counter.textContent = String(current + 1).padStart(2, '0');
+
+    // El primer show() es el arranque, no cuenta como interaccion.
+    if (primerCambio) primerCambio = false;
+    else if (pista) pista.classList.add('is-gone');
   }
 
   function play(item) {
@@ -61,6 +67,9 @@
     // restaurarlos al cambiar de invitado.
     media.querySelectorAll('img, .gs-play').forEach(el => el.classList.add('gs-hidden'));
     media.appendChild(iframe);
+
+    // Con el video sonando el gesto queda desactivado: la pista sobra.
+    if (pista) pista.classList.add('is-gone');
   }
 
   items.forEach(item => {
