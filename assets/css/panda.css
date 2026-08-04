@@ -439,3 +439,13 @@
 .lelo-panel-mascota .p-eyes-angry,
 .lelo-panel-mascota .p-brows-angry,
 .lelo-panel-mascota .p-mouth-angry { opacity: 0; }
+
+/* ===== DE MORROS, FUERA DE LA CAJA =====
+   Dentro de la caja va con la cara de arrebato (ojos entrecerrados y cejas
+   en V). Aquí ya ha salido: mantiene la boca hacia abajo, pero mira con la
+   ceja levantada, como cuando lo atrapas. Enfadado, pero chulo. */
+#lelo-panda.punished.sulking .p-eyes-angry,
+#lelo-panda.punished.sulking .p-brows-angry { opacity: 0; }
+
+#lelo-panda.punished.sulking .p-eyes,
+#lelo-panda.punished.sulking .p-brows { opacity: 1; }

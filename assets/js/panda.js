@@ -427,7 +427,7 @@
     fly = null;
     setCaughtPose(false);
     el.classList.add('punished');
-    el.classList.remove('airborne', 'face-left');
+    el.classList.remove('airborne', 'face-left', 'sulking');
     boxShow(true);
     seatInBox();
 
@@ -470,7 +470,7 @@
 
   function freeFromBox() {
     clearTimeout(grumbleTimer);
-    el.classList.remove('punished', 'tantrum');
+    el.classList.remove('punished', 'sulking', 'tantrum');
     boxShow(false);
   }
 
@@ -509,7 +509,8 @@
   function entrarEnMorros(conMensaje) {
     mode = 'sulk';
     el.classList.remove('airborne');
-    el.classList.add('punished');
+    // 'sulking' cambia solo la mirada: boca de enfado, pero ceja levantada
+    el.classList.add('punished', 'sulking');
     pulse('squash');
     // Con caducidad: un bocadillo clavado en pantalla acaba estorbando, y
     // para volver a verlo basta con tocarlo.
@@ -536,7 +537,7 @@
     clearTimeout(grumbleTimer);
     clearTimeout(caducidadTimer);
     borrarEnfado();
-    el.classList.remove('punished', 'tantrum');
+    el.classList.remove('punished', 'sulking', 'tantrum');
     boxShow(false);
     fly = null;
     if (perdonado) showBubble(MSG_PAZ, 4000);
@@ -677,6 +678,9 @@
   // ---------- POSES ----------
   function setCaughtPose(on) {
     el.classList.toggle('caught', on);
+    // Al cogerlo manda la cara de atrapado, aunque viniera de morros: si no,
+    // las reglas del enfado ganaban y los dos estados se veían igual.
+    if (on) el.classList.remove('punished', 'sulking');
     el.classList.remove('airborne');
   }
 
@@ -726,7 +730,7 @@
     // lo que pedía.
     if (sigueEnfadado()) { saltarAMorros(MSG_MORROS); return; }
 
-    el.classList.remove('punished', 'tantrum');
+    el.classList.remove('punished', 'sulking', 'tantrum');
     boxShow(false);
     if (reduceMotion) { hideBubble(); mode = 'parked'; return; }
     mode = 'bounce';
@@ -1147,7 +1151,7 @@
   // recargar la página no le hace olvidar.
   function arrancarEnfadado() {
     boxShow(true);
-    el.classList.add('punished');
+    el.classList.add('punished', 'sulking');
     el.classList.remove('airborne', 'face-left');
     mode = 'sulk';
     var t = morrosTarget();
