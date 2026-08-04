@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 100 100" role="img" aria-label="Simbolo de En Paralelo">
+  <title>En Paralelo — símbolo</title>
+
+  <!-- Todo el dibujo es un solo grupo, de un solo color y hecho solo con
+       trazos: al cambiar el color en Canva cambia entero, sin partes sueltas.
+       Los puntos son segmentos de longitud cero con extremo redondo, para no
+       tener que mezclar relleno y trazo. -->
+  <g fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round">
+
+    <!-- Arco mayor: abraza por la izquierda -->
+    <path d="M42 12 A39 39 0 0 0 42 88" stroke-width="11"/>
+
+    <!-- Arco menor: mas cerrado y mas fino, para que no sean simetricos -->
+    <path d="M60 20 A32 32 0 0 1 60 80" stroke-width="7"/>
+
+    <!-- Voz que escucha: mas fina, a la izquierda -->
+    <path d="M43 68 C38 55 48 47 43 34" stroke-width="3.2"/>
+    <path d="M43 30 L43 30.01" stroke-width="4.4"/>
+
+    <!-- Voz que habla: con mas presencia, a la derecha -->
+    <path d="M56 70 C51 56 61 48 56 35" stroke-width="4.6"/>
+    <path d="M56 30 L56 30.01" stroke-width="6"/>
+
+  </g>
+</svg>
