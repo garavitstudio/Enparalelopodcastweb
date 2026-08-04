@@ -308,7 +308,7 @@
   position: relative;
   display: grid;
   grid-template-columns: 210px 1fr;
-  align-items: end;
+  align-items: center;
   gap: 10px;
   width: 100%;
   max-width: 760px;
@@ -345,9 +345,10 @@
   color: var(--neon-yellow);
 }
 
-/* lelo asomando junto al formulario, botando despacio */
+/* lelo asomando junto al formulario, botando despacio. Centrado con el
+   bloque de texto: anclado abajo quedaba descolgado del resto. */
 .lelo-panel-mascota {
-  align-self: end;
+  align-self: center;
   animation: leloPanelBote 2.8s ease-in-out infinite;
 }
 
