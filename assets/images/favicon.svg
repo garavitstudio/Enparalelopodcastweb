@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-7 -7 114 114" width="512" height="512" role="img" aria-label="En Paralelo">
+  <title>En Paralelo</title>
+  <style>
+    /* Sin fondo, el icono tiene que verse tanto sobre claro como sobre
+       oscuro: en negro desaparecería en las pestañas de tema oscuro. */
+    .marca { stroke: #0a0a0a; }
+    @media (prefers-color-scheme: dark) { .marca { stroke: #ffed4a; } }
+  </style>
+  <g class="marca" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M42 12 A39 39 0 0 0 42 88" stroke-width="11"/>
+    <path d="M60 20 A32 32 0 0 1 60 80" stroke-width="7"/>
+    <path d="M43 68 C38 55 48 47 43 34" stroke-width="3.2"/>
+    <path d="M43 30 L43 30.01" stroke-width="4.4"/>
+    <path d="M56 70 C51 56 61 48 56 35" stroke-width="4.6"/>
+    <path d="M56 30 L56 30.01" stroke-width="6"/>
+  </g>
+</svg>
