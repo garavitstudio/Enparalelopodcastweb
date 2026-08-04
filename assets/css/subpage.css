@@ -787,3 +787,177 @@
 @media (max-width: 480px) {
   .sponsor-grid { grid-template-columns: 1fr; }
 }
+
+/* ===== PÁGINAS DE EPISODIO =====
+   Cada episodio con su propia URL: es lo que permite que el dominio
+   posicione por el nombre del invitado y por los temas del episodio, en vez
+   de que todo el tráfico de búsqueda se lo quede YouTube. */
+.ep-breadcrumb {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 22px;
+  letter-spacing: 0.04em;
+}
+
+.ep-breadcrumb a { color: var(--text-muted); text-decoration: none; }
+.ep-breadcrumb a:hover { color: var(--neon-yellow); }
+.ep-breadcrumb span { margin: 0 6px; }
+
+.ep-datos {
+  margin-top: 18px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+.ep-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  margin-bottom: 28px;
+}
+
+.ep-media img,
+.ep-media iframe { width: 100%; height: 100%; display: block; border: 0; }
+.ep-media img { object-fit: cover; transition: transform 0.6s ease, filter 0.4s ease; }
+.ep-media:hover img { transform: scale(1.03); filter: brightness(0.85); }
+
+.ep-play {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 237, 74, 0.5);
+  background: rgba(10, 10, 10, 0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--neon-yellow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.ep-play svg { width: 26px; height: 26px; margin-left: 3px; }
+
+.ep-media:hover .ep-play {
+  transform: scale(1.1);
+  background: rgba(255, 237, 74, 0.15);
+  box-shadow: 0 0 26px rgba(255, 237, 74, 0.35);
+}
+
+/* El resumen va destacado: es la frase que un buscador o una IA cita */
+.ep-resumen {
+  font-size: 1.08rem;
+  line-height: 1.75;
+  color: var(--text-primary);
+  border-left: 3px solid var(--neon-yellow);
+  padding-left: 20px;
+  margin-bottom: 30px;
+}
+
+.ep-plataformas {
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding-top: 22px;
+}
+
+.ep-plat-label {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.ep-plat-row { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.ep-plat {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.84rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: 9px 18px;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  transition: all 0.25s ease;
+}
+
+.ep-plat:hover {
+  border-color: var(--neon-yellow);
+  color: var(--neon-yellow);
+  background: rgba(255, 237, 74, 0.07);
+}
+
+/* Navegación entre episodios: enlaces internos que reparten autoridad */
+.ep-nav { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+.ep-nav-item {
+  display: block;
+  padding: 18px 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.025);
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.ep-nav-item:hover { border-color: rgba(255, 237, 74, 0.4); background: rgba(255, 237, 74, 0.05); }
+.ep-nav-item span { display: block; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 5px; }
+.ep-nav-item strong { font-family: 'Outfit', sans-serif; font-size: 0.98rem; color: var(--text-primary); }
+.ep-nav-item:hover strong { color: var(--neon-yellow); }
+
+/* ===== ÍNDICE DE EPISODIOS ===== */
+.ep-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+
+.ep-card { border-radius: var(--radius-md); overflow: hidden; transition: transform 0.3s ease, border-color 0.3s ease; }
+.ep-card:hover { transform: translateY(-4px); }
+.ep-card-link { display: block; text-decoration: none; }
+.ep-card-thumb { aspect-ratio: 16 / 9; overflow: hidden; background: #000; }
+.ep-card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
+.ep-card:hover .ep-card-thumb img { transform: scale(1.05); }
+.ep-card-body { padding: 24px 26px 28px; }
+
+.ep-card-meta {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+}
+
+.ep-card-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1.12rem;
+  line-height: 1.32;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.ep-card:hover .ep-card-title { color: var(--neon-yellow); }
+.ep-card-desc { font-size: 0.9rem; line-height: 1.65; color: rgba(240, 240, 240, 0.7); margin-bottom: 16px; }
+
+.ep-card-cta {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--neon-yellow);
+}
+
+@media (max-width: 900px) {
+  .ep-grid { grid-template-columns: 1fr; }
+  .ep-nav { grid-template-columns: 1fr; }
+}
