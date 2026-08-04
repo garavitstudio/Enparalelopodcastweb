@@ -73,20 +73,131 @@ const MARCAS = {
   senal: envoltorio(`    <path d="M34 22 A38 38 0 0 1 34 78" stroke-width="10"/>
     <path d="M60 34 A22 22 0 0 1 60 66" stroke-width="10" opacity="0.9"/>
     <circle cx="22" cy="50" r="6" fill="${AMARILLO}" stroke="none"/>`, 2.4),
+
+  // --- Segunda tanda: sin simetría, como pide el propio brief ---
+
+  // El espacio entre los dos. Dos arcos que abrazan un hueco con algo
+  // dentro: lo que importa no es cada uno, es lo que pasa en medio.
+  // Distintos a propósito: uno más abierto y grueso que el otro.
+  entre: envoltorio(`    <path d="M36 14 A36 36 0 0 0 36 86" stroke-width="11"/>
+    <path d="M64 22 A28 28 0 0 1 64 78" stroke-width="8" opacity="0.92"/>
+    <circle cx="50" cy="50" r="5.5" fill="${AMARILLO}" stroke="none"/>`, 2.4),
+
+  // Dos que se acercan sin llegar a tocarse. La tensión del hueco es el
+  // punto: siguen siendo dos. Uno arranca antes y sube más.
+  roce: envoltorio(`    <path d="M22 88 C22 58 40 56 46 40 C49 32 48 24 46 16" stroke-width="10"/>
+    <path d="M78 88 C78 62 62 58 56 44 C53 37 54 30 56 24" stroke-width="8" opacity="0.9"/>`, 2.4),
+
+  // Eco: una voz y la que responde. La segunda repite la forma de la
+  // primera, desplazada y más tenue. Conversación, no monólogo.
+  eco: envoltorio(`    <path d="M30 76 C30 46 44 34 44 20" stroke-width="11"/>
+    <path d="M52 80 C52 50 66 38 66 24" stroke-width="7" opacity="0.55"/>
+    <circle cx="44" cy="16" r="5" fill="${AMARILLO}" stroke="none"/>
+    <circle cx="66" cy="20" r="3.5" fill="${AMARILLO}" stroke="none" opacity="0.55"/>`, 2.2),
+
+  // Órbita: dos cuerpos girando uno alrededor del otro. Ni uno manda ni
+  // el otro sigue; se sostienen. Tamaños distintos, como dos personas.
+  orbita: envoltorio(`    <path d="M50 16 A34 34 0 1 1 22 68" stroke-width="9"/>
+    <circle cx="50" cy="16" r="9" fill="${AMARILLO}" stroke="none"/>
+    <circle cx="22" cy="68" r="5.5" fill="${AMARILLO}" stroke="none" opacity="0.85"/>`, 2.4),
+
+  // --- Variantes de "el espacio entre los dos" ---
+
+  // Abrazo cerrado: los arcos rodean casi por completo. El hueco se
+  // estrecha y el punto gana peso: la conversación, protegida.
+  entre1: envoltorio(`    <path d="M46 10 A40 40 0 0 0 46 90" stroke-width="11"/>
+    <path d="M56 20 A30 30 0 0 1 56 80" stroke-width="8" opacity="0.9"/>
+    <circle cx="50" cy="50" r="7" fill="${AMARILLO}" stroke="none"/>`, 2.6),
+
+  // Hueco descentrado: el punto no está en el medio geométrico. Menos
+  // logotipo de banco, más dos personas de verdad.
+  entre2: envoltorio(`    <path d="M40 12 A38 38 0 0 0 34 86" stroke-width="11"/>
+    <path d="M62 26 A26 26 0 0 1 66 74" stroke-width="7.5" opacity="0.9"/>
+    <circle cx="52" cy="56" r="6" fill="${AMARILLO}" stroke="none"/>`, 2.5),
+
+  // Sin punto: solo los dos y el vacío. Lo que pasa en medio no se
+  // dibuja, se sugiere. Es la versión más adulta y silenciosa.
+  entre3: envoltorio(`    <path d="M42 12 A38 38 0 0 0 42 88" stroke-width="12"/>
+    <path d="M60 24 A28 28 0 0 1 60 76" stroke-width="8.5" opacity="0.88"/>`, 2.6),
+
+  // --- Variantes de "el roce" ---
+
+  // El casi: se acercan hasta rozarse y en ese punto salta la chispa.
+  // El destello marca el instante exacto del encuentro.
+  roce1: envoltorio(`    <path d="M20 90 C20 60 42 58 47 42 C50 33 49 24 47 14" stroke-width="10"/>
+    <path d="M80 90 C80 64 58 60 53 44 C50 36 51 28 53 20" stroke-width="8" opacity="0.9"/>
+    <circle cx="50" cy="47" r="4.5" fill="${AMARILLO}" stroke="none"/>`, 2.5),
+
+  // Se cruzan y siguen: vienen de lados distintos, se atraviesan una vez
+  // y continúan. Dos vidas que se encuentran y no se detienen.
+  roce2: envoltorio(`    <path d="M24 90 C24 62 70 54 74 14" stroke-width="10"/>
+    <path d="M76 90 C76 66 32 56 28 20" stroke-width="7.5" opacity="0.85"/>`, 2.5),
+
+  // Uno sostiene: el trazo corto se apoya en el largo sin fundirse con
+  // él. Dos que se acompañan sin ser lo mismo.
+  roce3: envoltorio(`    <path d="M34 92 C30 60 40 40 52 12" stroke-width="11"/>
+    <path d="M64 88 C62 66 60 52 58 40" stroke-width="7.5" opacity="0.88"/>
+    <circle cx="52" cy="12" r="5" fill="${AMARILLO}" stroke="none"/>`, 2.4),
+
+  // --- El abrazo: los arcos son el espacio de la conversación y dentro
+  // van las dos voces. Continente y contenido en la misma marca. ---
+
+  // Tal como llegó la idea: arcos gruesos y voces finas dentro.
+  abrazo: envoltorio(`    <path d="M36 14 A44 44 0 0 0 36 86" stroke-width="10"/>
+    <path d="M64 14 A44 44 0 0 1 64 86" stroke-width="10"/>
+    <path d="M46 66 C42 58 50 54 47 44" stroke-width="4"/>
+    <path d="M56 62 C52 54 60 50 57 40" stroke-width="4"/>
+    <circle cx="44" cy="70" r="2.6" fill="${AMARILLO}" stroke="none"/>
+    <circle cx="59" cy="36" r="2.6" fill="${AMARILLO}" stroke="none"/>`, 2),
+
+  // Reequilibrado: las voces crecen y engordan hasta sostener el peso de
+  // los arcos, y los arcos adelgazan un poco. Es la misma idea, pero que
+  // aguanta a 32 píxeles.
+  abrazo2: envoltorio(`    <path d="M30 12 A46 46 0 0 0 30 88" stroke-width="9"/>
+    <path d="M70 12 A46 46 0 0 1 70 88" stroke-width="9"/>
+    <path d="M44 76 C38 60 52 54 45 36" stroke-width="7.5"/>
+    <path d="M58 64 C64 50 52 44 57 26" stroke-width="7.5" opacity="0.92"/>`, 2.3),
+
+  // Mínimo: dos arcos y dos gestos dentro, sin más detalle. Pensado para
+  // que a 16 píxeles siga leyéndose que hay algo vivo en medio.
+  abrazo3: envoltorio(`    <path d="M32 16 A42 42 0 0 0 32 84" stroke-width="10"/>
+    <path d="M68 16 A42 42 0 0 1 68 84" stroke-width="10"/>
+    <path d="M45 70 C40 56 50 52 45 38" stroke-width="9"/>
+    <path d="M57 62 C62 48 52 44 57 30" stroke-width="9" opacity="0.9"/>`, 2.4),
+
+  // Versión reducida del abrazo, para 16 y 48 píxeles. A ese tamaño las dos
+  // voces son una mota, así que se quedan en un solo trazo que las resume.
+  // Misma marca, menos detalle: es lo que hace cualquier identidad seria.
+  abrazoMini: envoltorio(`    <path d="M28 12 A48 48 0 0 0 28 88" stroke-width="12"/>
+    <path d="M72 12 A48 48 0 0 1 72 88" stroke-width="12"/>
+    <path d="M50 72 C42 54 58 46 50 28" stroke-width="11"/>`, 2.6),
+};
+
+// Una marca puede tener versión reducida para los tamaños pequeños: a 16 px
+// el detalle interior se convierte en una mancha y conviene simplificar.
+const REDUCIDAS = {
+  abrazo: 'abrazoMini',
+  abrazo2: 'abrazoMini',
+  abrazo3: 'abrazoMini',
 };
 
 async function generar(marca) {
   const svg = MARCAS[marca];
   if (!svg) { console.error(`No existe la marca "${marca}". Opciones: ${Object.keys(MARCAS).join(', ')}`); process.exit(1); }
 
+  // Hasta 48 px se usa la versión reducida si la marca tiene una; a partir
+  // de 96 px, la completa. El navegador elige según el atributo sizes.
+  const mini = REDUCIDAS[marca] ? MARCAS[REDUCIDAS[marca]] : svg;
+
   for (const lado of TAMANOS) {
-    await sharp(Buffer.from(svg.replace(/LADO/g, lado)))
+    await sharp(Buffer.from((lado <= 48 ? mini : svg).replace(/LADO/g, lado)))
       .png({ compressionLevel: 9 }).toFile(path.join(IMG, `favicon-${lado}.png`));
   }
   await sharp(Buffer.from(svg.replace(/LADO/g, 180)))
     .png({ compressionLevel: 9 }).toFile(path.join(IMG, 'apple-touch-icon.png'));
 
-  console.log(`Iconos generados con la marca "${marca}":`);
+  console.log(`Iconos generados con la marca "${marca}"` +
+    (REDUCIDAS[marca] ? ` (reducida "${REDUCIDAS[marca]}" hasta 48 px)` : '') + ':');
   for (const lado of [...TAMANOS, 'apple-touch-icon']) {
     const f = typeof lado === 'number' ? `favicon-${lado}.png` : lado + '.png';
     console.log(`  ${f.padEnd(24)} ${(fs.statSync(path.join(IMG, f)).size / 1024).toFixed(1)} KB`);
