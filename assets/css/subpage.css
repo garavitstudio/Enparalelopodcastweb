@@ -961,3 +961,43 @@
   .ep-grid { grid-template-columns: 1fr; }
   .ep-nav { grid-template-columns: 1fr; }
 }
+
+/* ===== TRANSCRIPCIÓN DEL EPISODIO =====
+   Es el mayor multiplicador del SEO de un podcast: convierte un episodio de
+   horas en miles de palabras que un buscador sí puede leer. Se muestra
+   entera, sin plegar: lo que se oculta tras un clic pesa menos. */
+.tr-nota {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.ep-transcripcion {
+  max-width: 760px;
+  max-height: 620px;
+  overflow-y: auto;
+  padding-right: 16px;
+  border-left: 2px solid rgba(255, 237, 74, 0.18);
+  padding-left: 22px;
+}
+
+.ep-transcripcion p {
+  color: rgba(240, 240, 240, 0.72);
+  font-size: 0.94rem;
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+
+.ep-transcripcion .tr-t {
+  display: inline-block;
+  min-width: 58px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.78rem;
+  color: var(--neon-yellow);
+  opacity: 0.65;
+}
+
+.ep-transcripcion::-webkit-scrollbar { width: 6px; }
+.ep-transcripcion::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); border-radius: 3px; }
+.ep-transcripcion::-webkit-scrollbar-thumb { background: rgba(255,237,74,0.25); border-radius: 3px; }
+.ep-transcripcion::-webkit-scrollbar-thumb:hover { background: rgba(255,237,74,0.45); }

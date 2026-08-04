@@ -7,7 +7,9 @@
     "dev": "npx serve .",
     "optimize-images": "node optimize-images.cjs",
     "optimize-videos": "node optimize-videos.cjs",
-    "cache-bust": "node cache-bust-assets.cjs"
+    "cache-bust": "node cache-bust-assets.cjs",
+    "episodios": "node build-episodios.cjs",
+    "publicar": "node build-episodios.cjs && node cache-bust-assets.cjs"
   },
   "devDependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
