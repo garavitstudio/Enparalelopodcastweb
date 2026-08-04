@@ -347,16 +347,48 @@ img {
 
 .form-input:focus {
   border-color: rgba(255,237,74,0.5);
-  background: rgba(255,237,74,0.04);
+  /* background-color, no el atajo: el atajo borraría la flecha dibujada
+     de los desplegables al enfocarlos. */
+  background-color: rgba(255,237,74,0.04);
   box-shadow: 0 0 0 3px rgba(255,237,74,0.08);
 }
 
 .form-input::placeholder { color: var(--text-dim); }
 
+/* ===== DESPLEGABLES =====
+   El select nativo se pinta con el estilo del sistema operativo y canta
+   muchísimo al lado del resto. Se le quita el aspecto de serie y se le
+   dibuja una flecha propia con gradientes: la CSP no admite imágenes
+   incrustadas (data:), así que un SVG de fondo quedaría bloqueado. */
+select.form-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  padding-right: 42px;
+  /* Pinta el desplegable abierto en oscuro en vez del blanco del sistema */
+  color-scheme: dark;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--neon-yellow) 50%),
+    linear-gradient(135deg, var(--neon-yellow) 50%, transparent 50%);
+  background-position: right 22px center, right 17px center;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+select.form-input:hover {
+  border-color: rgba(255, 237, 74, 0.35);
+}
+
+/* Mientras no se ha elegido nada, el texto va atenuado como un placeholder */
+select.form-input:invalid { color: var(--text-dim); }
+
 select.form-input option {
   background: #111;
   color: var(--text-primary);
 }
+
+select.form-input option[value=""] { color: var(--text-dim); }
 
 textarea.form-input {
   resize: vertical;
