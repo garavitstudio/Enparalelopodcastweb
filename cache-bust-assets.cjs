@@ -35,6 +35,7 @@ for (const file of files) {
 
   // Marcador de las páginas recién generadas
   content = content.replace(/__V__/g, String(stamp));
+  content = content.replace(/__VER__/g, String(stamp));
 
   content = content.replace(/\.css(\?v=\d+)?"/g, `.css?v=${stamp}"`);
   content = content.replace(/\.js(\?v=\d+)?"/g, `.js?v=${stamp}"`);
