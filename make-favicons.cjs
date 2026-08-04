@@ -196,6 +196,40 @@ Object.assign(MARCAS, {
     <circle cx="50" cy="28" r="5" fill="${AMARILLO}" stroke="none"/>`, 2.6),
 });
 
+// --- El círculo con las dos voces dentro ---
+//
+// Los arcos casi se cierran, como en la primera versión, pero en el centro
+// ya no hay un punto: están las dos voces. El círculo es el espacio de la
+// conversación; dentro pasa lo que pasa.
+//
+// Los pesos siguen cruzados: arco izquierdo más grueso, voz izquierda más
+// tenue. Las dos voces se reparten a los lados del eje para que el conjunto
+// quede centrado de verdad.
+Object.assign(MARCAS, {
+  circuloEco: envoltorio(`    <path d="M44 13 A38 38 0 0 0 44 87" stroke-width="11"/>
+    <path d="M56 13 A38 38 0 0 1 56 87" stroke-width="7.5" opacity="0.9"/>
+    <path d="M43 65 C39 55 47 49 43 39" stroke-width="5.5" opacity="0.5"/>
+    <circle cx="43" cy="35" r="2.8" fill="${AMARILLO}" stroke="none" opacity="0.5"/>
+    <path d="M57 68 C53 57 61 51 57 41" stroke-width="8"/>
+    <circle cx="57" cy="36" r="4.2" fill="${AMARILLO}" stroke="none"/>`, 2.4),
+
+  // Voces finas: basta con que se entiendan como líneas. Al adelgazarlas
+  // el círculo respira y el contraste con el grosor de los arcos hace que
+  // se lean como algo distinto, no como más marca.
+  circuloFino: envoltorio(`    <path d="M44 13 A38 38 0 0 0 44 87" stroke-width="11"/>
+    <path d="M56 13 A38 38 0 0 1 56 87" stroke-width="7.5" opacity="0.9"/>
+    <path d="M43 68 C38 55 48 47 43 34" stroke-width="3.2" opacity="0.5"/>
+    <circle cx="43" cy="30" r="2.2" fill="${AMARILLO}" stroke="none" opacity="0.5"/>
+    <path d="M57 70 C52 56 62 48 57 35" stroke-width="4.6"/>
+    <circle cx="57" cy="30" r="3" fill="${AMARILLO}" stroke="none"/>`, 2.3),
+
+  // A tamaño pequeño la voz tenue no llega: se queda una sola, centrada.
+  circuloEcoMini: envoltorio(`    <path d="M44 12 A39 39 0 0 0 44 88" stroke-width="12.5"/>
+    <path d="M56 12 A39 39 0 0 1 56 88" stroke-width="9" opacity="0.9"/>
+    <path d="M50 68 C45 55 55 47 50 34" stroke-width="10"/>
+    <circle cx="50" cy="28" r="5" fill="${AMARILLO}" stroke="none"/>`, 2.6),
+});
+
 // Una marca puede tener versión reducida para los tamaños pequeños: a 16 px
 // el detalle interior se convierte en una mancha y conviene simplificar.
 const REDUCIDAS = {
@@ -203,6 +237,8 @@ const REDUCIDAS = {
   abrazo2: 'abrazoMini',
   abrazo3: 'abrazoMini',
   abrazoEco: 'abrazoEcoMini',
+  circuloEco: 'circuloEcoMini',
+  circuloFino: 'circuloEcoMini',
 };
 
 async function generar(marca) {
