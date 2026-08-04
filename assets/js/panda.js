@@ -131,6 +131,13 @@
     'Si quieres que te perdone después de esto, deja tu correo en cualquier ' +
     'formulario. Si no, olvídate de mí.';
 
+  // Si ya nos dejó el correo, pedírselo otra vez sería no enterarse de nada
+  var MSG_AMIGO = [
+    '¡Ey! Que tú ya me dejaste tu correo. Estamos en paz 🐼',
+    'Contigo no me enfado, que ya cumpliste.',
+    'Anda, si eres de los míos. Sigue a lo tuyo.'
+  ];
+
   var MSG_MORROS = 'De aquí no me muevo hasta que dejes tu correo.';
   var MSG_VUELVES = 'No te intentes escapar, que sigo enfadado contigo.';
   var MSG_PAZ = '¡Bueno! Pues ya estamos en paz. Vamos a botar 🐼';
@@ -162,6 +169,7 @@
   }
 
   function guardarEnfado() {
+    if (yaNosDioCorreo()) return; // ya cumpliste: no hay nada que reprochar
     try { localStorage.setItem(CLAVE_ENFADO, String(Date.now())); } catch (e) {}
   }
 
@@ -169,7 +177,23 @@
     try { localStorage.removeItem(CLAVE_ENFADO); } catch (e) {}
   }
 
-  function sigueEnfadado() { return leerEnfado() !== 0; }
+  // Una vez que nos has dejado el correo, lelo ya no puede volver a
+  // enfadarse: puedes seguir metiéndolo en la caja, pero al sacarlo se le
+  // pasa. Cobrar dos veces el mismo peaje sería absurdo.
+  var CLAVE_CORREO = 'lelo:correo';
+
+  function yaNosDioCorreo() {
+    try { return !!localStorage.getItem(CLAVE_CORREO); } catch (e) { return false; }
+  }
+
+  function apuntarCorreo() {
+    try { localStorage.setItem(CLAVE_CORREO, String(Date.now())); } catch (e) {}
+  }
+
+  function sigueEnfadado() {
+    if (yaNosDioCorreo()) return false;
+    return leerEnfado() !== 0;
+  }
   var MSG_VOLUMEN = 'Sube el volumen, anda… 🎧';
 
   // ---------- DOM ----------
@@ -259,6 +283,7 @@
   var grumbleTimer = null; // refunfuños mientras está castigado
   var caducidadTimer = null; // vigila cuándo se le pasa el enfado
   var morrosDichos = 0;      // refunfuños soltados, para repetir el enlace
+  var panelAbierto = false;  // formulario a pantalla completa a la vista
 
   var panelEls = [];
   var panelRects = []; // [{r, el}]
@@ -435,7 +460,7 @@
       // se ha ido y si no, habría que ir a buscar el formulario a mano.
       morrosDichos++;
       if (enMorros && morrosDichos % 3 === 0) {
-        texto += '<br /><a href="' + joinHref + '">Va, te lo dejo →</a>';
+        texto += '<br /><a class="lelo-cta" href="' + joinHref + '">Va, te lo dejo →</a>';
       }
 
       showBubble(texto, pantallaPequena() ? 3200 : 5000);
@@ -489,7 +514,7 @@
     // Con caducidad: un bocadillo clavado en pantalla acaba estorbando, y
     // para volver a verlo basta con tocarlo.
     if (conMensaje) {
-      showBubble(conMensaje + '<br /><a href="' + joinHref + '">Va, te lo dejo →</a>', 9000);
+      showBubble(conMensaje + '<br /><a class="lelo-cta" href="' + joinHref + '">Va, te lo dejo →</a>', 9000);
     }
     scheduleGrumble(true);
     vigilarCaducidad();
@@ -525,9 +550,129 @@
   // Puente para el resto de la web: al enviar un formulario con correo se
   // le perdona. Vive en window porque quien lo llama es utils.js.
   window.leloPerdona = function () {
-    if (!sigueEnfadado() && mode !== 'sulk' && mode !== 'punished') return;
+    apuntarCorreo();
+    borrarEnfado();
+    if (mode !== 'sulk' && mode !== 'punished') return;
     volverANormal(true);
   };
+
+  // ---------- FORMULARIO A PANTALLA COMPLETA ----------
+  // Antes, responderle a lelo te mandaba a una sección de otra página y te
+  // dejaba tirado a medio camino. Ahora el formulario viene él.
+  var panel = null;
+
+  function construirPanel() {
+    if (panel) return panel;
+
+    panel = document.createElement('div');
+    panel.className = 'lelo-panel';
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-modal', 'true');
+    panel.setAttribute('aria-label', 'Deja tu correo a lelo');
+
+    panel.innerHTML =
+      '<div class="lelo-panel-card">' +
+        '<button type="button" class="lelo-panel-close" aria-label="Cerrar">✕</button>' +
+        '<div class="lelo-panel-mascota" aria-hidden="true">' + SVG + '</div>' +
+        '<div class="lelo-panel-body">' +
+          '<span class="lelo-panel-label">lelo tiene algo que decirte</span>' +
+          '<h2 class="lelo-panel-title">Venga, va. Rellénalo y<br />nos perdonamos de una vez,<br />que me aburro.</h2>' +
+          '<form class="lelo-panel-form" novalidate>' +
+            '<input type="text" name="_gotcha" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" />' +
+            '<input type="hidden" name="origen" value="lelo" />' +
+            '<label class="lelo-panel-field">' +
+              '<span>¿Cómo te llamamos?</span>' +
+              '<input type="text" name="name" class="form-input" placeholder="Tu nombre" required autocomplete="name" />' +
+            '</label>' +
+            '<label class="lelo-panel-field">' +
+              '<span>Tu correo</span>' +
+              '<input type="email" name="email" class="form-input" placeholder="tu@email.com" required autocomplete="email" />' +
+            '</label>' +
+            '<label class="form-consent">' +
+              '<input type="checkbox" name="consentimiento" value="sí" required />' +
+              '<span>He leído y acepto la <a href="/privacidad" target="_blank" rel="noopener">política de privacidad</a>.</span>' +
+            '</label>' +
+            '<button type="submit" class="btn-primary lelo-panel-submit">Hacer las paces →</button>' +
+            '<p class="lelo-panel-nota">Sin spam. En serio. Solo lo que merezca la pena leer.</p>' +
+          '</form>' +
+        '</div>' +
+      '</div>';
+
+    document.body.appendChild(panel);
+
+    panel.querySelector('.lelo-panel-close').addEventListener('click', cerrarPanel);
+    panel.addEventListener('click', function (e) {
+      if (e.target === panel) cerrarPanel();
+    });
+    panel.querySelector('.lelo-panel-form').addEventListener('submit', enviarPanel);
+
+    return panel;
+  }
+
+  function abrirPanel() {
+    construirPanel();
+    hideBubble();
+    // El panda de carne y hueso se aparta: dentro del panel ya hay otro
+    el.style.visibility = 'hidden';
+    boxBack.style.visibility = 'hidden';
+    boxFront.style.visibility = 'hidden';
+    panelAbierto = true;
+
+    panel.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(function () {
+      var primero = panel.querySelector('input[name="name"]');
+      if (primero) primero.focus();
+    }, 260);
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && panelAbierto) cerrarPanel();
+  });
+
+  function cerrarPanel() {
+    if (!panel) return;
+    panel.classList.remove('open');
+    document.body.style.overflow = '';
+    panelAbierto = false;
+    el.style.visibility = '';
+    boxBack.style.visibility = '';
+    boxFront.style.visibility = '';
+  }
+
+  function enviarPanel(e) {
+    e.preventDefault();
+    var form = e.currentTarget;
+    var btn = form.querySelector('[type="submit"]');
+    var original = btn.textContent;
+
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+
+    btn.textContent = 'Enviando…';
+    btn.disabled = true;
+
+    fetch('https://formspree.io/f/xpqkqnrg', {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(function (res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      btn.textContent = '✓ ¡Hecho! Ya somos amigos';
+      form.reset();
+      setTimeout(function () {
+        cerrarPanel();
+        btn.textContent = original;
+        btn.disabled = false;
+        window.leloPerdona();
+      }, 1400);
+    }).catch(function () {
+      btn.textContent = 'No se pudo enviar. Inténtalo de nuevo';
+      setTimeout(function () {
+        btn.textContent = original;
+        btn.disabled = false;
+      }, 3500);
+    });
+  }
 
   // ---------- POSES ----------
   function setCaughtPose(on) {
@@ -559,9 +704,14 @@
     mode = 'caught';
     vx = 0; vy = 0;
     setCaughtPose(true);
+    if (yaNosDioCorreo()) {
+      showBubble(MSG_AMIGO[Math.floor(Math.random() * MSG_AMIGO.length)], 4000);
+      return;
+    }
+
     showBubble(
       (desdeCaja ? MSG_PERDON : MSG_NEWSLETTER) +
-      '<br /><a href="' + joinHref + '">' +
+      '<br /><a class="lelo-cta" href="' + joinHref + '">' +
       (desdeCaja ? 'Está bien, toma →' : 'Déjanoslo aquí →') + '</a>'
     );
   }
@@ -681,9 +831,19 @@
     vx = (Math.random() < 0.5 ? -1 : 1) * 2.6;
   }
 
-  // Si pulsa el enlace del bocadillo, soltamos al panda
+  // Responder a lelo abre el formulario aquí mismo. El href apunta de todas
+  // formas al formulario de la comunidad: si el JS fallara, el enlace sigue
+  // llevando a algún sitio útil en vez de no hacer nada.
   bubble.addEventListener('click', function (e) {
-    if (e.target.tagName === 'A') releasePanda();
+    var enlace = e.target.closest ? e.target.closest('a') : null;
+    if (!enlace) return;
+    if (enlace.classList.contains('lelo-cta')) {
+      e.preventDefault();
+      releasePanda();
+      abrirPanel();
+      return;
+    }
+    releasePanda();
   });
 
   // ---------- GUIÑOS: se cuela por abajo y provoca al visitante ----------
@@ -922,7 +1082,8 @@
 
   // ---------- BUCLE ----------
   function frame(now) {
-    if (modal && modal.classList.contains('open')) {
+    // Con el modal de vídeo o el panel del correo abiertos, lelo se aparta
+    if (panelAbierto || (modal && modal.classList.contains('open'))) {
       el.style.visibility = 'hidden';
       bubble.style.visibility = 'hidden';
       boxBack.style.visibility = 'hidden';
@@ -995,7 +1156,7 @@
     // Un respiro antes de soltar la pulla, para que dé tiempo a verlo ahí
     setTimeout(function () {
       if (mode !== 'sulk') return;
-      showBubble(MSG_VUELVES + '<br /><a href="' + joinHref + '">Va, te lo dejo →</a>', 7000);
+      showBubble(MSG_VUELVES + '<br /><a class="lelo-cta" href="' + joinHref + '">Va, te lo dejo →</a>', 7000);
     }, 1400);
     scheduleGrumble(true);
     vigilarCaducidad();
