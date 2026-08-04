@@ -396,6 +396,11 @@
   margin-top: 32px;
 }
 
+/* Seis datos: 3x2 en escritorio para que la rejilla quede cerrada. */
+.sponsor-grid--six {
+  grid-template-columns: repeat(3, 1fr);
+}
+
 .sponsor-stat {
   padding: 28px 24px;
   border-radius: var(--radius-md);
@@ -416,7 +421,8 @@
   font-size: 0.82rem;
   color: var(--text-muted);
   font-family: 'Space Grotesk', sans-serif;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
+  line-height: 1.45;
   text-transform: uppercase;
 }
 
