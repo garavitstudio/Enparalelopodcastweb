@@ -107,9 +107,29 @@
     'Con lo bien que botaba yo…'
   ];
 
+  // En el móvil el mismo bocadillo se come media pantalla y estorba para
+  // leer, así que ahí refunfuña igual pero más corto.
+  var MSG_ANGRY_CORTO = [
+    'Ahí te quedas.',
+    'Tú te lo pierdes.',
+    '¿Contento?',
+    'Sácame de aquí.',
+    'Con lo bien que botaba…'
+  ];
+
+  function pantallaPequena() {
+    return window.matchMedia('(max-width: 640px)').matches;
+  }
+
   var MSG_NEWSLETTER =
     '¿Qué haces, que no nos has dejado tu correo para la newsletter? ' +
     'Tú sabrás lo que te pierdes…';
+
+  // Al sacarlo de la caja sigue enfadado: repetirle el mensaje de bienvenida
+  // rompía el personaje, así que aquí negocia el perdón.
+  var MSG_PERDON =
+    'Si quieres que te perdone después de esto, deja tu correo en cualquier ' +
+    'formulario. Si no, olvídate de mí.';
   var MSG_VOLUMEN = 'Sube el volumen, anda… 🎧';
 
   // ---------- DOM ----------
@@ -258,6 +278,9 @@
   function showBubble(html, autoHideMs) {
     clearTimeout(bubbleTimer);
     bubble.innerHTML = html;
+    // Solo intercepta el dedo si trae enlace; si no, se puede tocar la web
+    // a través de él en vez de tener que esperar a que se vaya.
+    bubble.classList.toggle('has-link', html.indexOf('<a ') !== -1);
     bubble.classList.add('show');
     placeBubble();
     if (autoHideMs) bubbleTimer = setTimeout(hideBubble, autoHideMs);
@@ -335,10 +358,19 @@
 
   function scheduleGrumble(first) {
     clearTimeout(grumbleTimer);
-    var delay = first ? 5000 + Math.random() * 3000 : 9000 + Math.random() * 9000;
+    // En pantalla pequeña habla menos y menos rato: la gracia se mantiene,
+    // pero deja de taparle la web a quien está leyendo.
+    var movil = pantallaPequena();
+    var delay = first
+      ? (movil ? 7000 : 5000) + Math.random() * (movil ? 5000 : 3000)
+      : (movil ? 17000 : 9000) + Math.random() * (movil ? 16000 : 9000);
     grumbleTimer = setTimeout(function () {
       if (mode !== 'punished') return;
-      showBubble(MSG_ANGRY[Math.floor(Math.random() * MSG_ANGRY.length)], 4200);
+      var lista = pantallaPequena() ? MSG_ANGRY_CORTO : MSG_ANGRY;
+      showBubble(
+        lista[Math.floor(Math.random() * lista.length)],
+        pantallaPequena() ? 2600 : 4200
+      );
       scheduleGrumble();
     }, delay);
   }
@@ -368,7 +400,7 @@
 
   function clamp(v, min, max) { return Math.min(Math.max(v, min), max); }
 
-  function catchPanda() {
+  function catchPanda(desdeCaja) {
     clearTimeout(resumeTimer);
     clearTimeout(grumbleTimer);
     if (mode === 'flyTo') fly = null;
@@ -380,7 +412,9 @@
     vx = 0; vy = 0;
     setCaughtPose(true);
     showBubble(
-      MSG_NEWSLETTER + '<br /><a href="' + joinHref + '">Déjanoslo aquí →</a>'
+      (desdeCaja ? MSG_PERDON : MSG_NEWSLETTER) +
+      '<br /><a href="' + joinHref + '">' +
+      (desdeCaja ? 'Está bien, toma →' : 'Déjanoslo aquí →') + '</a>'
     );
   }
 
@@ -406,8 +440,9 @@
   el.addEventListener('pointerdown', function (e) {
     e.preventDefault();
     try { el.setPointerCapture(e.pointerId); } catch (err) {}
-    if (mode === 'punished') freeFromBox(); // sacarlo de la caja
-    catchPanda();
+    var desdeCaja = mode === 'punished';
+    if (desdeCaja) freeFromBox(); // sacarlo de la caja
+    catchPanda(desdeCaja);
     boxShow(true); // al arrastrar se descubre dónde soltarlo
     drag = {
       id: e.pointerId,
@@ -472,7 +507,11 @@
   el.addEventListener('keydown', function (e) {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      if (mode === 'punished') { freeFromBox(); releaseFromPunish(); }
+      if (mode === 'punished') {
+        freeFromBox();
+        catchPanda(true);
+        resumeTimer = setTimeout(releasePanda, 5000);
+      }
       else if (mode === 'caught') releasePanda();
       else { catchPanda(); resumeTimer = setTimeout(releasePanda, 5000); }
     }

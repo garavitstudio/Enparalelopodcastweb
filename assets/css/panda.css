@@ -198,6 +198,11 @@
 .lelo-bubble.show {
   opacity: 1;
   transform: scale(1);
+}
+
+/* Solo se puede pulsar cuando ofrece algo (el enlace al formulario);
+   el resto de bocadillos dejan pasar el dedo a lo que hay debajo. */
+.lelo-bubble.show.has-link {
   pointer-events: auto;
 }
 
@@ -246,5 +251,33 @@
 
 @media (max-width: 640px) {
   #lelo-panda { width: 68px; height: 87px; }
-  .lelo-bubble { max-width: 200px; font-size: 0.8rem; }
+
+  /* Un bocadillo de 240px sobre una pantalla de móvil tapa media web. Se
+     encoge para que siga leyéndose sin comerse lo que hay detrás. */
+  .lelo-bubble {
+    max-width: 168px;
+    font-size: 0.72rem;
+    line-height: 1.35;
+    padding: 8px 11px;
+    border-width: 2px;
+    border-radius: 12px;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.4);
+  }
+
+  /* El rabito se encoge con el bocadillo, en las dos orientaciones */
+  .lelo-bubble::before { bottom: -13px; left: 20px; border-width: 7px; border-bottom: none; }
+  .lelo-bubble::after  { bottom: -9px;  left: 22px; border-width: 5px; border-bottom: none; }
+
+  .lelo-bubble.below::before {
+    top: -13px;
+    border-width: 7px;
+    border-top: none;
+    border-bottom: 7px solid #14120f;
+  }
+  .lelo-bubble.below::after {
+    top: -9px;
+    border-width: 5px;
+    border-top: none;
+    border-bottom: 5px solid #fdfcf7;
+  }
 }

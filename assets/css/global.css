@@ -206,6 +206,66 @@ img {
   flex-shrink: 0;
   color: var(--neon-yellow);
   opacity: 0.92;
+  /* Mismo tubo de neón que el logo, a menor escala: los iconos son
+     pequeños y con el halo del logo se emborronarían. */
+  filter:
+    drop-shadow(0 0 4px rgba(255, 237, 74, 0.5))
+    drop-shadow(0 0 11px rgba(255, 237, 74, 0.22));
+  animation: iconNeon 6s ease-in-out infinite;
+}
+
+/* Respira y, de vez en cuando, pega el parpadeo del tubo fundido */
+@keyframes iconNeon {
+  0%, 100% {
+    opacity: 0.92;
+    filter: drop-shadow(0 0 4px rgba(255, 237, 74, 0.5)) drop-shadow(0 0 11px rgba(255, 237, 74, 0.22));
+  }
+  42% {
+    opacity: 1;
+    filter: drop-shadow(0 0 7px rgba(255, 237, 74, 0.75)) drop-shadow(0 0 18px rgba(255, 237, 74, 0.4));
+  }
+  70%, 74% {
+    opacity: 0.55;
+    filter: drop-shadow(0 0 2px rgba(255, 237, 74, 0.18));
+  }
+  72%, 78% {
+    opacity: 1;
+    filter: drop-shadow(0 0 7px rgba(255, 237, 74, 0.7)) drop-shadow(0 0 16px rgba(255, 237, 74, 0.35));
+  }
+}
+
+/* Los desfases evitan que toda la página parpadee a la vez, que parecería
+   un fallo de la web y no un letrero. En negativo para que arranquen ya
+   repartidos, sin espera inicial. */
+.col-card:nth-child(2) .ui-icon,
+.dist-stat:nth-child(2) .ui-icon,
+.sponsor-stat:nth-child(2) .ui-icon,
+.profile-card:nth-child(2) .ui-icon { animation-delay: -2.1s; }
+
+.col-card:nth-child(3) .ui-icon,
+.dist-stat:nth-child(3) .ui-icon,
+.sponsor-stat:nth-child(3) .ui-icon,
+.profile-card:nth-child(3) .ui-icon { animation-delay: -4.3s; }
+
+.sponsor-stat:nth-child(4) .ui-icon,
+.profile-card:nth-child(4) .ui-icon { animation-delay: -1.2s; }
+
+.sponsor-stat:nth-child(5) .ui-icon { animation-delay: -3.4s; }
+.sponsor-stat:nth-child(6) .ui-icon { animation-delay: -5.1s; }
+
+/* Al pasar por encima de la tarjeta, el icono sube de intensidad */
+.col-card:hover .ui-icon,
+.dist-stat:hover .ui-icon,
+.sponsor-stat:hover .ui-icon {
+  animation: none;
+  opacity: 1;
+  filter:
+    drop-shadow(0 0 8px rgba(255, 237, 74, 1))
+    drop-shadow(0 0 22px rgba(255, 237, 74, 0.55));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-icon { animation: none; }
 }
 
 /* Cuando acompaña a un texto en la misma línea */
@@ -213,6 +273,47 @@ img {
   display: inline-block;
   vertical-align: -0.16em;
   margin-right: 0.45em;
+}
+
+/* ===== INDICADOR DE FINAL DE PÁGINA =====
+   Los tres puntos que cierran el contenido, justo encima del pie. Van
+   anclados al final de #app, así que basta con incluirlos dentro. Necesitan
+   z-index propio: los paneles de cristal van en la capa 10 y los taparían. */
+.scroll-indicator {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  z-index: 11;
+}
+
+.scroll-indicator span {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--neon-yellow);
+  animation: scrollBounce 1.5s ease-in-out infinite;
+  box-shadow: 0 0 6px var(--neon-yellow);
+}
+
+.scroll-indicator span:nth-child(2) { animation-delay: 0.2s; opacity: 0.6; }
+.scroll-indicator span:nth-child(3) { animation-delay: 0.4s; opacity: 0.3; }
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(6px); opacity: 0.4; }
+}
+
+@media (max-width: 480px) {
+  /* El hueco bajo el último panel baja a 50px y los puntos (25px de alto
+     desde los 32px) se metían debajo del cristal: se bajan para que quepan
+     enteros en ese hueco. */
+  .scroll-indicator { bottom: 14px; }
 }
 
 /* ===== FORMS ===== */

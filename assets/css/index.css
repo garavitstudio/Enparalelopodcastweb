@@ -117,39 +117,7 @@
   text-transform: uppercase;
 }
 
-/* SCROLL INDICATOR */
-/* Va anclado al final del contenido (#app), como cierre de la página.
-   Necesita z-index propio: los paneles de cristal van en la capa 10 y,
-   si se solapan, lo taparían. */
-.scroll-indicator {
-  position: absolute;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  z-index: 11;
-}
-
-.scroll-indicator span {
-  display: block;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--neon-yellow);
-  animation: scrollBounce 1.5s ease-in-out infinite;
-  box-shadow: 0 0 6px var(--neon-yellow);
-}
-
-.scroll-indicator span:nth-child(2) { animation-delay: 0.2s; opacity: 0.6; }
-.scroll-indicator span:nth-child(3) { animation-delay: 0.4s; opacity: 0.3; }
-
-@keyframes scrollBounce {
-  0%, 100% { transform: translateY(0); opacity: 1; }
-  50% { transform: translateY(6px); opacity: 0.4; }
-}
+/* SCROLL INDICATOR: vive en global.css porque cierra todas las páginas */
 
 /* ========= COPY DOLOR ========= */
 .copy-section {}
@@ -877,8 +845,4 @@
   .hero-cta-row { flex-direction: column; align-items: stretch; }
   .btn-primary, .btn-secondary { justify-content: center; }
 
-  /* Aquí el hueco bajo el último panel baja a 50px y los puntos (25px de
-     alto desde los 32px) se metían debajo del cristal: se bajan para que
-     quepan enteros en ese hueco. */
-  .scroll-indicator { bottom: 14px; }
 }
