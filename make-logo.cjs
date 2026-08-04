@@ -37,7 +37,7 @@ const trazos = (color) => `
 const simbolo = (lado) => Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${lado}" height="${lado}" viewBox="0 0 100 100">
   <defs>
     <filter id="halo" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="4.5"/>
+      <feGaussianBlur stdDeviation="2.6"/>
     </filter>
     <filter id="suave" x="-30%" y="-30%" width="160%" height="160%">
       <feGaussianBlur stdDeviation="0.7"/>
@@ -138,7 +138,7 @@ const simbolo = (lado) => Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" w
 
   // El símbolo va un pelín mayor que la letra: su trazo es más fino que el
   // de la tipografía y, a igual altura, se vería más pequeño de lo que es.
-  const lado = Math.round(altoO * 1.46); // el halo ocupa por fuera del circulo
+  const lado = Math.round(altoO * 1.14); // el circulo queda a la altura de las mayusculas
   const cx = Math.round((ox + oxFin) / 2);
   const cy = Math.round((oy + oyFin) / 2);
 
