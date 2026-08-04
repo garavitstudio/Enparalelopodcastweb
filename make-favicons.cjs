@@ -173,12 +173,36 @@ const MARCAS = {
     <path d="M50 72 C42 54 58 46 50 28" stroke-width="11"/>`, 2.6),
 };
 
+// --- El abrazo con eco: los arcos de "el espacio entre los dos" y, dentro,
+// una voz y la que le responde.
+//
+// Los pesos van cruzados a propósito: el arco grande está a la izquierda y
+// la voz con más presencia a la derecha. Si el peso se acumulara en el mismo
+// lado, el conjunto escoraría; cruzado se equilibra sin caer en la simetría,
+// que es justo lo que no queremos.
+Object.assign(MARCAS, {
+  abrazoEco: envoltorio(`    <path d="M30 10 A46 46 0 0 0 30 90" stroke-width="11.5"/>
+    <path d="M70 24 A31 31 0 0 1 70 76" stroke-width="7" opacity="0.9"/>
+    <path d="M45 70 C41 56 49 50 45 36" stroke-width="5.5" opacity="0.5"/>
+    <circle cx="45" cy="32" r="3" fill="${AMARILLO}" stroke="none" opacity="0.5"/>
+    <path d="M58 76 C54 60 62 54 58 40" stroke-width="8.5"/>
+    <circle cx="58" cy="35" r="4.5" fill="${AMARILLO}" stroke="none"/>`, 2.4),
+
+  // Su versión reducida: a 16 px la voz tenue no se ve, así que se queda
+  // la principal, ya centrada para que el conjunto no cojee.
+  abrazoEcoMini: envoltorio(`    <path d="M28 10 A48 48 0 0 0 28 90" stroke-width="13"/>
+    <path d="M72 22 A33 33 0 0 1 72 78" stroke-width="8.5" opacity="0.9"/>
+    <path d="M50 74 C45 58 55 50 50 34" stroke-width="10"/>
+    <circle cx="50" cy="28" r="5" fill="${AMARILLO}" stroke="none"/>`, 2.6),
+});
+
 // Una marca puede tener versión reducida para los tamaños pequeños: a 16 px
 // el detalle interior se convierte en una mancha y conviene simplificar.
 const REDUCIDAS = {
   abrazo: 'abrazoMini',
   abrazo2: 'abrazoMini',
   abrazo3: 'abrazoMini',
+  abrazoEco: 'abrazoEcoMini',
 };
 
 async function generar(marca) {
