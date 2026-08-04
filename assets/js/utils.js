@@ -161,6 +161,9 @@
         btn.style.borderColor = 'rgba(255,237,74,0.5)';
         btn.style.color = '#ffed4a';
         this.reset();
+
+        // Ya nos has dejado el correo: a lelo se le pasa el enfado
+        if (typeof window.leloPerdona === 'function') window.leloPerdona();
       } catch (err) {
         btn.textContent = 'No se pudo enviar. Inténtalo de nuevo';
       }

@@ -130,6 +130,46 @@
   var MSG_PERDON =
     'Si quieres que te perdone después de esto, deja tu correo en cualquier ' +
     'formulario. Si no, olvídate de mí.';
+
+  var MSG_MORROS = 'De aquí no me muevo hasta que dejes tu correo.';
+  var MSG_VUELVES = 'No te intentes escapar, que sigo enfadado contigo.';
+  var MSG_PAZ = '¡Bueno! Pues ya estamos en paz. Vamos a botar 🐼';
+
+  // Refunfuños de cuando está plantado fuera de la caja
+  var MSG_MORROS_MAS = [
+    'Sigo aquí, ¿eh?',
+    'Tú mismo. Yo tengo todo el día.',
+    'Un correo. No te pido más.',
+    'No pienso moverme.',
+    'Te estoy mirando.'
+  ];
+
+  // ---------- ENFADO QUE SOBREVIVE A LA RECARGA ----------
+  // Se guarda solo una marca de tiempo en localStorage (no es una cookie ni
+  // identifica a nadie) y caduca sola, para que el enfado no sea eterno.
+  var CLAVE_ENFADO = 'lelo:enfadado';
+  var ENFADO_MS = 25 * 60 * 1000; // 25 minutos
+
+  function leerEnfado() {
+    try {
+      var ts = parseInt(localStorage.getItem(CLAVE_ENFADO), 10);
+      if (!ts) return 0;
+      if (Date.now() - ts > ENFADO_MS) { borrarEnfado(); return 0; }
+      return ts;
+    } catch (e) {
+      return 0; // navegación privada o almacenamiento bloqueado
+    }
+  }
+
+  function guardarEnfado() {
+    try { localStorage.setItem(CLAVE_ENFADO, String(Date.now())); } catch (e) {}
+  }
+
+  function borrarEnfado() {
+    try { localStorage.removeItem(CLAVE_ENFADO); } catch (e) {}
+  }
+
+  function sigueEnfadado() { return leerEnfado() !== 0; }
   var MSG_VOLUMEN = 'Sube el volumen, anda… 🎧';
 
   // ---------- DOM ----------
@@ -217,6 +257,7 @@
   var landings = [];       // aterrizajes recientes, para detectar atascos
   var panelsMutedUntil = 0;
   var grumbleTimer = null; // refunfuños mientras está castigado
+  var caducidadTimer = null; // vigila cuándo se le pasa el enfado
 
   var panelEls = [];
   var panelRects = []; // [{r, el}]
@@ -335,6 +376,22 @@
     el.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0)';
   }
 
+  // ---------- MORROS: plantado junto a la caja ----------
+  // Se pone al lado que tenga sitio, con los pies a la altura de la base de
+  // la caja para que se lea como "he salido, pero no me he ido".
+  function morrosTarget() {
+    var r = boxRect();
+    // La separación no es estética: pegado a la caja, overBox() lo daría por
+    // dentro y un simple toque volvería a castigarlo sin querer.
+    var izq = r.left - pw - 14;
+    var der = r.right + 14;
+    var sx;
+    if (izq >= 6) sx = izq;
+    else if (der + pw <= W - 6) sx = der;
+    else sx = Math.max(6, izq);
+    return { x: sx, y: r.bottom - ph };
+  }
+
   function punish() {
     clearTimeout(resumeTimer);
     mode = 'punished';
@@ -365,8 +422,11 @@
       ? (movil ? 7000 : 5000) + Math.random() * (movil ? 5000 : 3000)
       : (movil ? 17000 : 9000) + Math.random() * (movil ? 16000 : 9000);
     grumbleTimer = setTimeout(function () {
-      if (mode !== 'punished') return;
-      var lista = pantallaPequena() ? MSG_ANGRY_CORTO : MSG_ANGRY;
+      if (mode !== 'punished' && mode !== 'sulk') return;
+      // Dentro de la caja se queja del castigo; fuera, de que sigue esperando
+      var lista = mode === 'sulk'
+        ? MSG_MORROS_MAS
+        : (pantallaPequena() ? MSG_ANGRY_CORTO : MSG_ANGRY);
       showBubble(
         lista[Math.floor(Math.random() * lista.length)],
         pantallaPequena() ? 2600 : 4200
@@ -380,6 +440,84 @@
     el.classList.remove('punished', 'tantrum');
     boxShow(false);
   }
+
+  // Salta fuera de la caja y se queda plantado al lado, de brazos cruzados,
+  // hasta que llegue el correo o se le pase el enfado.
+  function saltarAMorros(conMensaje) {
+    clearTimeout(resumeTimer);
+    clearTimeout(grumbleTimer);
+    tunneling = false;
+    tunnelArmed = false;
+    vx = 0; vy = 0;
+    setCaughtPose(false);
+    boxShow(true);
+    el.classList.add('punished');
+    el.classList.remove('airborne', 'face-left', 'tantrum');
+
+    if (reduceMotion) {
+      var t = morrosTarget();
+      x = t.x; y = t.y;
+      entrarEnMorros(conMensaje);
+      return;
+    }
+
+    fly = {
+      x0: x, y0: y,
+      t0: performance.now(),
+      dur: 520,
+      arc: 70,
+      destino: morrosTarget,
+      alTerminar: function () { entrarEnMorros(conMensaje); }
+    };
+    mode = 'flyTo';
+    el.classList.add('airborne');
+  }
+
+  function entrarEnMorros(conMensaje) {
+    mode = 'sulk';
+    el.classList.remove('airborne');
+    el.classList.add('punished');
+    pulse('squash');
+    if (conMensaje) {
+      showBubble(conMensaje + '<br /><a href="' + joinHref + '">Va, te lo dejo →</a>');
+    }
+    scheduleGrumble(true);
+    vigilarCaducidad();
+  }
+
+  // El enfado caduca solo: si nadie deja el correo, a los 25 minutos vuelve
+  // a botar como si nada para no dejar la web bloqueada de por vida.
+  function vigilarCaducidad() {
+    clearTimeout(caducidadTimer);
+    caducidadTimer = setTimeout(function () {
+      if (mode !== 'sulk') return;
+      if (sigueEnfadado()) { vigilarCaducidad(); return; }
+      volverANormal(false);
+    }, 20000);
+  }
+
+  // Se le pasa el enfado: sale de la caja, se despide y retoma los saltos
+  function volverANormal(perdonado) {
+    clearTimeout(grumbleTimer);
+    clearTimeout(caducidadTimer);
+    borrarEnfado();
+    el.classList.remove('punished', 'tantrum');
+    boxShow(false);
+    fly = null;
+    if (perdonado) showBubble(MSG_PAZ, 4000);
+    else hideBubble();
+    if (reduceMotion) { park(); return; }
+    mode = 'bounce';
+    vy = -9;
+    vx = (x > W / 2 ? -1 : 1) * 2.6;
+  }
+
+  // Puente para el resto de la web: al enviar un formulario con correo se
+  // le perdona. Vive en window porque quien lo llama es utils.js.
+  window.leloPerdona = function () {
+    if (!sigueEnfadado() && mode !== 'sulk' && mode !== 'punished') return;
+    volverANormal(true);
+  };
 
   // ---------- POSES ----------
   function setCaughtPose(on) {
@@ -422,6 +560,12 @@
   function releasePanda(throwVx, throwVy) {
     if (mode !== 'caught') return;
     setCaughtPose(false);
+
+    // Si sigue enfadado no vuelve a botar: se planta al lado de la caja.
+    // Antes se soltaba y se iba dando saltos, y no daba tiempo ni a leer
+    // lo que pedía.
+    if (sigueEnfadado()) { saltarAMorros(MSG_MORROS); return; }
+
     el.classList.remove('punished', 'tantrum');
     boxShow(false);
     if (reduceMotion) { hideBubble(); mode = 'parked'; return; }
@@ -441,8 +585,8 @@
     e.preventDefault();
     try { el.setPointerCapture(e.pointerId); } catch (err) {}
     var desdeCaja = mode === 'punished';
-    if (desdeCaja) freeFromBox(); // sacarlo de la caja
-    catchPanda(desdeCaja);
+    if (desdeCaja) { guardarEnfado(); freeFromBox(); } // sacarlo de la caja
+    catchPanda(desdeCaja || sigueEnfadado());
     boxShow(true); // al arrastrar se descubre dónde soltarlo
     drag = {
       id: e.pointerId,
@@ -508,6 +652,7 @@
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       if (mode === 'punished') {
+        guardarEnfado();
         freeFromBox();
         catchPanda(true);
         resumeTimer = setTimeout(releasePanda, 5000);
@@ -741,11 +886,15 @@
   function flyPhysics(now) {
     var t = Math.min((now - fly.t0) / fly.dur, 1);
     var ease = t * (2 - t); // easeOutQuad
-    var tgt = perchTarget();
+    // El vuelo sirve tanto para posarse en el audio como para el salto a
+    // los morros: cada uno trae su destino y qué hacer al llegar.
+    var tgt = (fly.destino || perchTarget)();
     x = fly.x0 + (tgt.x - fly.x0) * ease;
     y = fly.y0 + (tgt.y - fly.y0) * ease - Math.sin(t * Math.PI) * fly.arc;
     if (t >= 1) {
+      var alTerminar = fly.alTerminar;
       fly = null;
+      if (alTerminar) { alTerminar(); return; }
       mode = 'perched';
       perchedSince = now;
       el.classList.remove('airborne');
@@ -785,6 +934,12 @@
       x = br.left + (br.width - pw) / 2;
       y = br.top - ph * 0.52;
     }
+    else if (mode === 'sulk') {
+      // Plantado junto a la caja, siguiéndola si la pantalla cambia
+      var mt = morrosTarget();
+      x = mt.x;
+      y = mt.y;
+    }
 
     var tilt = mode === 'bounce' ? Math.max(-8, Math.min(8, vx * 2)) : 0;
     el.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) rotate(' + tilt + 'deg)';
@@ -816,11 +971,33 @@
     el.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0)';
   }
 
+  // ---------- ARRANQUE ----------
+  // Si quedó enfadado en la visita anterior sigue plantado donde lo dejaste:
+  // recargar la página no le hace olvidar.
+  function arrancarEnfadado() {
+    boxShow(true);
+    el.classList.add('punished');
+    el.classList.remove('airborne', 'face-left');
+    mode = 'sulk';
+    var t = morrosTarget();
+    x = t.x; y = t.y;
+    el.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0)';
+    // Un respiro antes de soltar la pulla, para que dé tiempo a verlo ahí
+    setTimeout(function () {
+      if (mode !== 'sulk') return;
+      showBubble(MSG_VUELVES + '<br /><a href="' + joinHref + '">Va, te lo dejo →</a>', 7000);
+    }, 1400);
+    scheduleGrumble(true);
+    vigilarCaducidad();
+  }
+
   if (reduceMotion) {
     // Sin animación: el panda se queda quieto en la esquina y solo
     // reacciona al atraparlo (el bucle de físicas no corre).
-    park();
+    if (sigueEnfadado()) arrancarEnfadado();
+    else park();
   } else {
+    if (sigueEnfadado()) arrancarEnfadado();
     requestAnimationFrame(frame);
   }
 })();
