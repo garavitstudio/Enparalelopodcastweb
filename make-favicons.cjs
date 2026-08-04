@@ -223,6 +223,21 @@ Object.assign(MARCAS, {
     <path d="M57 70 C52 56 62 48 57 35" stroke-width="4.6"/>
     <circle cx="57" cy="30" r="3" fill="${AMARILLO}" stroke="none"/>`, 2.3),
 
+  // Arcos más separados y de distinto tamaño: el derecho traza un radio
+  // menor, así que la asimetría se ve sin necesidad de forzarla. Siguen
+  // compartiendo centro, que es lo que impide que parezca un error.
+  circuloDes: envoltorio(`    <path d="M42 12 A39 39 0 0 0 42 88" stroke-width="11"/>
+    <path d="M60 20 A32 32 0 0 1 60 80" stroke-width="7" opacity="0.88"/>
+    <path d="M43 68 C38 55 48 47 43 34" stroke-width="3.2" opacity="0.5"/>
+    <circle cx="43" cy="30" r="2.2" fill="${AMARILLO}" stroke="none" opacity="0.5"/>
+    <path d="M56 70 C51 56 61 48 56 35" stroke-width="4.6"/>
+    <circle cx="56" cy="30" r="3" fill="${AMARILLO}" stroke="none"/>`, 2.3),
+
+  circuloDesMini: envoltorio(`    <path d="M42 11 A40 40 0 0 0 42 89" stroke-width="12.5"/>
+    <path d="M61 19 A33 33 0 0 1 61 81" stroke-width="8.5" opacity="0.88"/>
+    <path d="M49 70 C44 56 54 48 49 34" stroke-width="9"/>
+    <circle cx="49" cy="28" r="4.6" fill="${AMARILLO}" stroke="none"/>`, 2.6),
+
   // A tamaño pequeño la voz tenue no llega: se queda una sola, centrada.
   circuloEcoMini: envoltorio(`    <path d="M44 12 A39 39 0 0 0 44 88" stroke-width="12.5"/>
     <path d="M56 12 A39 39 0 0 1 56 88" stroke-width="9" opacity="0.9"/>
@@ -239,6 +254,7 @@ const REDUCIDAS = {
   abrazoEco: 'abrazoEcoMini',
   circuloEco: 'circuloEcoMini',
   circuloFino: 'circuloEcoMini',
+  circuloDes: 'circuloDesMini',
 };
 
 async function generar(marca) {
