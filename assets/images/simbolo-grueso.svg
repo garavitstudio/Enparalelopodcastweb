@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 100 100" role="img" aria-label="Simbolo de En Paralelo, version gruesa">
+  <title>En Paralelo — símbolo (trazo grueso)</title>
+
+  <!-- Version de trazo grueso: la que se adapto para ocupar el lugar de la O.
+       Pesa como la tipografia del logotipo (grosor 0,22 sobre la altura),
+       asi que dentro de la palabra no se lee como si fuera de otra fuente.
+
+       Mismo criterio que la version fina: un solo grupo, un solo color y
+       todo hecho con trazos, para que al cambiar el color cambie entero.
+       Los puntos son segmentos minimos con extremo redondo. -->
+  <g fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round">
+
+    <!-- Arco mayor: abraza por la izquierda -->
+    <path d="M42 14 A38 38 0 0 0 42 86" stroke-width="15"/>
+
+    <!-- Arco menor: mas cerrado y mas fino, para que no sean simetricos -->
+    <path d="M60 21 A31 31 0 0 1 60 79" stroke-width="10"/>
+
+    <!-- Voz que escucha: mas fina, a la izquierda -->
+    <path d="M44 66 C39 55 48 47 44 36" stroke-width="4.4"/>
+    <path d="M44 32 L44 32.01" stroke-width="6"/>
+
+    <!-- Voz que habla: con mas presencia, a la derecha -->
+    <path d="M57 69 C52 57 61 49 57 38" stroke-width="6.2"/>
+    <path d="M57 33 L57 33.01" stroke-width="8"/>
+
+  </g>
+</svg>
