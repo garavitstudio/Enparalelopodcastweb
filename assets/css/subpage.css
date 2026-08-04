@@ -475,6 +475,252 @@
   flex-wrap: wrap;
 }
 
+/* ===== ESCENARIO DE INVITADOS =====
+   Un solo episodio en grande con su ficha al lado, y una tira inferior
+   para saltar entre invitados. Es un carrusel, pero se navega eligiendo
+   a la persona en vez de deslizando tarjetas como en la portada. */
+.guest-stage {
+  margin-top: 34px;
+}
+
+.gs-item {
+  display: none;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.gs-item.is-active {
+  display: grid;
+  animation: gsFade 0.45s ease;
+}
+
+@keyframes gsFade {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* --- Reproductor --- */
+.gs-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+}
+
+.gs-media img,
+.gs-media iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+}
+
+.gs-media img {
+  object-fit: cover;
+  transition: transform 0.6s ease, filter 0.4s ease;
+}
+
+.gs-media:hover img {
+  transform: scale(1.04);
+  filter: brightness(0.85);
+}
+
+.gs-play {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 237, 74, 0.5);
+  background: rgba(10, 10, 10, 0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--neon-yellow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.gs-play svg { width: 22px; height: 22px; margin-left: 3px; }
+
+/* Miniatura y boton mientras el episodio esta sonando */
+.gs-hidden { display: none !important; }
+
+.gs-media:hover .gs-play,
+.gs-play:focus-visible {
+  transform: scale(1.12);
+  background: rgba(255, 237, 74, 0.15);
+  box-shadow: 0 0 26px rgba(255, 237, 74, 0.35);
+}
+
+/* --- Ficha --- */
+.gs-body { padding-top: 4px; }
+
+.gs-role {
+  display: inline-block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--neon-yellow);
+  background: rgba(255, 237, 74, 0.08);
+  border: 1px solid rgba(255, 237, 74, 0.22);
+  padding: 5px 12px;
+  border-radius: 100px;
+}
+
+.gs-name {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.1;
+  margin: 14px 0 10px;
+  color: var(--text-primary);
+}
+
+.gs-ep {
+  font-size: 0.92rem;
+  color: rgba(240, 240, 240, 0.55);
+  font-style: italic;
+  border-left: 2px solid rgba(255, 237, 74, 0.3);
+  padding-left: 12px;
+  margin-bottom: 16px;
+}
+
+.gs-desc {
+  color: rgba(240, 240, 240, 0.75);
+  font-size: 0.97rem;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.gs-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.84rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--neon-yellow);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 237, 74, 0.35);
+  padding-bottom: 3px;
+  transition: gap 0.25s ease, border-color 0.25s ease;
+}
+
+.gs-link:hover { gap: 14px; border-color: var(--neon-yellow); }
+.gs-link svg { width: 15px; height: 15px; }
+
+/* --- Barra de navegación --- */
+.gs-nav {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.gs-count {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  min-width: 62px;
+}
+
+.gs-count b { color: var(--neon-yellow); font-weight: 500; }
+
+.gs-arrow {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.gs-arrow:hover:not(:disabled) {
+  border-color: var(--neon-yellow);
+  color: var(--neon-yellow);
+  background: rgba(255, 237, 74, 0.08);
+}
+
+.gs-arrow:disabled { opacity: 0.25; cursor: default; }
+
+/* --- Tira de invitados --- */
+.gs-rail {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.gs-tab {
+  text-align: left;
+  padding: 13px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.025);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.gs-tab:hover {
+  border-color: rgba(255, 237, 74, 0.3);
+  background: rgba(255, 237, 74, 0.05);
+}
+
+.gs-tab.is-active {
+  border-color: rgba(255, 237, 74, 0.55);
+  background: rgba(255, 237, 74, 0.09);
+  box-shadow: inset 0 0 18px rgba(255, 237, 74, 0.08);
+}
+
+.gs-tab-name {
+  display: block;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.gs-tab.is-active .gs-tab-name { color: var(--neon-yellow); }
+
+.gs-tab-role {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+@media (max-width: 1024px) {
+  .gs-rail { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 900px) {
+  .gs-item.is-active { grid-template-columns: 1fr; gap: 22px; }
+}
+
+@media (max-width: 560px) {
+  .gs-rail { grid-template-columns: repeat(2, 1fr); }
+  .gs-play { width: 54px; height: 54px; }
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
   .story-block { grid-template-columns: 1fr; }
