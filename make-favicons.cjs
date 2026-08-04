@@ -245,9 +245,47 @@ Object.assign(MARCAS, {
     <circle cx="50" cy="28" r="5" fill="${AMARILLO}" stroke="none"/>`, 2.6),
 });
 
+// --- La versión definitiva, la misma que el símbolo suelto ---
+//
+// Sin opacidades: las dos voces se distinguen por grosor, no por
+// transparencia. Aguanta mejor en pequeño, porque un trazo al 50% se pierde
+// antes que uno fino, y además funciona a una sola tinta.
+const definitiva = (trazo, fondo) => `<svg xmlns="http://www.w3.org/2000/svg" width="LADO" height="LADO" viewBox="0 0 100 100">
+  <rect width="100" height="100" fill="${fondo}"/>
+  <g fill="none" stroke="${trazo}" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M42 12 A39 39 0 0 0 42 88" stroke-width="11"/>
+    <path d="M60 20 A32 32 0 0 1 60 80" stroke-width="7"/>
+    <path d="M43 68 C38 55 48 47 43 34" stroke-width="3.2"/>
+    <path d="M43 30 L43 30.01" stroke-width="4.4"/>
+    <path d="M56 70 C51 56 61 48 56 35" stroke-width="4.6"/>
+    <path d="M56 30 L56 30.01" stroke-width="6"/>
+  </g>
+</svg>`;
+
+// A 16 px las dos voces se juntan en una mancha: ahí va una sola, centrada.
+const definitivaMini = (trazo, fondo) => `<svg xmlns="http://www.w3.org/2000/svg" width="LADO" height="LADO" viewBox="0 0 100 100">
+  <rect width="100" height="100" fill="${fondo}"/>
+  <g fill="none" stroke="${trazo}" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M42 11 A40 40 0 0 0 42 89" stroke-width="12.5"/>
+    <path d="M61 19 A33 33 0 0 1 61 81" stroke-width="8.5"/>
+    <path d="M49 70 C44 56 54 48 49 34" stroke-width="9"/>
+    <path d="M49 28 L49 28.01" stroke-width="10"/>
+  </g>
+</svg>`;
+
+Object.assign(MARCAS, {
+  simbolo: definitiva(AMARILLO, NEGRO),
+  simboloMini: definitivaMini(AMARILLO, NEGRO),
+  // Invertida: el cuadrado amarillo destaca más sobre el blanco de Google
+  simboloInv: definitiva(NEGRO, AMARILLO),
+  simboloInvMini: definitivaMini(NEGRO, AMARILLO),
+});
+
 // Una marca puede tener versión reducida para los tamaños pequeños: a 16 px
 // el detalle interior se convierte en una mancha y conviene simplificar.
 const REDUCIDAS = {
+  simbolo: 'simboloMini',
+  simboloInv: 'simboloInvMini',
   abrazo: 'abrazoMini',
   abrazo2: 'abrazoMini',
   abrazo3: 'abrazoMini',

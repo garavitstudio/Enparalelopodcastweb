@@ -11,29 +11,41 @@ const fs = require('fs');
 const path = require('path');
 
 const IMG = path.join(__dirname, 'assets/images');
-const AMARILLO = '#ffed4a';
 const ANCHO = 1600;   // resolución de trabajo
 const UMBRAL = 225;   // por encima de esto es trazo, por debajo es resplandor
+
+// Colores medidos sobre el propio logo, no elegidos a ojo: el núcleo del
+// neón es casi crema y el resplandor, el amarillo saturado de la marca.
+// Con un solo tono el símbolo se veía de otro color que las letras.
+const NUCLEO = '#ffee92';
+const HALO = '#ffe133';
 
 // El símbolo, engordado para casar con el peso de la tipografía y con su
 // mismo resplandor. En el icono el trazo es fino porque va solo; metido
 // dentro de la palabra tiene que pesar lo que pesan las demás letras, o se
 // lee como si fuera de otra fuente.
+const trazos = (color) => `
+    <path d="M42 14 A38 38 0 0 0 42 86" stroke-width="15"/>
+    <path d="M60 21 A31 31 0 0 1 60 79" stroke-width="10"/>
+    <path d="M44 66 C39 55 48 47 44 36" stroke-width="4.4"/>
+    <path d="M44 32 L44 32.01" stroke-width="6"/>
+    <path d="M57 69 C52 57 61 49 57 38" stroke-width="6.2"/>
+    <path d="M57 33 L57 33.01" stroke-width="8"/>`;
+
+// El símbolo montado como el neón de las letras: un halo saturado detrás y
+// el núcleo claro encima. Con un solo tono plano no casaba con el logo.
 const simbolo = (lado) => Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${lado}" height="${lado}" viewBox="0 0 100 100">
   <defs>
-    <filter id="neon" x="-45%" y="-45%" width="190%" height="190%">
-      <feGaussianBlur stdDeviation="3" result="b"/>
-      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    <filter id="halo" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="4.5"/>
+    </filter>
+    <filter id="suave" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="0.7"/>
     </filter>
   </defs>
-  <g filter="url(#neon)" fill="none" stroke="${AMARILLO}" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M42 14 A38 38 0 0 0 42 86" stroke-width="16"/>
-    <path d="M60 21 A31 31 0 0 1 60 79" stroke-width="10.5" opacity="0.9"/>
-    <path d="M44 66 C39 55 48 47 44 36" stroke-width="4.6" opacity="0.55"/>
-    <circle cx="44" cy="32" r="3.2" fill="${AMARILLO}" stroke="none" opacity="0.55"/>
-    <path d="M57 69 C52 57 61 49 57 38" stroke-width="6.5"/>
-    <circle cx="57" cy="33" r="4.4" fill="${AMARILLO}" stroke="none"/>
-  </g>
+  <g fill="none" stroke="${HALO}" stroke-linecap="round" stroke-linejoin="round" filter="url(#halo)" opacity="0.85">${trazos()}</g>
+  <g fill="none" stroke="${HALO}" stroke-linecap="round" stroke-linejoin="round" filter="url(#suave)">${trazos()}</g>
+  <g fill="none" stroke="${NUCLEO}" stroke-linecap="round" stroke-linejoin="round" filter="url(#suave)" stroke-opacity="0.95">${trazos()}</g>
 </svg>`);
 
 (async () => {
@@ -78,17 +90,55 @@ const simbolo = (lado) => Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" w
   const altoO = oyFin - oy + 1;
   console.log(`la O: x ${ox}-${oxFin} (${anchoO}px)  ·  y ${oy}-${oyFin} (${altoO}px)`);
 
-  // Se borra la O con margen suficiente para llevarse también su resplandor
-  const m = Math.round(altoO * 0.34);
-  const mascara = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
+  // Se borra la O, con margen para llevarse también su resplandor.
+  //
+  // El hueco tiene que ser TRANSPARENTE, no negro: al recortar con dest-in
+  // lo que decide es el canal alfa y no el color, así que un rectángulo
+  // negro opaco no borraba nada. Se usa un path con regla par-impar, que
+  // deja el interior sin pintar de verdad.
+  // El recorte es una elipse, no un rectángulo, y con el borde difuminado:
+  // el logo lleva un resplandor de fondo alrededor de las letras y, si se
+  // corta en seco, queda un agujero rectangular a la vista.
+  const m = Math.round(altoO * 0.2);
+  const cxO = (ox + oxFin) / 2, cyO = (oy + oyFin) / 2;
+  const rxE = anchoO / 2 + m, ryE = altoO / 2 + m;
+
+  const mascara = await sharp(Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
     <rect width="${W}" height="${H}" fill="#fff"/>
-    <rect x="${ox - m}" y="${oy - m}" width="${anchoO + m * 2}" height="${altoO + m * 2}" rx="${m}" fill="#000"/>
-  </svg>`);
-  const sinO = await base.clone().composite([{ input: mascara, blend: 'dest-in' }]).png().toBuffer();
+    <ellipse cx="${cxO}" cy="${cyO}" rx="${rxE}" ry="${ryE}" fill="#000"/>
+  </svg>`))
+    .blur(14)                 // difumina la frontera del recorte
+    .toColourspace('b-w')
+    .raw().toBuffer({ resolveWithObject: true });
+
+  // El gris de la máscara se traslada al canal alfa: negro borra, blanco deja
+  const alfa = Buffer.alloc(W * H * 4);
+  for (let i = 0; i < W * H; i++) {
+    alfa[i * 4] = alfa[i * 4 + 1] = alfa[i * 4 + 2] = 255;
+    alfa[i * 4 + 3] = mascara.data[i];
+  }
+  const sinO = await base.clone()
+    .composite([{ input: alfa, raw: { width: W, height: H, channels: 4 }, blend: 'dest-in' }])
+    .png().toBuffer();
+
+  const rx = Math.round(cxO - rxE), ry = Math.round(cyO - ryE);
+  const rw = Math.round(rxE * 2), rh = Math.round(ryE * 2);
+
+  // Comprobación: en el hueco no puede quedar tinta de la letra anterior
+  const { data: dSin } = await sharp(sinO).raw().toBuffer({ resolveWithObject: true });
+  let restos = 0;
+  for (let y = ry; y < ry + rh; y++) {
+    for (let x = rx; x < rx + rw; x++) {
+      if (dSin[(y * W + x) * C + (C - 1)] > 60) restos++;
+    }
+  }
+  console.log(restos === 0
+    ? 'la O queda borrada (borde difuminado)'
+    : `AVISO: quedan ${restos} pixeles de la O sin borrar`);
 
   // El símbolo va un pelín mayor que la letra: su trazo es más fino que el
   // de la tipografía y, a igual altura, se vería más pequeño de lo que es.
-  const lado = Math.round(altoO * 1.34); // el resplandor ocupa fuera del circulo
+  const lado = Math.round(altoO * 1.46); // el halo ocupa por fuera del circulo
   const cx = Math.round((ox + oxFin) / 2);
   const cy = Math.round((oy + oyFin) / 2);
 
