@@ -589,6 +589,18 @@
               '<span>Tu correo</span>' +
               '<input type="email" name="email" class="form-input" placeholder="tu@email.com" required autocomplete="email" />' +
             '</label>' +
+            // Obligatorio a propósito: si viniera con un valor por defecto,
+            // todo el mundo quedaría registrado como lo que pusiéramos aquí.
+            '<label class="lelo-panel-field">' +
+              '<span>¿En calidad de qué vienes?</span>' +
+              '<select name="perfil" class="form-input" required>' +
+                '<option value="" disabled selected>Elige una opción</option>' +
+                '<option value="oyente">Oyente</option>' +
+                '<option value="invitado">Invitado potencial</option>' +
+                '<option value="patrocinador">Marca o patrocinador</option>' +
+                '<option value="curioso">Curioso, pasaba por aquí</option>' +
+              '</select>' +
+            '</label>' +
             '<label class="form-consent">' +
               '<input type="checkbox" name="consentimiento" value="sí" required />' +
               '<span>He leído y acepto la <a href="/privacidad" target="_blank" rel="noopener">política de privacidad</a>.</span>' +
