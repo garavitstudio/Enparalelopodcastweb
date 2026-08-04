@@ -380,15 +380,20 @@ select.form-input:hover {
   border-color: rgba(255, 237, 74, 0.35);
 }
 
-/* Mientras no se ha elegido nada, el texto va atenuado como un placeholder */
-select.form-input:invalid { color: var(--text-dim); }
+/* Mientras no se ha elegido nada, el texto va atenuado como un placeholder.
+   Con --text-dim (#555) sobre este fondo el contraste era de 2,5:1 y no
+   había quien lo leyera; --text-muted da 5,3:1 y sí cumple. */
+select.form-input:invalid { color: var(--text-muted); }
 
 select.form-input option {
   background: #111;
   color: var(--text-primary);
 }
 
-select.form-input option[value=""] { color: var(--text-dim); }
+select.form-input option[value=""] { color: var(--text-muted); }
+
+/* Edge antiguo pinta su propia flecha además de la nuestra */
+select.form-input::-ms-expand { display: none; }
 
 textarea.form-input {
   resize: vertical;
