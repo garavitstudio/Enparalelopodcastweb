@@ -258,6 +258,7 @@
   var panelsMutedUntil = 0;
   var grumbleTimer = null; // refunfuños mientras está castigado
   var caducidadTimer = null; // vigila cuándo se le pasa el enfado
+  var morrosDichos = 0;      // refunfuños soltados, para repetir el enlace
 
   var panelEls = [];
   var panelRects = []; // [{r, el}]
@@ -424,13 +425,20 @@
     grumbleTimer = setTimeout(function () {
       if (mode !== 'punished' && mode !== 'sulk') return;
       // Dentro de la caja se queja del castigo; fuera, de que sigue esperando
-      var lista = mode === 'sulk'
+      var enMorros = mode === 'sulk';
+      var lista = enMorros
         ? MSG_MORROS_MAS
         : (pantallaPequena() ? MSG_ANGRY_CORTO : MSG_ANGRY);
-      showBubble(
-        lista[Math.floor(Math.random() * lista.length)],
-        pantallaPequena() ? 2600 : 4200
-      );
+      var texto = lista[Math.floor(Math.random() * lista.length)];
+
+      // De vez en cuando vuelve a ofrecer el enlace: el primer bocadillo ya
+      // se ha ido y si no, habría que ir a buscar el formulario a mano.
+      morrosDichos++;
+      if (enMorros && morrosDichos % 3 === 0) {
+        texto += '<br /><a href="' + joinHref + '">Va, te lo dejo →</a>';
+      }
+
+      showBubble(texto, pantallaPequena() ? 3200 : 5000);
       scheduleGrumble();
     }, delay);
   }
@@ -478,8 +486,10 @@
     el.classList.remove('airborne');
     el.classList.add('punished');
     pulse('squash');
+    // Con caducidad: un bocadillo clavado en pantalla acaba estorbando, y
+    // para volver a verlo basta con tocarlo.
     if (conMensaje) {
-      showBubble(conMensaje + '<br /><a href="' + joinHref + '">Va, te lo dejo →</a>');
+      showBubble(conMensaje + '<br /><a href="' + joinHref + '">Va, te lo dejo →</a>', 9000);
     }
     scheduleGrumble(true);
     vigilarCaducidad();

@@ -200,9 +200,10 @@
   transform: scale(1);
 }
 
-/* Solo se puede pulsar cuando ofrece algo (el enlace al formulario);
-   el resto de bocadillos dejan pasar el dedo a lo que hay debajo. */
-.lelo-bubble.show.has-link {
+/* Lo único pulsable es el enlace. El cuerpo del bocadillo nunca captura el
+   dedo: si lo hacía, un bocadillo abierto sobre un formulario impedía
+   escribir en el campo que hay debajo. */
+.lelo-bubble.show.has-link a {
   pointer-events: auto;
 }
 
