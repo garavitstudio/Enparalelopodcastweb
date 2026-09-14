@@ -17,6 +17,8 @@
     "sharp": "^0.33.3"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
+    "@vercel/functions": "^3.9.7",
     "text-to-svg": "^3.1.5"
   }
 }
