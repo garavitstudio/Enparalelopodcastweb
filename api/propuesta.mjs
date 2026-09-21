@@ -35,6 +35,18 @@ const ORIGENES = new Set([
 	'https://www.enparalelopodcast.com',
 ]);
 
+/**
+ * Y desde la red de casa, para poder ver la propuesta en el móvil antes de
+ * publicarla. Solo direcciones privadas: nadie puede llegar aquí desde fuera
+ * con un origen `192.168.x.x`, porque ese origen solo existe dentro de una
+ * red local. Lo que de verdad limita el daño es `LECTORES`, no esta lista.
+ */
+const ORIGEN_LOCAL = /^https?:\/\/(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+)(:\d+)?$/;
+
+function origenPermitido(origen) {
+	return Boolean(origen) && (ORIGENES.has(origen) || ORIGEN_LOCAL.test(origen));
+}
+
 /** Topes de cordura. Son notas de una persona, no un almacén. */
 const MAX_BYTES = 64 * 1024;
 const MAX_NOTAS = 200;
@@ -62,7 +74,7 @@ async function asegurarEsquema() {
 
 function cors(peticion, respuesta) {
 	const origen = peticion.headers.origin;
-	if (origen && ORIGENES.has(origen)) {
+	if (origenPermitido(origen)) {
 		respuesta.setHeader('Access-Control-Allow-Origin', origen);
 	}
 	respuesta.setHeader('Vary', 'Origin');
